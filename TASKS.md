@@ -253,7 +253,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - Apply `dark` class to `<html>`
 - [x] Create `src/lib/components/ThemeToggle.svelte`
 - [x] Detect system preference on mount
-- [ ] Unit test for store logic
+- [x] Unit tests for ThemeToggle component (4 tests)
 - [x] E2E test for toggle functionality
 
 ## 17. Layout & Navigation
@@ -279,7 +279,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - Version badge
   - Placeholder sections for future content
 - [x] Create `src/lib/components/ServiceCard.svelte`
-- [ ] Component tests for each
+- [x] Component tests (ServiceCard: 5 tests, ThemeToggle: 4 tests)
 
 ## 19. Demo Catalog
 

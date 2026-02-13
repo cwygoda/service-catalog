@@ -58,6 +58,7 @@ export default tseslint.config(
       '.svelte-kit/**',
       '*.config.js',
       '*.config.ts',
+      'vitest.setup.ts',
     ],
   }
 );
