@@ -38,8 +38,8 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - moduleResolution: NodeNext
   - target: ES2022
   - paths aliases: `@core/*`, `@adapters/*`, `@shared/*`
-- [ ] Create `tsconfig.node.json` for CLI/build
-- [ ] Create `tsconfig.web.json` for SvelteKit (extends base)
+- [x] Create `tsconfig.node.json` for CLI/build
+- [x] Create `tsconfig.json` for SvelteKit (extends .svelte-kit/tsconfig.json)
 
 ## 3. Linting & Formatting
 
@@ -216,29 +216,22 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 13. SvelteKit Setup
 
-- [ ] Initialize SvelteKit in `src/web/`:
-
-  ```bash
-  pnpm create svelte@latest src/web --template skeleton --types typescript
-  ```
-
-- [ ] Install `@sveltejs/adapter-static`
-- [ ] Configure `svelte.config.js` for static output
-- [ ] Move/merge configs to root level
-- [ ] Verify `pnpm dev` starts dev server
+- [x] Initialize SvelteKit (using standard src/routes structure)
+- [x] Install `@sveltejs/adapter-static`
+- [x] Configure `svelte.config.js` for static output
+- [x] Merge configs to root level (vite.config.ts, svelte.config.js)
+- [x] Verify `pnpm dev` starts dev server
 
 ## 14. Tailwind CSS
 
-- [ ] Install Tailwind CSS + PostCSS + Autoprefixer
-- [ ] Create `tailwind.config.js`:
-  - content paths for Svelte files
-  - darkMode: 'class'
-- [ ] Create `src/web/app.css` with Tailwind directives
-- [ ] Import in root layout
+- [x] Install Tailwind CSS v4 + @tailwindcss/vite plugin
+- [x] Configure vite.config.ts with Tailwind plugin (CSS-first config in v4)
+- [x] Create `src/app.css` with `@import 'tailwindcss'`
+- [x] Import in root layout
 
 ## 15. Web Data Loading
 
-- [ ] Create `src/web/lib/ports/catalog.port.ts`:
+- [ ] Create `src/lib/ports/catalog.port.ts`:
 
   ```typescript
   export interface CatalogPort {
@@ -247,46 +240,46 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   }
   ```
 
-- [ ] Create `src/web/lib/adapters/static-json.adapter.ts`:
+- [ ] Create `src/lib/adapters/static-json.adapter.ts`:
   - Implements CatalogPort
   - Fetches from `/catalog.json` (static build)
 - [ ] Configure Vite to copy `catalog.json` to static folder
 
 ## 16. Dark Mode
 
-- [ ] Create `src/web/lib/stores/theme.store.ts`:
+- [ ] Create `src/lib/stores/theme.store.ts`:
   - Track current theme: 'light' | 'dark' | 'system'
   - Persist to localStorage
   - Apply `dark` class to `<html>`
-- [ ] Create `src/web/lib/components/ThemeToggle.svelte`
+- [ ] Create `src/lib/components/ThemeToggle.svelte`
 - [ ] Detect system preference on mount
 - [ ] Unit test for store logic
 - [ ] E2E test for toggle functionality
 
 ## 17. Layout & Navigation
 
-- [ ] Create `src/web/routes/+layout.svelte`:
+- [ ] Update `src/routes/+layout.svelte`:
   - Header with logo/title
   - Navigation links
   - Theme toggle
   - Responsive: hamburger menu on mobile
-- [ ] Create `src/web/lib/components/Header.svelte`
-- [ ] Create `src/web/lib/components/Nav.svelte`
+- [ ] Create `src/lib/components/Header.svelte`
+- [ ] Create `src/lib/components/Nav.svelte`
 
 ## 18. Routes & Pages
 
-- [ ] Create `src/web/routes/+page.svelte` (Home):
+- [ ] Update `src/routes/+page.svelte` (Home):
   - Catalog overview
   - Service count
   - Quick links
-- [ ] Create `src/web/routes/services/+page.svelte` (Service list):
+- [ ] Create `src/routes/services/+page.svelte` (Service list):
   - Grid of service cards
   - Load from CatalogPort
-- [ ] Create `src/web/routes/services/[id]/+page.svelte` (Service detail):
+- [ ] Create `src/routes/services/[id]/+page.svelte` (Service detail):
   - Name, description
   - Version badge
   - Placeholder sections for future content
-- [ ] Create `src/web/lib/components/ServiceCard.svelte`
+- [ ] Create `src/lib/components/ServiceCard.svelte`
 - [ ] Component tests for each
 
 ## 19. Demo Catalog
@@ -391,7 +384,7 @@ pnpm verify
 
 ## Acceptance Criteria
 
-- [ ] `pnpm verify` passes (all checks green)
+- [x] `pnpm verify` passes (all checks green)
 - [ ] Site displays 6 demo services with name + description
 - [ ] Dark mode toggle works and persists
 - [ ] Mobile responsive layout works
