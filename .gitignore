@@ -9,3 +9,6 @@ build/
 playwright-report/
 test-results/
 coverage/
+
+# Generated
+static/catalog.json

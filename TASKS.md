@@ -231,7 +231,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 15. Web Data Loading
 
-- [ ] Create `src/lib/ports/catalog.port.ts`:
+- [x] Create `src/lib/ports/catalog.port.ts`:
 
   ```typescript
   export interface CatalogPort {
@@ -240,10 +240,10 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   }
   ```
 
-- [ ] Create `src/lib/adapters/static-json.adapter.ts`:
+- [x] Create `src/lib/adapters/static-json.adapter.ts`:
   - Implements CatalogPort
   - Fetches from `/catalog.json` (static build)
-- [ ] Configure Vite to copy `catalog.json` to static folder
+- [x] CLI build command generates `catalog.json` to static folder
 
 ## 16. Dark Mode
 
@@ -258,28 +258,28 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 17. Layout & Navigation
 
-- [ ] Update `src/routes/+layout.svelte`:
+- [x] Update `src/routes/+layout.svelte`:
   - Header with logo/title
   - Navigation links
-  - Theme toggle
-  - Responsive: hamburger menu on mobile
-- [ ] Create `src/lib/components/Header.svelte`
-- [ ] Create `src/lib/components/Nav.svelte`
+  - ~~Theme toggle~~ (deferred to dark mode task)
+  - [ ] Responsive: hamburger menu on mobile
+- [x] Create `src/lib/components/Header.svelte`
+- [ ] Create `src/lib/components/Nav.svelte` (mobile nav)
 
 ## 18. Routes & Pages
 
-- [ ] Update `src/routes/+page.svelte` (Home):
+- [x] Update `src/routes/+page.svelte` (Home):
   - Catalog overview
   - Service count
   - Quick links
-- [ ] Create `src/routes/services/+page.svelte` (Service list):
+- [x] Create `src/routes/services/+page.svelte` (Service list):
   - Grid of service cards
   - Load from CatalogPort
-- [ ] Create `src/routes/services/[id]/+page.svelte` (Service detail):
+- [x] Create `src/routes/services/[id]/+page.svelte` (Service detail):
   - Name, description
   - Version badge
   - Placeholder sections for future content
-- [ ] Create `src/lib/components/ServiceCard.svelte`
+- [x] Create `src/lib/components/ServiceCard.svelte`
 - [ ] Component tests for each
 
 ## 19. Demo Catalog
@@ -307,20 +307,19 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 20. Build Integration
 
-- [ ] Update CLI `build` command to orchestrate:
-  1. Load catalog from input path
-  2. Write `catalog.json` to web static folder
-  3. Run SvelteKit build
-- [ ] Add npm scripts:
-  - `dev`: `vite dev` (web only, needs catalog.json)
-  - `build`: `service-catalog build -i demo-catalog && vite build`
+- [x] Add npm scripts to orchestrate build:
+  - `build:cli`: compile CLI
+  - `build:catalog`: generate catalog.json to static
+  - `dev`: build CLI + catalog + vite dev
+  - `build`: build CLI + catalog + vite build
   - `preview`: `vite preview`
 - [ ] Integration test: full build + verify output structure
 
 ## 21. E2E Tests
 
-- [ ] Create `tests/e2e/navigation.spec.ts`:
+- [x] Create `tests/e2e/home.spec.ts`:
   - Home page loads
+  - Shows service count
   - Navigate to services list
   - Navigate to service detail
   - Back navigation works
@@ -331,7 +330,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 - [ ] Create `tests/e2e/responsive.spec.ts`:
   - Mobile viewport shows hamburger
   - Menu opens/closes
-- [ ] All E2E tests pass against built static site
+- [x] All E2E tests pass against built static site
 
 ## 22. Deployment
 
@@ -385,7 +384,7 @@ pnpm verify
 ## Acceptance Criteria
 
 - [x] `pnpm verify` passes (all checks green)
-- [ ] Site displays 6 demo services with name + description
+- [x] Site displays 6 demo services with name + description
 - [ ] Dark mode toggle works and persists
 - [ ] Mobile responsive layout works
 - [ ] Deployed to Vercel and accessible
