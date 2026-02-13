@@ -1,0 +1,30 @@
+[use_case]
+id = "checkout-flow"
+name = "Customer Checkout"
+description = "Handles the complete customer checkout process"
+bpmn = "./checkout.bpmn.txt"
+
+[[use_case.participants]]
+service = "order-service"
+role = "Creates and manages order"
+
+[[use_case.participants]]
+service = "billing-service"
+role = "Processes payment"
+
+[[use_case.steps]]
+sequence = 1
+actor = "Customer"
+action = "Submits order"
+
+[[use_case.steps]]
+sequence = 2
+service = "order-service"
+action = "Validates order"
+endpoint = "POST /orders"
+
+[[use_case.steps]]
+sequence = 3
+service = "billing-service"
+action = "Processes payment"
+endpoint = "POST /payments"

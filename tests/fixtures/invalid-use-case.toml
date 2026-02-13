@@ -1,0 +1,6 @@
+[use_case]
+id = ""
+name = "Missing ID"
+description = "This use case has an empty ID"
+participants = []
+steps = []

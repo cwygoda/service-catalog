@@ -20,6 +20,7 @@ describe('JsonWriter', () => {
 
   it('writes catalog to JSON file', async () => {
     const catalog: Catalog = {
+      useCases: [],
       services: [
         { id: 'svc-1', name: 'Service 1', description: 'First' },
         { id: 'svc-2', name: 'Service 2', description: 'Second' },
@@ -35,7 +36,7 @@ describe('JsonWriter', () => {
   });
 
   it('creates nested directories if needed', async () => {
-    const catalog: Catalog = { services: [] };
+    const catalog: Catalog = { useCases: [], services: [] };
     const outputPath = join(tempDir, 'nested', 'deep', 'catalog.json');
 
     await writer.write(catalog, outputPath);
@@ -46,6 +47,7 @@ describe('JsonWriter', () => {
 
   it('writes pretty-printed JSON', async () => {
     const catalog: Catalog = {
+      useCases: [],
       services: [{ id: 'test', name: 'Test', description: 'Desc' }],
     };
     const outputPath = join(tempDir, 'catalog.json');
@@ -60,8 +62,14 @@ describe('JsonWriter', () => {
   it('overwrites existing file', async () => {
     const outputPath = join(tempDir, 'catalog.json');
 
-    await writer.write({ services: [{ id: 'old', name: 'Old', description: 'Old' }] }, outputPath);
-    await writer.write({ services: [{ id: 'new', name: 'New', description: 'New' }] }, outputPath);
+    await writer.write(
+      { useCases: [], services: [{ id: 'old', name: 'Old', description: 'Old' }] },
+      outputPath
+    );
+    await writer.write(
+      { useCases: [], services: [{ id: 'new', name: 'New', description: 'New' }] },
+      outputPath
+    );
 
     const content = await readFile(outputPath, 'utf-8');
     const parsed = JSON.parse(content) as Catalog;
@@ -70,6 +78,7 @@ describe('JsonWriter', () => {
 
   it('preserves service metadata', async () => {
     const catalog: Catalog = {
+      useCases: [],
       services: [
         {
           id: 'with-meta',

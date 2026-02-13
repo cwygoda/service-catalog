@@ -38,9 +38,9 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
 - [x] Create type guard `isUseCase()`
 - [x] Unit tests for use case domain (27 tests)
 
-## 2. Use Case TypeBox Schema
+## 2. Use Case TypeBox Schema ✅
 
-- [ ] Create `src/shared/schemas/use-case.schema.ts`:
+- [x] Create `src/shared/schemas/use-case.schema.ts`:
 
   ```typescript
   export const UseCaseSchema = Type.Object({
@@ -55,20 +55,20 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
   });
   ```
 
-- [ ] Export from `src/shared/schemas/index.ts`
-- [ ] Unit tests for schema validation
+- [x] Export from `src/shared/schemas/index.ts`
+- [x] Unit tests for schema validation (22 tests)
 
-## 3. Use Case TOML Parser
+## 3. Use Case TOML Parser ✅
 
-- [ ] Extend `src/adapters/parsers/toml.parser.ts` to handle use case sidecars
-- [ ] Create `parseUseCaseToml()` function
-- [ ] Unit tests with fixtures:
+- [x] Extend `src/adapters/parsers/toml.parser.ts` to handle use case sidecars
+- [x] Create `parseUseCaseToml()` function
+- [x] Unit tests with fixtures (5 tests):
   - `tests/fixtures/valid-use-case.toml`
   - `tests/fixtures/invalid-use-case.toml`
 
-## 4. Catalog Domain Extension
+## 4. Catalog Domain Extension ✅
 
-- [ ] Update `src/core/domain/catalog.ts`:
+- [x] Update `src/core/domain/catalog.ts`:
 
   ```typescript
   export interface Catalog {
@@ -77,10 +77,10 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
   }
   ```
 
-- [ ] Update `createCatalog()` to accept use cases
-- [ ] Add `findUseCase(catalog, id)` function
-- [ ] Add `getServiceUseCases(catalog, serviceId)` - returns use cases a service participates in
-- [ ] Update existing tests
+- [x] Update `createCatalog()` to accept use cases
+- [x] Add `findUseCase(catalog, id)` function
+- [x] Add `getServiceUseCases(catalog, serviceId)` - returns use cases a service participates in
+- [x] Update existing tests (16 tests total)
 
 ## 5. Filesystem Loader Extension
 

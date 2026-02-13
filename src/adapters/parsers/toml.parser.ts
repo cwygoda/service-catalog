@@ -1,9 +1,12 @@
 import { parse, TomlError } from 'smol-toml';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { ServiceSidecarSchema, type ServiceSidecar } from '../../shared/schemas/service.schema.js';
+import { UseCaseSidecarSchema, type UseCaseSidecar } from '../../shared/schemas/use-case.schema.js';
 import type { Service } from '../../core/domain/service.js';
+import type { UseCase } from '../../core/domain/use-case.js';
 
-const compiledSchema = TypeCompiler.Compile(ServiceSidecarSchema);
+const compiledServiceSchema = TypeCompiler.Compile(ServiceSidecarSchema);
+const compiledUseCaseSchema = TypeCompiler.Compile(UseCaseSidecarSchema);
 
 export class TomlParseError extends Error {
   constructor(
@@ -54,8 +57,8 @@ export function parseToml(content: string, filePath: string): ServiceSidecar {
     );
   }
 
-  if (!compiledSchema.Check(parsed)) {
-    const errors = [...compiledSchema.Errors(parsed)].map(
+  if (!compiledServiceSchema.Check(parsed)) {
+    const errors = [...compiledServiceSchema.Errors(parsed)].map(
       (e) => `${e.path}: ${e.message} (got ${JSON.stringify(e.value)})`
     );
     throw new ValidationError('Invalid service sidecar', filePath, errors);
@@ -76,4 +79,56 @@ export function sidecarToService(sidecar: ServiceSidecar): Service {
   }
 
   return service;
+}
+
+export function parseUseCaseToml(content: string, filePath: string): UseCaseSidecar {
+  let parsed: unknown;
+
+  try {
+    parsed = parse(content);
+  } catch (error) {
+    if (error instanceof TomlError) {
+      throw new TomlParseError(error.message, filePath, error.line, error.column);
+    }
+    throw new TomlParseError(
+      error instanceof Error ? error.message : 'Unknown parse error',
+      filePath
+    );
+  }
+
+  if (!compiledUseCaseSchema.Check(parsed)) {
+    const errors = [...compiledUseCaseSchema.Errors(parsed)].map(
+      (e) => `${e.path}: ${e.message} (got ${JSON.stringify(e.value)})`
+    );
+    throw new ValidationError('Invalid use case sidecar', filePath, errors);
+  }
+
+  return parsed;
+}
+
+export function sidecarToUseCase(sidecar: UseCaseSidecar): UseCase {
+  const uc = sidecar.use_case;
+
+  const useCase: UseCase = {
+    id: uc.id,
+    name: uc.name,
+    description: uc.description,
+    participants: uc.participants.map((p) => ({
+      service: p.service,
+      role: p.role,
+    })),
+    steps: uc.steps.map((s) => ({
+      sequence: s.sequence,
+      action: s.action,
+      ...(s.actor !== undefined && { actor: s.actor }),
+      ...(s.service !== undefined && { service: s.service }),
+      ...(s.endpoint !== undefined && { endpoint: s.endpoint }),
+    })),
+  };
+
+  if (uc.bpmn !== undefined) {
+    useCase.bpmn = uc.bpmn;
+  }
+
+  return useCase;
 }
