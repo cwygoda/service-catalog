@@ -6,9 +6,9 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
 
 ---
 
-## 1. Use Case Domain Entity
+## 1. Use Case Domain Entity ✅
 
-- [ ] Create `src/core/domain/use-case.ts`:
+- [x] Create `src/core/domain/use-case.ts`:
 
   ```typescript
   export interface UseCase {
@@ -34,9 +34,9 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
   }
   ```
 
-- [ ] Create factory function `createUseCase()`
-- [ ] Create type guard `isUseCase()`
-- [ ] Unit tests for use case domain
+- [x] Create factory function `createUseCase()`
+- [x] Create type guard `isUseCase()`
+- [x] Unit tests for use case domain (27 tests)
 
 ## 2. Use Case TypeBox Schema
 
