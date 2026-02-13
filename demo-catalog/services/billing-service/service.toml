@@ -1,0 +1,7 @@
+[service]
+id = "billing-service"
+name = "Billing Service"
+description = "Two-stage payment processing with authorize and capture"
+
+[service.metadata]
+version = "2.0.0"

@@ -77,6 +77,7 @@ TOML sidecars → CLI parse → JSON intermediary → SvelteKit static build
 - Present tense, imperative mood
 - Reference issue/task if applicable
 - Don't commit unless asked to
+- **ALWAYS update TASKS.md before committing** — mark completed items with `[x]`
 
 ## Commands
 
@@ -100,14 +101,14 @@ pnpm preview         # Preview built site
 
 ## Key Files
 
-| File | Purpose |
-|------|---------|
-| `SPEC.md` | Full specification, phases, architecture |
-| `DEMO.md` | Demo catalog design (6 services, 3 use cases) |
-| `TASKS.md` | Current phase tasks |
-| `catalog.toml` | Catalog configuration (root) |
-| `service.toml` | Service sidecar |
-| `use-case.toml` | Use case definition |
+| File            | Purpose                                       |
+| --------------- | --------------------------------------------- |
+| `SPEC.md`       | Full specification, phases, architecture      |
+| `DEMO.md`       | Demo catalog design (6 services, 3 use cases) |
+| `TASKS.md`      | Current phase tasks                           |
+| `catalog.toml`  | Catalog configuration (root)                  |
+| `service.toml`  | Service sidecar                               |
+| `use-case.toml` | Use case definition                           |
 
 ## Testing Strategy
 

@@ -11,7 +11,7 @@ Most service catalogs are **infrastructure-up**: list services, show their APIs,
 3. **Drill into APIs** — What endpoints, events, and data are involved?
 4. **Trace the path** — Visualize the full journey from user action to system response
 
-This brings **product engineering perspective** to technical documentation. Engineers understand *why* services exist, not just *what* they do.
+This brings **product engineering perspective** to technical documentation. Engineers understand _why_ services exist, not just _what_ they do.
 
 ## Core Concepts
 
@@ -152,7 +152,7 @@ Generic OIDC provider (works with Okta, Auth0, Azure AD, etc.)
 
 Single package with internal modules, following **hexagonal architecture** (ports & adapters):
 
-```text
+````text
 src/
 ├── core/                    # Domain layer (pure, no I/O)
 │   ├── domain/              # Entities: Service, Domain, DataStore, UseCase
@@ -846,3 +846,4 @@ ref = "main"
 - Runtime health integration
 - MCP server for AI tool integration
 - Use case templates / scaffolding
+````

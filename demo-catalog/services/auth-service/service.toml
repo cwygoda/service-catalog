@@ -1,0 +1,7 @@
+[service]
+id = "auth-service"
+name = "Auth Service"
+description = "OIDC identity provider for user authentication"
+
+[service.metadata]
+version = "2.1.0"

@@ -1,0 +1,7 @@
+[service]
+id = "catalog-service"
+name = "Catalog Service"
+description = "Product catalog with search and inventory management"
+
+[service.metadata]
+version = "1.8.0"

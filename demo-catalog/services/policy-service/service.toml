@@ -1,0 +1,7 @@
+[service]
+id = "policy-service"
+name = "Policy Service"
+description = "Authorization policy evaluation using Open Policy Agent"
+
+[service.metadata]
+version = "1.4.0"

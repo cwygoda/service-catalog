@@ -6,11 +6,11 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 1. Project Initialization
 
-- [ ] Initialize pnpm project with `package.json`
+- [x] Initialize pnpm project with `package.json`
   - name: `@service-catalog/app`
   - type: `module`
   - engines: `node >=20`
-- [ ] Create directory structure (hexagonal):
+- [x] Create directory structure (hexagonal):
 
   ```text
   src/
@@ -32,7 +32,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 2. TypeScript Configuration
 
-- [ ] Create `tsconfig.json`:
+- [x] Create `tsconfig.json`:
   - strict: true
   - module: NodeNext
   - moduleResolution: NodeNext
@@ -43,20 +43,20 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 3. Linting & Formatting
 
-- [ ] Install ESLint 9+ with flat config
-- [ ] Install `@typescript-eslint/eslint-plugin`
-- [ ] Install `eslint-plugin-svelte`
-- [ ] Create `eslint.config.js`:
+- [x] Install ESLint 9+ with flat config
+- [x] Install `@typescript-eslint/eslint-plugin`
+- [x] Install `eslint-plugin-svelte`
+- [x] Create `eslint.config.js`:
   - TypeScript strict rules
   - Svelte rules
   - Import order rules
-- [ ] Install Prettier
-- [ ] Create `.prettierrc`:
+- [x] Install Prettier
+- [x] Create `.prettierrc`:
   - singleQuote: true
   - trailingComma: 'es5'
   - printWidth: 100
   - plugins: prettier-plugin-svelte
-- [ ] Add npm scripts:
+- [x] Add npm scripts:
   - `lint`: `eslint .`
   - `lint:fix`: `eslint . --fix`
   - `format`: `prettier --write .`
@@ -65,18 +65,18 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 4. Testing Setup
 
-- [ ] Install Vitest
-- [ ] Create `vitest.config.ts`:
+- [x] Install Vitest
+- [x] Create `vitest.config.ts`:
   - environment: node (for core/cli)
   - coverage provider: v8
   - include patterns
 - [ ] Create `vitest.workspace.ts` for multiple projects (node + jsdom)
-- [ ] Install `@testing-library/svelte` for component tests
-- [ ] Install Playwright
-- [ ] Create `playwright.config.ts`:
+- [x] Install `@testing-library/svelte` for component tests
+- [x] Install Playwright
+- [x] Create `playwright.config.ts`:
   - baseURL: <http://localhost:4173> (preview server)
   - webServer config to auto-start preview
-- [ ] Create test directories:
+- [x] Create test directories:
 
   ```text
   tests/
@@ -84,7 +84,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   └── e2e/
   ```
 
-- [ ] Add npm scripts:
+- [x] Add npm scripts:
   - `test:unit`: `vitest run`
   - `test:unit:watch`: `vitest`
   - `test:integration`: `vitest run tests/integration`
@@ -94,17 +94,17 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 5. Verify Script
 
-- [ ] Create `pnpm verify` script that runs all checks in order:
+- [x] Create `pnpm verify` script that runs all checks in order:
 
   ```bash
   pnpm typecheck && pnpm lint && pnpm format:check && pnpm test:unit && pnpm build && pnpm test:e2e
   ```
 
-- [ ] Verify script exits non-zero on any failure
+- [x] Verify script exits non-zero on any failure
 
 ## 6. Core Domain Types
 
-- [ ] Create `src/core/domain/service.ts`:
+- [x] Create `src/core/domain/service.ts`:
 
   ```typescript
   export interface Service {
@@ -117,7 +117,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   }
   ```
 
-- [ ] Create `src/core/domain/catalog.ts`:
+- [x] Create `src/core/domain/catalog.ts`:
 
   ```typescript
   export interface Catalog {
@@ -125,11 +125,11 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   }
   ```
 
-- [ ] Unit tests for domain types (type guards, factories)
+- [x] Unit tests for domain types (type guards, factories)
 
 ## 7. Core Ports
 
-- [ ] Create `src/core/ports/catalog-loader.port.ts`:
+- [x] Create `src/core/ports/catalog-loader.port.ts`:
 
   ```typescript
   export interface CatalogLoaderPort {
@@ -137,7 +137,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   }
   ```
 
-- [ ] Create `src/core/ports/catalog-writer.port.ts`:
+- [x] Create `src/core/ports/catalog-writer.port.ts`:
 
   ```typescript
   export interface CatalogWriterPort {
@@ -147,8 +147,8 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 8. TypeBox Schemas
 
-- [ ] Install `@sinclair/typebox`
-- [ ] Create `src/shared/schemas/service.schema.ts`:
+- [x] Install `@sinclair/typebox`
+- [x] Create `src/shared/schemas/service.schema.ts`:
 
   ```typescript
   export const ServiceSchema = Type.Object({
@@ -156,32 +156,34 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
       id: Type.String(),
       name: Type.String(),
       description: Type.String(),
-      metadata: Type.Optional(Type.Object({
-        version: Type.Optional(Type.String()),
-      })),
+      metadata: Type.Optional(
+        Type.Object({
+          version: Type.Optional(Type.String()),
+        })
+      ),
     }),
   });
   ```
 
 - [ ] Export JSON Schema for external validation
-- [ ] Unit tests for schema validation
+- [x] Unit tests for schema validation
 
 ## 9. TOML Parser Adapter
 
-- [ ] Install `smol-toml`
-- [ ] Create `src/adapters/parsers/toml.parser.ts`:
+- [x] Install `smol-toml`
+- [x] Create `src/adapters/parsers/toml.parser.ts`:
   - Parse TOML string → object
   - Validate against TypeBox schema
   - Return typed result or throw with clear errors
-- [ ] Error messages include file path, line number if possible
-- [ ] Unit tests with fixtures:
+- [x] Error messages include file path, line number if possible
+- [x] Unit tests with fixtures:
   - `tests/fixtures/valid-service.toml`
   - `tests/fixtures/invalid-missing-id.toml`
   - `tests/fixtures/invalid-syntax.toml`
 
 ## 10. Filesystem Loader Adapter
 
-- [ ] Create `src/adapters/loaders/filesystem.loader.ts`:
+- [x] Create `src/adapters/loaders/filesystem.loader.ts`:
   - Implements `CatalogLoaderPort`
   - Recursively find `service.toml` files
   - Parse each, collect into Catalog
@@ -189,27 +191,27 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 11. JSON Writer Adapter
 
-- [ ] Create `src/adapters/persistence/json.writer.ts`:
+- [x] Create `src/adapters/persistence/json.writer.ts`:
   - Implements `CatalogWriterPort`
   - Write `catalog.json` to output path
-- [ ] Pretty-print JSON for readability
+- [x] Pretty-print JSON for readability
 - [ ] Unit tests
 
 ## 12. CLI Implementation
 
-- [ ] Install `commander` + `chalk`
-- [ ] Create `src/cli/index.ts` entry point
-- [ ] Create `src/cli/commands/build.command.ts`:
+- [x] Install `commander` + `chalk`
+- [x] Create `src/cli/index.ts` entry point
+- [x] Create `src/cli/commands/build.command.ts`:
 
   ```typescript
   interface BuildOptions {
-    input: string;   // -i, --input
-    output: string;  // -o, --output (default: dist/)
+    input: string; // -i, --input
+    output: string; // -o, --output (default: dist/)
   }
   ```
 
-- [ ] Wire up adapters via dependency injection
-- [ ] Add `bin` entry to `package.json`: `service-catalog`
+- [x] Wire up adapters via dependency injection
+- [x] Add `bin` entry to `package.json`: `service-catalog`
 - [ ] Integration test: run CLI on demo catalog, verify output
 
 ## 13. SvelteKit Setup
@@ -289,8 +291,8 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 19. Demo Catalog
 
-- [ ] Create `demo-catalog/` directory at project root
-- [ ] Create `demo-catalog/services/auth-service/service.toml`:
+- [x] Create `demo-catalog/` directory at project root
+- [x] Create `demo-catalog/services/auth-service/service.toml`:
 
   ```toml
   [service]
@@ -302,13 +304,13 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   version = "2.1.0"
   ```
 
-- [ ] Create remaining 5 services:
+- [x] Create remaining 5 services:
   - `policy-service/service.toml`
   - `crm-service/service.toml`
   - `billing-service/service.toml`
   - `catalog-service/service.toml`
   - `orders-service/service.toml`
-- [ ] Verify `pnpm build` with demo catalog produces valid output
+- [x] Verify `pnpm build` with demo catalog produces valid output
 
 ## 20. Build Integration
 
@@ -395,8 +397,8 @@ pnpm verify
 - [ ] Mobile responsive layout works
 - [ ] Deployed to Vercel and accessible
 - [ ] Test coverage >80% for `src/core/`
-- [ ] Zero ESLint errors, zero TypeScript errors
-- [ ] Hexagonal architecture enforced (core has no I/O imports)
+- [x] Zero ESLint errors, zero TypeScript errors
+- [x] Hexagonal architecture enforced (core has no I/O imports)
 
 ---
 

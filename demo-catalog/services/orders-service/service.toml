@@ -1,0 +1,7 @@
+[service]
+id = "orders-service"
+name = "Orders Service"
+description = "Order lifecycle management from cart to fulfillment"
+
+[service.metadata]
+version = "4.2.1"

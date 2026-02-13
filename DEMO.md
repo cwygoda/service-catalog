@@ -14,12 +14,12 @@ Customer places an order for catalog products with payment processing.
 
 **Participants:**
 
-| Service | Role |
-|---------|------|
-| catalog-service | Product lookup |
-| orders-service | Order lifecycle |
-| billing-service | Payment processing |
-| policy-service | Authorization checks |
+| Service         | Role                 |
+| --------------- | -------------------- |
+| catalog-service | Product lookup       |
+| orders-service  | Order lifecycle      |
+| billing-service | Payment processing   |
+| policy-service  | Authorization checks |
 
 **Flow:**
 
@@ -59,11 +59,11 @@ Customer updates their profile, billing info syncs automatically.
 
 **Participants:**
 
-| Service | Role |
-|---------|------|
-| crm-service | Profile management |
-| billing-service | Payment profile sync |
-| orders-service | Customer cache update |
+| Service         | Role                  |
+| --------------- | --------------------- |
+| crm-service     | Profile management    |
+| billing-service | Payment profile sync  |
+| orders-service  | Customer cache update |
 
 **Flow:**
 
@@ -87,11 +87,11 @@ New customer signs up and gets authenticated.
 
 **Participants:**
 
-| Service | Role |
-|---------|------|
-| auth-service | Identity provider |
-| crm-service | Customer record |
-| orders-service | Welcome flow |
+| Service        | Role              |
+| -------------- | ----------------- |
+| auth-service   | Identity provider |
+| crm-service    | Customer record   |
+| orders-service | Welcome flow      |
 
 **Flow:**
 
@@ -133,43 +133,43 @@ Services exist to implement use cases. Listed by domain.
 
 ### Platform Domain
 
-| Service | Purpose | Use Cases |
-|---------|---------|-----------|
-| auth-service | OIDC identity provider | UC-003 |
-| policy-service | AuthZ policy evaluation (OPA) | UC-001 |
+| Service        | Purpose                       | Use Cases |
+| -------------- | ----------------------------- | --------- |
+| auth-service   | OIDC identity provider        | UC-003    |
+| policy-service | AuthZ policy evaluation (OPA) | UC-001    |
 
 ### Commerce Domain
 
-| Service | Purpose | Use Cases |
-|---------|---------|-----------|
-| crm-service | Customer data, change events | UC-002, UC-003 |
-| billing-service | Two-stage billing (authorize → capture) | UC-001, UC-002 |
-| catalog-service | Product search and browse | UC-001 |
-| orders-service | Order lifecycle management | UC-001, UC-002, UC-003 |
+| Service         | Purpose                                 | Use Cases              |
+| --------------- | --------------------------------------- | ---------------------- |
+| crm-service     | Customer data, change events            | UC-002, UC-003         |
+| billing-service | Two-stage billing (authorize → capture) | UC-001, UC-002         |
+| catalog-service | Product search and browse               | UC-001                 |
+| orders-service  | Order lifecycle management              | UC-001, UC-002, UC-003 |
 
 ## Event Catalog
 
-| Event | Producer | Consumers | Use Cases |
-|-------|----------|-----------|-----------|
-| user.created | auth-service | crm-service | UC-003 |
-| customer.created | crm-service | orders-service | UC-003 |
-| customer.updated | crm-service | billing-service, orders-service | UC-002 |
-| payment.authorized | billing-service | orders-service | UC-001 |
-| payment.captured | billing-service | orders-service | UC-001 |
-| order.confirmed | orders-service | catalog-service | UC-001 |
+| Event              | Producer        | Consumers                       | Use Cases |
+| ------------------ | --------------- | ------------------------------- | --------- |
+| user.created       | auth-service    | crm-service                     | UC-003    |
+| customer.created   | crm-service     | orders-service                  | UC-003    |
+| customer.updated   | crm-service     | billing-service, orders-service | UC-002    |
+| payment.authorized | billing-service | orders-service                  | UC-001    |
+| payment.captured   | billing-service | orders-service                  | UC-001    |
+| order.confirmed    | orders-service  | catalog-service                 | UC-001    |
 
 ## Data Stores
 
-| Store | Owner | Type | Use Cases |
-|-------|-------|------|-----------|
-| users-db | auth-service | PostgreSQL | UC-003 |
-| sessions-cache | auth-service | Redis | UC-003 |
-| policies-store | policy-service | OPA bundle (S3) | UC-001 |
-| customers-db | crm-service | PostgreSQL | UC-002, UC-003 |
-| payments-db | billing-service | PostgreSQL | UC-001 |
-| products-db | catalog-service | PostgreSQL | UC-001 |
-| products-search | catalog-service | Elasticsearch | UC-001 |
-| orders-db | orders-service | PostgreSQL | UC-001, UC-002 |
+| Store           | Owner           | Type            | Use Cases      |
+| --------------- | --------------- | --------------- | -------------- |
+| users-db        | auth-service    | PostgreSQL      | UC-003         |
+| sessions-cache  | auth-service    | Redis           | UC-003         |
+| policies-store  | policy-service  | OPA bundle (S3) | UC-001         |
+| customers-db    | crm-service     | PostgreSQL      | UC-002, UC-003 |
+| payments-db     | billing-service | PostgreSQL      | UC-001         |
+| products-db     | catalog-service | PostgreSQL      | UC-001         |
+| products-search | catalog-service | Elasticsearch   | UC-001         |
+| orders-db       | orders-service  | PostgreSQL      | UC-001, UC-002 |
 
 ---
 

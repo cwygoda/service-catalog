@@ -1,0 +1,7 @@
+[service]
+id = "test-service"
+name = "Test Service"
+description = "A test service for unit tests"
+
+[service.metadata]
+version = "1.0.0"
