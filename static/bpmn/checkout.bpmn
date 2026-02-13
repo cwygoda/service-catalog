@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_checkout"
+                  targetNamespace="http://service-catalog.example.com/bpmn">
+
+  <bpmn:collaboration id="Collaboration_checkout">
+    <bpmn:participant id="Participant_customer" name="Customer" processRef="Process_customer" />
+    <bpmn:participant id="Participant_orders" name="Orders Service" processRef="Process_orders" />
+    <bpmn:participant id="Participant_catalog" name="Catalog Service" processRef="Process_catalog" />
+    <bpmn:participant id="Participant_billing" name="Billing Service" processRef="Process_billing" />
+    <bpmn:messageFlow id="Flow_initiate" sourceRef="Task_initiate" targetRef="Task_create_order" />
+    <bpmn:messageFlow id="Flow_reserve_req" sourceRef="Task_create_order" targetRef="Task_reserve" />
+    <bpmn:messageFlow id="Flow_reserve_resp" sourceRef="Task_reserve" targetRef="Gateway_reserve" />
+    <bpmn:messageFlow id="Flow_payment_req" sourceRef="Gateway_reserve" targetRef="Task_payment" />
+    <bpmn:messageFlow id="Flow_payment_resp" sourceRef="Task_payment" targetRef="Gateway_payment" />
+    <bpmn:messageFlow id="Flow_confirm" sourceRef="Gateway_payment" targetRef="Task_confirm" />
+    <bpmn:messageFlow id="Flow_complete" sourceRef="Task_confirm" targetRef="Event_complete" />
+  </bpmn:collaboration>
+
+  <bpmn:process id="Process_customer" isExecutable="false">
+    <bpmn:startEvent id="Event_start" name="Checkout Started">
+      <bpmn:outgoing>Flow_to_initiate</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_initiate" name="Initiate Checkout">
+      <bpmn:incoming>Flow_to_initiate</bpmn:incoming>
+      <bpmn:outgoing>Flow_to_wait</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:intermediateCatchEvent id="Event_wait" name="Wait for Confirmation">
+      <bpmn:incoming>Flow_to_wait</bpmn:incoming>
+      <bpmn:outgoing>Flow_to_complete</bpmn:outgoing>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="Event_complete" name="Order Confirmed">
+      <bpmn:incoming>Flow_to_complete</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_to_initiate" sourceRef="Event_start" targetRef="Task_initiate" />
+    <bpmn:sequenceFlow id="Flow_to_wait" sourceRef="Task_initiate" targetRef="Event_wait" />
+    <bpmn:sequenceFlow id="Flow_to_complete" sourceRef="Event_wait" targetRef="Event_complete" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_orders" isExecutable="false">
+    <bpmn:task id="Task_create_order" name="Create Pending Order&#10;POST /orders">
+      <bpmn:outgoing>Flow_to_gw_reserve</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_reserve" name="Inventory Reserved?">
+      <bpmn:incoming>Flow_to_gw_reserve</bpmn:incoming>
+      <bpmn:outgoing>Flow_reserve_ok</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_payment" name="Payment Successful?">
+      <bpmn:incoming>Flow_reserve_ok</bpmn:incoming>
+      <bpmn:outgoing>Flow_payment_ok</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_confirm" name="Confirm Order&#10;PATCH /orders/{id}/confirm">
+      <bpmn:incoming>Flow_payment_ok</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:sequenceFlow id="Flow_to_gw_reserve" sourceRef="Task_create_order" targetRef="Gateway_reserve" />
+    <bpmn:sequenceFlow id="Flow_reserve_ok" sourceRef="Gateway_reserve" targetRef="Gateway_payment" />
+    <bpmn:sequenceFlow id="Flow_payment_ok" sourceRef="Gateway_payment" targetRef="Task_confirm" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_catalog" isExecutable="false">
+    <bpmn:task id="Task_reserve" name="Reserve Inventory&#10;POST /inventory/reserve" />
+  </bpmn:process>
+
+  <bpmn:process id="Process_billing" isExecutable="false">
+    <bpmn:task id="Task_payment" name="Process Payment&#10;POST /payments" />
+  </bpmn:process>
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_checkout">
+      <!-- Customer Lane -->
+      <bpmndi:BPMNShape id="Participant_customer_di" bpmnElement="Participant_customer" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="800" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_start_di" bpmnElement="Event_start">
+        <dc:Bounds x="212" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="190" y="145" width="80" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_initiate_di" bpmnElement="Task_initiate">
+        <dc:Bounds x="300" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_wait_di" bpmnElement="Event_wait">
+        <dc:Bounds x="612" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_complete_di" bpmnElement="Event_complete">
+        <dc:Bounds x="872" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel><dc:Bounds x="850" y="145" width="80" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_to_initiate_di" bpmnElement="Flow_to_initiate">
+        <di:waypoint x="248" y="120" /><di:waypoint x="300" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_to_wait_di" bpmnElement="Flow_to_wait">
+        <di:waypoint x="400" y="120" /><di:waypoint x="612" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_to_complete_di" bpmnElement="Flow_to_complete">
+        <di:waypoint x="648" y="120" /><di:waypoint x="872" y="120" />
+      </bpmndi:BPMNEdge>
+
+      <!-- Orders Service Lane -->
+      <bpmndi:BPMNShape id="Participant_orders_di" bpmnElement="Participant_orders" isHorizontal="true">
+        <dc:Bounds x="160" y="200" width="800" height="140" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_create_order_di" bpmnElement="Task_create_order">
+        <dc:Bounds x="300" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_reserve_di" bpmnElement="Gateway_reserve" isMarkerVisible="true">
+        <dc:Bounds x="525" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="505" y="302" width="90" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_payment_di" bpmnElement="Gateway_payment" isMarkerVisible="true">
+        <dc:Bounds x="685" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel><dc:Bounds x="665" y="302" width="90" height="14" /></bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_confirm_di" bpmnElement="Task_confirm">
+        <dc:Bounds x="800" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_to_gw_reserve_di" bpmnElement="Flow_to_gw_reserve">
+        <di:waypoint x="400" y="270" /><di:waypoint x="525" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_reserve_ok_di" bpmnElement="Flow_reserve_ok">
+        <di:waypoint x="575" y="270" /><di:waypoint x="685" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_payment_ok_di" bpmnElement="Flow_payment_ok">
+        <di:waypoint x="735" y="270" /><di:waypoint x="800" y="270" />
+      </bpmndi:BPMNEdge>
+
+      <!-- Catalog Service Lane -->
+      <bpmndi:BPMNShape id="Participant_catalog_di" bpmnElement="Participant_catalog" isHorizontal="true">
+        <dc:Bounds x="160" y="360" width="800" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_reserve_di" bpmnElement="Task_reserve">
+        <dc:Bounds x="440" y="370" width="100" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Billing Service Lane -->
+      <bpmndi:BPMNShape id="Participant_billing_di" bpmnElement="Participant_billing" isHorizontal="true">
+        <dc:Bounds x="160" y="480" width="800" height="100" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_payment_di" bpmnElement="Task_payment">
+        <dc:Bounds x="600" y="490" width="100" height="80" />
+      </bpmndi:BPMNShape>
+
+      <!-- Message Flows -->
+      <bpmndi:BPMNEdge id="Flow_initiate_di" bpmnElement="Flow_initiate">
+        <di:waypoint x="350" y="160" /><di:waypoint x="350" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_reserve_req_di" bpmnElement="Flow_reserve_req">
+        <di:waypoint x="400" y="290" /><di:waypoint x="440" y="290" /><di:waypoint x="440" y="370" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_reserve_resp_di" bpmnElement="Flow_reserve_resp">
+        <di:waypoint x="540" y="410" /><di:waypoint x="540" y="370" /><di:waypoint x="550" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_payment_req_di" bpmnElement="Flow_payment_req">
+        <di:waypoint x="575" y="280" /><di:waypoint x="600" y="280" /><di:waypoint x="600" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_payment_resp_di" bpmnElement="Flow_payment_resp">
+        <di:waypoint x="700" y="530" /><di:waypoint x="710" y="530" /><di:waypoint x="710" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_confirm_di" bpmnElement="Flow_confirm">
+        <di:waypoint x="735" y="270" /><di:waypoint x="800" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_complete_di" bpmnElement="Flow_complete">
+        <di:waypoint x="890" y="230" /><di:waypoint x="890" y="138" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -2,6 +2,7 @@
 id = "checkout"
 name = "Customer Checkout"
 description = "End-to-end checkout flow when a customer completes their purchase. Coordinates order creation, payment processing, and inventory updates."
+bpmn = "/bpmn/checkout.bpmn"
 
 [[use_case.participants]]
 service = "orders-service"

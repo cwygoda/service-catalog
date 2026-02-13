@@ -63,3 +63,15 @@ test('navigation has Use Cases link', async ({ page }) => {
   const desktopNav = page.locator('nav.hidden.sm\\:flex');
   await expect(desktopNav.getByRole('link', { name: 'Use Cases' })).toBeVisible();
 });
+
+test('use case with BPMN shows diagram', async ({ page }) => {
+  await page.goto('/use-cases/checkout');
+  // Check for BPMN badge
+  await expect(page.getByText('BPMN', { exact: true })).toBeVisible();
+  // Check for Process Diagram section
+  await expect(page.getByText('Process Diagram')).toBeVisible();
+  // Wait for BPMN container to render (bpmn-js creates a .djs-container inside)
+  await expect(page.locator('.bpmn-container')).toBeVisible();
+  // Wait for actual diagram content (djs-container is created by bpmn-js)
+  await expect(page.locator('.djs-container')).toBeVisible({ timeout: 5000 });
+});

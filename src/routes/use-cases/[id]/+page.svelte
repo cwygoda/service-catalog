@@ -1,7 +1,30 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import BpmnDiagram from '$lib/components/BpmnDiagram.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
+
+  let bpmnXml = $state<string | null>(null);
+  let bpmnLoading = $state(false);
+  let bpmnError = $state<string | null>(null);
+
+  onMount(async () => {
+    if (data.useCase.bpmn) {
+      bpmnLoading = true;
+      try {
+        const response = await fetch(data.useCase.bpmn);
+        if (!response.ok) {
+          throw new Error(`Failed to load BPMN: ${String(response.status)}`);
+        }
+        bpmnXml = await response.text();
+      } catch (e) {
+        bpmnError = e instanceof Error ? e.message : 'Failed to load diagram';
+      } finally {
+        bpmnLoading = false;
+      }
+    }
+  });
 </script>
 
 <svelte:head>
@@ -52,7 +75,7 @@
       </p>
     </div>
 
-    <!-- BPMN Diagram placeholder -->
+    <!-- BPMN Diagram -->
     {#if data.useCase.bpmn}
       <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
         <h2
@@ -60,13 +83,22 @@
         >
           Process Diagram
         </h2>
-        <div
-          class="flex h-64 items-center justify-center rounded-lg border border-dashed border-gray-300 bg-gray-50 dark:border-gray-600 dark:bg-gray-900"
-        >
-          <p class="text-sm text-gray-500 dark:text-gray-400">
-            BPMN diagram: {data.useCase.bpmn}
-          </p>
-        </div>
+        {#if bpmnLoading}
+          <div
+            class="flex h-96 items-center justify-center rounded-lg border border-gray-200 bg-gray-50 dark:border-gray-700 dark:bg-gray-900"
+          >
+            <p class="text-sm text-gray-500 dark:text-gray-400">Loading diagram...</p>
+          </div>
+        {:else if bpmnError}
+          <div
+            class="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700 dark:border-red-800 dark:bg-red-900/20 dark:text-red-400"
+          >
+            <p class="font-medium">Failed to load diagram</p>
+            <p class="mt-1 text-sm">{bpmnError}</p>
+          </div>
+        {:else if bpmnXml}
+          <BpmnDiagram xml={bpmnXml} interactive />
+        {/if}
       </div>
     {/if}
 
