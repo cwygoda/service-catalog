@@ -247,21 +247,21 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 16. Dark Mode
 
-- [ ] Create `src/lib/stores/theme.store.ts`:
+- [x] Create `src/lib/stores/theme.svelte.ts` (Svelte 5 runes):
   - Track current theme: 'light' | 'dark' | 'system'
   - Persist to localStorage
   - Apply `dark` class to `<html>`
-- [ ] Create `src/lib/components/ThemeToggle.svelte`
-- [ ] Detect system preference on mount
+- [x] Create `src/lib/components/ThemeToggle.svelte`
+- [x] Detect system preference on mount
 - [ ] Unit test for store logic
-- [ ] E2E test for toggle functionality
+- [x] E2E test for toggle functionality
 
 ## 17. Layout & Navigation
 
 - [x] Update `src/routes/+layout.svelte`:
   - Header with logo/title
   - Navigation links
-  - ~~Theme toggle~~ (deferred to dark mode task)
+  - Theme toggle
   - [ ] Responsive: hamburger menu on mobile
 - [x] Create `src/lib/components/Header.svelte`
 - [ ] Create `src/lib/components/Nav.svelte` (mobile nav)
@@ -323,14 +323,14 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - Navigate to services list
   - Navigate to service detail
   - Back navigation works
-- [ ] Create `tests/e2e/dark-mode.spec.ts`:
+- [x] Create `tests/e2e/dark-mode.spec.ts`:
   - Toggle changes theme
   - Persists after reload
   - Respects system preference
 - [ ] Create `tests/e2e/responsive.spec.ts`:
   - Mobile viewport shows hamburger
   - Menu opens/closes
-- [x] All E2E tests pass against built static site
+- [x] All E2E tests pass against built static site (10 tests)
 
 ## 22. Deployment
 
@@ -385,7 +385,7 @@ pnpm verify
 
 - [x] `pnpm verify` passes (all checks green)
 - [x] Site displays 6 demo services with name + description
-- [ ] Dark mode toggle works and persists
+- [x] Dark mode toggle works and persists
 - [ ] Mobile responsive layout works
 - [ ] Deployed to Vercel and accessible
 - [ ] Test coverage >80% for `src/core/`

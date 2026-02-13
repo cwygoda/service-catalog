@@ -1,5 +1,6 @@
 <script lang="ts">
   import { page } from '$app/state';
+  import ThemeToggle from './ThemeToggle.svelte';
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -32,6 +33,7 @@
           {/each}
         </nav>
       </div>
+      <ThemeToggle />
     </div>
   </div>
 </header>
