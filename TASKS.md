@@ -82,11 +82,11 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
 - [x] Add `getServiceUseCases(catalog, serviceId)` - returns use cases a service participates in
 - [x] Update existing tests (16 tests total)
 
-## 5. Filesystem Loader Extension
+## 5. Filesystem Loader Extension ✅
 
-- [ ] Update `FilesystemLoader` to find `use-case.toml` files
-- [ ] Load use cases alongside services
-- [ ] Integration tests
+- [x] Update `FilesystemLoader` to find `use-case.toml` files
+- [x] Load use cases alongside services
+- [x] Integration tests (10 tests total, 3 new)
 
 ## 6. BPMN Sketch Miner Parser
 

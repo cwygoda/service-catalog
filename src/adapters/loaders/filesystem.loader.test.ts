@@ -20,6 +20,7 @@ describe('FilesystemLoader', () => {
   it('loads empty catalog from empty directory', async () => {
     const catalog = await loader.load(tempDir);
     expect(catalog.services).toEqual([]);
+    expect(catalog.useCases).toEqual([]);
   });
 
   it('loads single service', async () => {
@@ -116,5 +117,91 @@ version = "1.2.3"
     const catalog = await loader.load(tempDir);
 
     expect(catalog.services).toEqual([]);
+    expect(catalog.useCases).toEqual([]);
+  });
+
+  it('loads single use case', async () => {
+    const useCaseDir = join(tempDir, 'checkout');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "checkout"
+name = "Customer Checkout"
+description = "Checkout flow"
+participants = []
+steps = []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.id).toBe('checkout');
+    expect(catalog.useCases[0]?.name).toBe('Customer Checkout');
+  });
+
+  it('loads use case with participants and steps', async () => {
+    const useCaseDir = join(tempDir, 'full-checkout');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "full-checkout"
+name = "Full Checkout"
+description = "Complete checkout"
+bpmn = "./checkout.bpmn.txt"
+
+[[use_case.participants]]
+service = "order-service"
+role = "Creates order"
+
+[[use_case.steps]]
+sequence = 1
+actor = "Customer"
+action = "Submit order"
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases[0]?.participants).toHaveLength(1);
+    expect(catalog.useCases[0]?.steps).toHaveLength(1);
+    expect(catalog.useCases[0]?.bpmn).toBe('./checkout.bpmn.txt');
+  });
+
+  it('loads services and use cases together', async () => {
+    // Create service
+    const serviceDir = join(tempDir, 'services', 'order');
+    await mkdir(serviceDir, { recursive: true });
+    await writeFile(
+      join(serviceDir, 'service.toml'),
+      `[service]
+id = "order-service"
+name = "Order Service"
+description = "Handles orders"
+`
+    );
+
+    // Create use case
+    const useCaseDir = join(tempDir, 'use-cases', 'checkout');
+    await mkdir(useCaseDir, { recursive: true });
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "checkout"
+name = "Checkout"
+description = "Checkout flow"
+participants = []
+steps = []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.services[0]?.id).toBe('order-service');
+    expect(catalog.useCases[0]?.id).toBe('checkout');
   });
 });
