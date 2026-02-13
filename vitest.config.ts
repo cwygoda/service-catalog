@@ -14,7 +14,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       include: ['src/core/**', 'src/adapters/**', 'src/shared/**'],
-      exclude: ['**/*.test.ts', '**/*.d.ts'],
+      exclude: ['**/*.test.ts', '**/*.d.ts', '**/index.ts', '**/*.port.ts'],
       thresholds: {
         'src/core/**': {
           statements: 80,

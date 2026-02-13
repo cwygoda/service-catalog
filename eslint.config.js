@@ -56,6 +56,7 @@ export default tseslint.config(
       'build/**',
       'node_modules/**',
       '.svelte-kit/**',
+      'coverage/**',
       '*.config.js',
       '*.config.ts',
       'vitest.setup.ts',
