@@ -135,6 +135,10 @@ Error: Validation failed
 
 Include file path, line number, field path, expected vs actual.
 
+## After Each Task
+
+Run `/review` on changed files after completing each implementation task. Address critical issues before moving on.
+
 ## Don't
 
 - Add deps without checking health (recent commits, adoption)

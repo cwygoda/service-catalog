@@ -12,3 +12,6 @@ coverage/
 
 # Generated
 static/catalog.json
+
+# Claude feedback
+.claude/feedback/

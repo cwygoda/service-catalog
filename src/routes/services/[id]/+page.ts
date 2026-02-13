@@ -1,11 +1,9 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Catalog } from '../../../core/domain/index.js';
+import { fetchCatalog } from '$lib/utils/fetch-catalog.js';
 
 export const load: PageLoad = async ({ fetch, params }) => {
-  const response = await fetch('/catalog.json');
-  const catalog = (await response.json()) as Catalog;
-
+  const catalog = await fetchCatalog(fetch);
   const service = catalog.services.find((s) => s.id === params.id);
 
   if (!service) {
