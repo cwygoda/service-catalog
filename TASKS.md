@@ -342,7 +342,7 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
 
 ## 23. Documentation
 
-- [ ] Create `README.md`:
+- [x] Create `README.md`:
   - Project description
   - Prerequisites (Node 20+, pnpm)
   - Quick start
