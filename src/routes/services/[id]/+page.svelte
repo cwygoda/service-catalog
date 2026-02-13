@@ -50,6 +50,31 @@
       </p>
     </div>
 
+    {#if data.useCases.length > 0}
+      <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+        <h2
+          class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+        >
+          Participates in Use Cases
+        </h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {#each data.useCases as useCase (useCase.id)}
+            <a
+              href="/use-cases/{useCase.id}"
+              class="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+            >
+              <div class="font-medium text-gray-900 dark:text-white">
+                {useCase.name}
+              </div>
+              <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                {useCase.participants.length} participants · {useCase.steps.length} steps
+              </div>
+            </a>
+          {/each}
+        </div>
+      </div>
+    {/if}
+
     <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
       <h2
         class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
@@ -57,10 +82,6 @@
         Coming Soon
       </h2>
       <div class="grid gap-4 text-sm text-gray-500 dark:text-gray-400 sm:grid-cols-2">
-        <div class="rounded bg-gray-50 p-4 dark:bg-gray-900">
-          <span class="font-medium">Use Cases</span>
-          <p class="mt-1">Business flows this service participates in</p>
-        </div>
         <div class="rounded bg-gray-50 p-4 dark:bg-gray-900">
           <span class="font-medium">Dependencies</span>
           <p class="mt-1">Services this depends on and dependents</p>

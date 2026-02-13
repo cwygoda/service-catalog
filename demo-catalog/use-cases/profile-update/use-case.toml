@@ -1,0 +1,35 @@
+[use_case]
+id = "profile-update"
+name = "Profile Update"
+description = "Customer updates their profile information including contact details and preferences. Changes are validated, persisted, and synchronized across services."
+
+[[use_case.participants]]
+service = "crm-service"
+role = "Stores and manages customer profile data"
+
+[[use_case.participants]]
+service = "auth-service"
+role = "Updates authentication credentials if email changes"
+
+[[use_case.steps]]
+sequence = 1
+actor = "Customer"
+action = "Submits profile changes"
+
+[[use_case.steps]]
+sequence = 2
+service = "crm-service"
+action = "Validates profile data"
+endpoint = "PUT /customers/{id}"
+
+[[use_case.steps]]
+sequence = 3
+service = "auth-service"
+action = "Updates credentials if email changed"
+endpoint = "PATCH /users/{id}/email"
+
+[[use_case.steps]]
+sequence = 4
+service = "crm-service"
+action = "Confirms update"
+endpoint = "GET /customers/{id}"

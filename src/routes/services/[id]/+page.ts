@@ -10,7 +10,13 @@ export const load: PageLoad = async ({ fetch, params }) => {
     error(404, `Service '${params.id}' not found`);
   }
 
+  // Get use cases this service participates in
+  const useCases = catalog.useCases.filter((uc) =>
+    uc.participants.some((p) => p.service === service.id)
+  );
+
   return {
     service,
+    useCases,
   };
 };

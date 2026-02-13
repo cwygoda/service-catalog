@@ -1,0 +1,54 @@
+[use_case]
+id = "customer-onboarding"
+name = "Customer Onboarding"
+description = "New customer registration and account setup. Creates authentication credentials, initializes customer profile, and sets up billing preferences."
+
+[[use_case.participants]]
+service = "auth-service"
+role = "Creates user account and credentials"
+
+[[use_case.participants]]
+service = "crm-service"
+role = "Creates customer profile record"
+
+[[use_case.participants]]
+service = "billing-service"
+role = "Sets up payment method and billing preferences"
+
+[[use_case.participants]]
+service = "policy-service"
+role = "Evaluates onboarding eligibility rules"
+
+[[use_case.steps]]
+sequence = 1
+actor = "Customer"
+action = "Initiates registration"
+
+[[use_case.steps]]
+sequence = 2
+service = "policy-service"
+action = "Checks eligibility rules"
+endpoint = "POST /evaluate"
+
+[[use_case.steps]]
+sequence = 3
+service = "auth-service"
+action = "Creates user account"
+endpoint = "POST /users"
+
+[[use_case.steps]]
+sequence = 4
+service = "crm-service"
+action = "Creates customer profile"
+endpoint = "POST /customers"
+
+[[use_case.steps]]
+sequence = 5
+service = "billing-service"
+action = "Sets up billing account"
+endpoint = "POST /accounts"
+
+[[use_case.steps]]
+sequence = 6
+actor = "Customer"
+action = "Receives welcome email"
