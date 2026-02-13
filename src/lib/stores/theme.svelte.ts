@@ -1,11 +1,9 @@
-import { browser } from '$app/environment';
-
 export type Theme = 'light' | 'dark' | 'system';
 
 const STORAGE_KEY = 'theme';
 
 function getStoredTheme(): Theme {
-  if (!browser) return 'system';
+  if (typeof localStorage === 'undefined') return 'system';
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === 'light' || stored === 'dark' || stored === 'system') {
     return stored;
@@ -14,12 +12,12 @@ function getStoredTheme(): Theme {
 }
 
 function getSystemTheme(): 'light' | 'dark' {
-  if (!browser) return 'light';
+  if (typeof window === 'undefined') return 'light';
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function applyTheme(theme: Theme): void {
-  if (!browser) return;
+  if (typeof document === 'undefined') return;
 
   const resolved = theme === 'system' ? getSystemTheme() : theme;
   const root = document.documentElement;
@@ -31,44 +29,43 @@ function applyTheme(theme: Theme): void {
   }
 }
 
-class ThemeState {
-  #theme = $state<Theme>(getStoredTheme());
+// Simple reactive state using $state rune at module level
+let currentTheme = $state<Theme>('system');
 
-  constructor() {
-    if (browser) {
-      // Apply initial theme
-      applyTheme(this.#theme);
-
-      // Listen for system theme changes
-      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-      mediaQuery.addEventListener('change', () => {
-        if (this.#theme === 'system') {
-          applyTheme('system');
-        }
-      });
-    }
-  }
-
+export const theme = {
   get current(): Theme {
-    return this.#theme;
-  }
+    return currentTheme;
+  },
 
   get resolved(): 'light' | 'dark' {
-    return this.#theme === 'system' ? getSystemTheme() : this.#theme;
-  }
+    return currentTheme === 'system' ? getSystemTheme() : currentTheme;
+  },
 
-  set(theme: Theme): void {
-    this.#theme = theme;
-    if (browser) {
-      localStorage.setItem(STORAGE_KEY, theme);
-      applyTheme(theme);
+  init(): void {
+    if (typeof window === 'undefined') return;
+
+    // Load stored theme
+    currentTheme = getStoredTheme();
+
+    // Listen for system theme changes
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    mediaQuery.addEventListener('change', () => {
+      if (currentTheme === 'system') {
+        applyTheme('system');
+      }
+    });
+  },
+
+  set(newTheme: Theme): void {
+    currentTheme = newTheme;
+    if (typeof localStorage !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, newTheme);
     }
-  }
+    applyTheme(newTheme);
+  },
 
   toggle(): void {
     const next = this.resolved === 'dark' ? 'light' : 'dark';
     this.set(next);
-  }
-}
-
-export const theme = new ThemeState();
+  },
+};
