@@ -262,9 +262,8 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - Header with logo/title
   - Navigation links
   - Theme toggle
-  - [ ] Responsive: hamburger menu on mobile
-- [x] Create `src/lib/components/Header.svelte`
-- [ ] Create `src/lib/components/Nav.svelte` (mobile nav)
+  - Responsive: hamburger menu on mobile
+- [x] Create `src/lib/components/Header.svelte` (includes mobile nav)
 
 ## 18. Routes & Pages
 
@@ -327,10 +326,11 @@ Goal: Demo-able static site with basic service listing + full dev tooling.
   - Toggle changes theme
   - Persists after reload
   - Respects system preference
-- [ ] Create `tests/e2e/responsive.spec.ts`:
+- [x] Create `tests/e2e/responsive.spec.ts`:
   - Mobile viewport shows hamburger
   - Menu opens/closes
-- [x] All E2E tests pass against built static site (10 tests)
+  - Desktop nav visible on large screens
+- [x] All E2E tests pass against built static site (15 tests)
 
 ## 22. Deployment
 
@@ -386,7 +386,7 @@ pnpm verify
 - [x] `pnpm verify` passes (all checks green)
 - [x] Site displays 6 demo services with name + description
 - [x] Dark mode toggle works and persists
-- [ ] Mobile responsive layout works
+- [x] Mobile responsive layout works
 - [ ] Deployed to Vercel and accessible
 - [ ] Test coverage >80% for `src/core/`
 - [x] Zero ESLint errors, zero TypeScript errors
