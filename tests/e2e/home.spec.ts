@@ -12,7 +12,8 @@ test('shows service count', async ({ page }) => {
 
 test('navigates to services list', async ({ page }) => {
   await page.goto('/');
-  await page.getByRole('link', { name: 'View all →' }).click();
+  // Use href filter since there are multiple "View all →" links
+  await page.locator('a[href="/services"]:has-text("View all →")').click();
   await expect(page).toHaveURL('/services');
   await expect(page.getByText('Browse all 6 services')).toBeVisible();
 });

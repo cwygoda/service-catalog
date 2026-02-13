@@ -1,13 +1,11 @@
 <script lang="ts">
   import { theme } from '$lib/stores/theme.svelte';
-
-  function handleClick() {
-    theme.toggle();
-  }
 </script>
 
 <button
-  onclick={handleClick}
+  onclick={() => {
+    theme.toggle();
+  }}
   class="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
   aria-label="Toggle theme"
 >
