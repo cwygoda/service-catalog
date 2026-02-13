@@ -88,21 +88,25 @@ Use cases are the heart of the catalog. Business scenarios that span multiple se
 - [x] Load use cases alongside services
 - [x] Integration tests (10 tests total, 3 new)
 
-## 6. BPMN Sketch Miner Parser
+## 6. BPMN Sketch Miner Parser ⏭️ (Deferred)
 
-- [ ] Research bpmn-sketch-miner library
-- [ ] Create `src/adapters/parsers/bpmn.parser.ts`:
-  - Parse `.bpmn.txt` (Sketch Miner DSL) → BPMN 2.0 XML
-- [ ] Unit tests with sample BPMN files
+> **TODO (Future):** BPMN Sketch Miner has no npm package - it's web-only.
+> When needed, implement a simple line-based DSL parser for `.bpmn.txt` files.
+> For now, use standard BPMN 2.0 XML files with bpmn-js.
 
-## 7. BPMN Renderer
+- [x] Research bpmn-sketch-miner library (no npm package available)
+- [ ] ~~Create DSL parser~~ → Deferred to future phase
+- [x] Decision: Use bpmn-js with BPMN 2.0 XML only
 
-- [ ] Install `bpmn-js` for rendering
-- [ ] Create `src/lib/components/BpmnDiagram.svelte`:
+## 7. BPMN Renderer ✅
+
+- [x] Install `bpmn-js` for rendering
+- [x] Create `src/lib/components/BpmnDiagram.svelte`:
   - Accept BPMN XML as prop
-  - Render static SVG by default
+  - Render with bpmn-js NavigatedViewer
   - Optional interactive mode (zoom/pan)
-- [ ] Component tests
+  - Error handling for invalid XML
+- [ ] Component tests (deferred - bpmn-js requires browser, test via E2E)
 
 ## 8. Use Case List Page
 
