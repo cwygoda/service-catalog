@@ -9,6 +9,7 @@ export const ServiceSidecarSchema = Type.Object({
     id: Type.String({ minLength: 1 }),
     name: Type.String({ minLength: 1 }),
     description: Type.String(),
+    domain: Type.Optional(Type.String({ minLength: 1 })),
     metadata: Type.Optional(ServiceMetadataSchema),
   }),
 });

@@ -18,6 +18,7 @@ export const UseCaseSidecarSchema = Type.Object({
     id: Type.String({ minLength: 1 }),
     name: Type.String({ minLength: 1 }),
     description: Type.String(),
+    domain: Type.Optional(Type.String({ minLength: 1 })),
     bpmn: Type.Optional(Type.String()),
     participants: Type.Array(ParticipantSchema),
     steps: Type.Array(StepSchema),

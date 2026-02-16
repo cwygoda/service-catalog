@@ -15,6 +15,7 @@ export interface UseCase {
   id: string;
   name: string;
   description: string;
+  domain?: string;
   bpmn?: string;
   participants: Participant[];
   steps: Step[];
@@ -26,13 +27,14 @@ export function createUseCase(
   description: string,
   participants: Participant[] = [],
   steps: Step[] = [],
-  bpmn?: string
+  options?: { domain?: string; bpmn?: string }
 ): UseCase {
   return {
     id,
     name,
     description,
-    ...(bpmn !== undefined && { bpmn }),
+    ...(options?.domain !== undefined && { domain: options.domain }),
+    ...(options?.bpmn !== undefined && { bpmn: options.bpmn }),
     participants,
     steps,
   };
@@ -70,6 +72,11 @@ export function isUseCase(value: unknown): value is UseCase {
   if (typeof obj['id'] !== 'string') return false;
   if (typeof obj['name'] !== 'string') return false;
   if (typeof obj['description'] !== 'string') return false;
+
+  // Optional domain
+  if ('domain' in obj && obj['domain'] !== undefined && typeof obj['domain'] !== 'string') {
+    return false;
+  }
 
   // Optional bpmn
   if ('bpmn' in obj && obj['bpmn'] !== undefined && typeof obj['bpmn'] !== 'string') return false;

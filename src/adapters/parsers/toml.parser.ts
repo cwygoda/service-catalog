@@ -74,6 +74,10 @@ export function sidecarToService(sidecar: ServiceSidecar): Service {
     description: sidecar.service.description,
   };
 
+  if (sidecar.service.domain !== undefined) {
+    service.domain = sidecar.service.domain;
+  }
+
   if (sidecar.service.metadata) {
     service.metadata = sidecar.service.metadata;
   }
@@ -125,6 +129,10 @@ export function sidecarToUseCase(sidecar: UseCaseSidecar): UseCase {
       ...(s.endpoint !== undefined && { endpoint: s.endpoint }),
     })),
   };
+
+  if (uc.domain !== undefined) {
+    useCase.domain = uc.domain;
+  }
 
   if (uc.bpmn !== undefined) {
     useCase.bpmn = uc.bpmn;

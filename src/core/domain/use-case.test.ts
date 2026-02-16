@@ -121,15 +121,28 @@ describe('UseCase', () => {
     });
 
     it('creates use case with bpmn path', () => {
-      const useCase = createUseCase(
-        'checkout',
-        'Checkout Flow',
-        'Description',
-        [],
-        [],
-        './checkout.bpmn.txt'
-      );
+      const useCase = createUseCase('checkout', 'Checkout Flow', 'Description', [], [], {
+        bpmn: './checkout.bpmn.txt',
+      });
 
+      expect(useCase.bpmn).toBe('./checkout.bpmn.txt');
+    });
+
+    it('creates use case with domain', () => {
+      const useCase = createUseCase('checkout', 'Checkout Flow', 'Description', [], [], {
+        domain: 'commerce',
+      });
+
+      expect(useCase.domain).toBe('commerce');
+    });
+
+    it('creates use case with domain and bpmn', () => {
+      const useCase = createUseCase('checkout', 'Checkout Flow', 'Description', [], [], {
+        domain: 'commerce',
+        bpmn: './checkout.bpmn.txt',
+      });
+
+      expect(useCase.domain).toBe('commerce');
       expect(useCase.bpmn).toBe('./checkout.bpmn.txt');
     });
 
@@ -137,6 +150,12 @@ describe('UseCase', () => {
       const useCase = createUseCase('checkout', 'Checkout', 'Desc');
 
       expect('bpmn' in useCase).toBe(false);
+    });
+
+    it('omits domain key when undefined', () => {
+      const useCase = createUseCase('checkout', 'Checkout', 'Desc');
+
+      expect('domain' in useCase).toBe(false);
     });
   });
 
@@ -268,6 +287,31 @@ describe('UseCase', () => {
           name: 'Checkout',
           description: 'Desc',
           bpmn: 123,
+          participants: [],
+          steps: [],
+        })
+      ).toBe(false);
+    });
+
+    it('returns true for use case with domain', () => {
+      const useCase: UseCase = {
+        id: 'checkout',
+        name: 'Checkout Flow',
+        description: 'Description',
+        domain: 'commerce',
+        participants: [],
+        steps: [],
+      };
+      expect(isUseCase(useCase)).toBe(true);
+    });
+
+    it('returns false for non-string domain', () => {
+      expect(
+        isUseCase({
+          id: 'checkout',
+          name: 'Checkout',
+          description: 'Desc',
+          domain: 123,
           participants: [],
           steps: [],
         })
