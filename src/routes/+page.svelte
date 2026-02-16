@@ -22,6 +22,15 @@
 
   <div class="mb-12 grid gap-6 sm:grid-cols-3">
     <a
+      href="/domains"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
+        {data.domainCount}
+      </div>
+      <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">Domains</div>
+    </a>
+    <a
       href="/use-cases"
       class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
     >
@@ -39,12 +48,6 @@
       </div>
       <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">Services</div>
     </a>
-    <div
-      class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center dark:border-gray-600 dark:bg-gray-900"
-    >
-      <div class="text-4xl font-bold text-gray-400 dark:text-gray-600">—</div>
-      <div class="mt-1 text-sm text-gray-500 dark:text-gray-500">Domains (Phase 3)</div>
-    </div>
   </div>
 
   {#if data.featuredUseCases.length > 0}

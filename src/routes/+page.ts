@@ -7,6 +7,7 @@ export const load: PageLoad = async ({ fetch }) => {
   return {
     serviceCount: catalog.services.length,
     useCaseCount: catalog.useCases.length,
+    domainCount: catalog.domains.length,
     recentServices: catalog.services.slice(0, 3),
     featuredUseCases: catalog.useCases.slice(0, 3),
   };
