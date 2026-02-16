@@ -103,13 +103,13 @@
 - [x] Create `src/routes/domains/[id]/+page.ts` loader
 - [x] Handle 404 for unknown domain
 
-## 10. Hierarchical Navigation
+## 10. Hierarchical Navigation ✅
 
-- [ ] Create `src/lib/components/NavTree.svelte`:
+- [x] Create `src/lib/components/NavTree.svelte`:
   - Collapsible tree view
   - Domains → Use Cases → Services hierarchy
-- [ ] Add tree/flat toggle to header
-- [ ] Persist preference in localStorage
+- [x] Add tree/flat toggle to header
+- [x] Persist preference in localStorage
 
 ## 11. Breadcrumb Navigation ✅
 
@@ -153,8 +153,8 @@
   - [x] Domain → use case → service drill-down
   - [x] Flat routes still work
   - [x] Breadcrumbs work correctly
-  - [ ] Tree navigation works (pending Task 10)
-  - [ ] Tree/flat toggle persists (pending Task 10)
+  - [x] Tree navigation works
+  - [x] Tree/flat toggle persists
 
 ---
 

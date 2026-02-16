@@ -1,6 +1,7 @@
 <script lang="ts">
   import { page } from '$app/state';
   import ThemeToggle from './ThemeToggle.svelte';
+  import NavModeToggle from './NavModeToggle.svelte';
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -48,6 +49,7 @@
       </div>
 
       <div class="flex items-center gap-2">
+        <NavModeToggle />
         <ThemeToggle />
         <!-- Mobile menu button -->
         <button

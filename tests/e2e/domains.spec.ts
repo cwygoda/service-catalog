@@ -76,3 +76,39 @@ test('can navigate from domain to use case to service', async ({ page }) => {
     .click();
   await expect(page).toHaveURL('/services/orders-service');
 });
+
+test('tree/flat toggle shows nav tree', async ({ page }) => {
+  await page.goto('/');
+  await page.setViewportSize({ width: 1280, height: 720 });
+  // Click the nav mode toggle button (list/tree icon)
+  await page.getByRole('button', { name: /switch to tree view/i }).click();
+  // NavTree sidebar should appear on large screens
+  await expect(page.getByRole('navigation', { name: 'Catalog tree' })).toBeVisible();
+});
+
+test('tree/flat toggle persists preference', async ({ page }) => {
+  await page.goto('/');
+  await page.setViewportSize({ width: 1280, height: 720 });
+  // Switch to tree mode
+  await page.getByRole('button', { name: /switch to tree view/i }).click();
+  await expect(page.getByRole('navigation', { name: 'Catalog tree' })).toBeVisible();
+  // Reload page
+  await page.reload();
+  // Tree should still be visible
+  await expect(page.getByRole('navigation', { name: 'Catalog tree' })).toBeVisible();
+});
+
+test('nav tree expands domains to show use cases', async ({ page }) => {
+  await page.goto('/');
+  await page.setViewportSize({ width: 1280, height: 720 });
+  // Switch to tree mode
+  await page.getByRole('button', { name: /switch to tree view/i }).click();
+  const navTree = page.getByRole('navigation', { name: 'Catalog tree' });
+  // Expand Commerce domain
+  await navTree
+    .getByRole('button', { name: /expand/i })
+    .first()
+    .click();
+  // Use case should be visible
+  await expect(navTree.getByRole('link', { name: 'Customer Checkout' })).toBeVisible();
+});
