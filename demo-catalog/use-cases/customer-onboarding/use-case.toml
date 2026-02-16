@@ -2,6 +2,7 @@
 id = "customer-onboarding"
 name = "Customer Onboarding"
 description = "New customer registration and account setup. Creates authentication credentials, initializes customer profile, and sets up billing preferences."
+domain = "platform"
 
 [[use_case.participants]]
 service = "auth-service"

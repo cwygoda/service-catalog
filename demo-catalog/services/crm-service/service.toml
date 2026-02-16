@@ -2,6 +2,7 @@
 id = "crm-service"
 name = "CRM Service"
 description = "Customer relationship management and profile data"
+domain = "platform"
 
 [service.metadata]
 version = "3.0.2"

@@ -2,6 +2,7 @@
 id = "profile-update"
 name = "Profile Update"
 description = "Customer updates their profile information including contact details and preferences. Changes are validated, persisted, and synchronized across services."
+domain = "platform"
 
 [[use_case.participants]]
 service = "crm-service"

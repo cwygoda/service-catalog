@@ -2,6 +2,7 @@
 id = "auth-service"
 name = "Auth Service"
 description = "OIDC identity provider for user authentication"
+domain = "platform"
 
 [service.metadata]
 version = "2.1.0"
