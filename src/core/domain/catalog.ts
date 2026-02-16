@@ -1,13 +1,19 @@
 import type { Service } from './service.js';
 import type { UseCase } from './use-case.js';
+import type { Domain } from './domain.js';
 
 export interface Catalog {
   services: Service[];
   useCases: UseCase[];
+  domains: Domain[];
 }
 
-export function createCatalog(services: Service[] = [], useCases: UseCase[] = []): Catalog {
-  return { services, useCases };
+export function createCatalog(
+  services: Service[] = [],
+  useCases: UseCase[] = [],
+  domains: Domain[] = []
+): Catalog {
+  return { services, useCases, domains };
 }
 
 export function addService(catalog: Catalog, service: Service): Catalog {
@@ -28,4 +34,24 @@ export function findUseCase(catalog: Catalog, id: string): UseCase | undefined {
 
 export function getServiceUseCases(catalog: Catalog, serviceId: string): UseCase[] {
   return catalog.useCases.filter((uc) => uc.participants.some((p) => p.service === serviceId));
+}
+
+export function addDomain(catalog: Catalog, domain: Domain): Catalog {
+  return { ...catalog, domains: [...catalog.domains, domain] };
+}
+
+export function findDomain(catalog: Catalog, id: string): Domain | undefined {
+  return catalog.domains.find((d) => d.id === id);
+}
+
+export function getDomainUseCases(catalog: Catalog, domainId: string): UseCase[] {
+  return catalog.useCases.filter((uc) => uc.domain === domainId);
+}
+
+export function getDomainServices(catalog: Catalog, domainId: string): Service[] {
+  return catalog.services.filter((s) => s.domain === domainId);
+}
+
+export function getChildDomains(catalog: Catalog, parentId: string): Domain[] {
+  return catalog.domains.filter((d) => d.parent === parentId);
 }
