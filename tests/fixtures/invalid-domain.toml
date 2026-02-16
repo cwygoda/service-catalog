@@ -1,0 +1,4 @@
+[domain]
+id = ""
+name = "Invalid Domain"
+description = "This domain has an empty id"

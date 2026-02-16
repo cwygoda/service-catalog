@@ -6,6 +6,8 @@ import {
   sidecarToService,
   parseUseCaseToml,
   sidecarToUseCase,
+  parseDomainToml,
+  sidecarToDomain,
   TomlParseError,
   ValidationError,
 } from './toml.parser.js';
@@ -149,6 +151,95 @@ describe('toml.parser', () => {
       const useCase = sidecarToUseCase(sidecar);
 
       expect('bpmn' in useCase).toBe(false);
+    });
+  });
+
+  describe('parseDomainToml', () => {
+    it('parses valid domain sidecar', async () => {
+      const content = await readFile(join(fixturesDir, 'valid-domain.toml'), 'utf-8');
+      const result = parseDomainToml(content, 'test.toml');
+
+      expect(result.domain.id).toBe('commerce');
+      expect(result.domain.name).toBe('Commerce');
+      expect(result.domain.description).toBe(
+        'E-commerce domain handling orders, payments, and fulfillment'
+      );
+      expect(result.domain.parent).toBeUndefined();
+    });
+
+    it('parses domain with parent', async () => {
+      const content = await readFile(join(fixturesDir, 'valid-domain-with-parent.toml'), 'utf-8');
+      const result = parseDomainToml(content, 'test.toml');
+
+      expect(result.domain.id).toBe('orders');
+      expect(result.domain.parent).toBe('commerce');
+    });
+
+    it('throws ValidationError for invalid domain', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-domain.toml'), 'utf-8');
+
+      expect(() => parseDomainToml(content, 'invalid.toml')).toThrow(ValidationError);
+    });
+
+    it('includes file path in error', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-domain.toml'), 'utf-8');
+
+      try {
+        parseDomainToml(content, '/path/to/domain.toml');
+        expect.fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ValidationError);
+        expect((error as ValidationError).filePath).toBe('/path/to/domain.toml');
+      }
+    });
+  });
+
+  describe('sidecarToDomain', () => {
+    it('converts sidecar to domain object', () => {
+      const sidecar = {
+        domain: {
+          id: 'commerce',
+          name: 'Commerce',
+          description: 'E-commerce domain',
+        },
+      };
+
+      const domain = sidecarToDomain(sidecar);
+
+      expect(domain).toEqual({
+        id: 'commerce',
+        name: 'Commerce',
+        description: 'E-commerce domain',
+      });
+    });
+
+    it('includes parent when present', () => {
+      const sidecar = {
+        domain: {
+          id: 'orders',
+          name: 'Orders',
+          description: 'Order subdomain',
+          parent: 'commerce',
+        },
+      };
+
+      const domain = sidecarToDomain(sidecar);
+
+      expect(domain.parent).toBe('commerce');
+    });
+
+    it('omits parent when not present', () => {
+      const sidecar = {
+        domain: {
+          id: 'commerce',
+          name: 'Commerce',
+          description: 'Desc',
+        },
+      };
+
+      const domain = sidecarToDomain(sidecar);
+
+      expect('parent' in domain).toBe(false);
     });
   });
 });

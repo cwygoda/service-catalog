@@ -2,11 +2,14 @@ import { parse, TomlError } from 'smol-toml';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { ServiceSidecarSchema, type ServiceSidecar } from '../../shared/schemas/service.schema.js';
 import { UseCaseSidecarSchema, type UseCaseSidecar } from '../../shared/schemas/use-case.schema.js';
+import { DomainSidecarSchema, type DomainSidecar } from '../../shared/schemas/domain.schema.js';
 import type { Service } from '../../core/domain/service.js';
 import type { UseCase } from '../../core/domain/use-case.js';
+import type { Domain } from '../../core/domain/domain.js';
 
 const compiledServiceSchema = TypeCompiler.Compile(ServiceSidecarSchema);
 const compiledUseCaseSchema = TypeCompiler.Compile(UseCaseSidecarSchema);
+const compiledDomainSchema = TypeCompiler.Compile(DomainSidecarSchema);
 
 export class TomlParseError extends Error {
   constructor(
@@ -139,4 +142,45 @@ export function sidecarToUseCase(sidecar: UseCaseSidecar): UseCase {
   }
 
   return useCase;
+}
+
+export function parseDomainToml(content: string, filePath: string): DomainSidecar {
+  let parsed: unknown;
+
+  try {
+    parsed = parse(content);
+  } catch (error) {
+    if (error instanceof TomlError) {
+      throw new TomlParseError(error.message, filePath, error.line, error.column);
+    }
+    throw new TomlParseError(
+      error instanceof Error ? error.message : 'Unknown parse error',
+      filePath
+    );
+  }
+
+  if (!compiledDomainSchema.Check(parsed)) {
+    const errors = [...compiledDomainSchema.Errors(parsed)].map(
+      (e) => `${e.path}: ${e.message} (got ${JSON.stringify(e.value)})`
+    );
+    throw new ValidationError('Invalid domain sidecar', filePath, errors);
+  }
+
+  return parsed;
+}
+
+export function sidecarToDomain(sidecar: DomainSidecar): Domain {
+  const d = sidecar.domain;
+
+  const domain: Domain = {
+    id: d.id,
+    name: d.name,
+    description: d.description,
+  };
+
+  if (d.parent !== undefined) {
+    domain.parent = d.parent;
+  }
+
+  return domain;
 }

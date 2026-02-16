@@ -1,0 +1,5 @@
+[domain]
+id = "orders"
+name = "Orders"
+description = "Order management subdomain"
+parent = "commerce"

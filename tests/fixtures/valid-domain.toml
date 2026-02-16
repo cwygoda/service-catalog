@@ -1,0 +1,4 @@
+[domain]
+id = "commerce"
+name = "Commerce"
+description = "E-commerce domain handling orders, payments, and fulfillment"
