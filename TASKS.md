@@ -1,4 +1,6 @@
-# Phase 3: Domains + Hierarchy
+# Phase 3: Domains + Hierarchy ✅
+
+**Status:** Complete
 
 **Goal:** Organize use cases and services into business domains with hierarchical navigation.
 
@@ -120,15 +122,14 @@
   - Service detail pages (when in domain)
 - [x] Support nested domains (parent chain)
 
-## 12. URL Structure Update
+## 12. URL Structure Update (Deferred)
 
-- [ ] Add routes:
-  - `/domains` - domain list
-  - `/domains/[id]` - domain detail
-  - `/domains/[id]/use-cases/[ucId]` - use case within domain context
-  - `/domains/[id]/services/[svcId]` - service within domain context
-- [ ] Keep existing flat routes working (`/use-cases/[id]`, `/services/[id]`)
-- [ ] Canonical URLs for SEO
+- [x] `/domains` - domain list
+- [x] `/domains/[id]` - domain detail
+- [ ] `/domains/[id]/use-cases/[ucId]` - deferred (breadcrumbs provide context)
+- [ ] `/domains/[id]/services/[svcId]` - deferred (breadcrumbs provide context)
+- [x] Keep existing flat routes working (`/use-cases/[id]`, `/services/[id]`)
+- [ ] Canonical URLs for SEO - not needed without nested routes
 
 ## 13. Navigation Updates ✅
 
@@ -164,14 +165,14 @@
 pnpm verify  # All checks must pass
 ```
 
-## Acceptance Criteria
+## Acceptance Criteria ✅
 
-- [ ] Domain list page shows demo domains
-- [ ] Domain detail shows use cases prominently (before services)
-- [ ] Hierarchical tree navigation works
-- [ ] Breadcrumbs show full path
-- [ ] All E2E tests pass
-- [ ] Flat routes (`/services/[id]`) remain functional
+- [x] Domain list page shows demo domains
+- [x] Domain detail shows use cases prominently (before services)
+- [x] Hierarchical tree navigation works
+- [x] Breadcrumbs show full path
+- [x] All E2E tests pass (38 tests)
+- [x] Flat routes (`/services/[id]`) remain functional
 
 ---
 
