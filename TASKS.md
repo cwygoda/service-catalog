@@ -1,187 +1,160 @@
-# Phase 2: Use Cases + BPMN ⭐
+# Phase 3: Domains + Hierarchy
 
-**Goal:** Use-case-first navigation — the core differentiator.
-
-Use cases are the heart of the catalog. Business scenarios that span multiple services, visualized with BPMN diagrams.
+**Goal:** Organize use cases and services into business domains with hierarchical navigation.
 
 ---
 
-## 1. Use Case Domain Entity ✅
+## 1. Domain Entity
 
-- [x] Create `src/core/domain/use-case.ts`:
+- [ ] Create `src/core/domain/domain.ts`:
 
   ```typescript
-  export interface UseCase {
+  export interface Domain {
     id: string;
     name: string;
-    description: string; // markdown content or path
-    bpmn?: string; // path to .bpmn.txt file
-    participants: Participant[];
-    steps: Step[];
-  }
-
-  export interface Participant {
-    service: string; // service id
-    role: string;
-  }
-
-  export interface Step {
-    sequence: number;
-    actor?: string; // external actor
-    service?: string; // service id
-    action: string;
-    endpoint?: string; // e.g. "POST /orders"
+    description: string;
+    parent?: string; // optional subdomain
   }
   ```
 
-- [x] Create factory function `createUseCase()`
-- [x] Create type guard `isUseCase()`
-- [x] Unit tests for use case domain (27 tests)
+- [ ] Create factory function `createDomain()`
+- [ ] Create type guard `isDomain()`
+- [ ] Unit tests for domain entity
 
-## 2. Use Case TypeBox Schema ✅
+## 2. Domain TypeBox Schema
 
-- [x] Create `src/shared/schemas/use-case.schema.ts`:
+- [ ] Create `src/shared/schemas/domain.schema.ts`:
 
   ```typescript
-  export const UseCaseSchema = Type.Object({
-    use_case: Type.Object({
+  export const DomainSchema = Type.Object({
+    domain: Type.Object({
       id: Type.String({ minLength: 1 }),
       name: Type.String({ minLength: 1 }),
       description: Type.String(),
-      bpmn: Type.Optional(Type.String()),
-      participants: Type.Array(ParticipantSchema),
-      steps: Type.Array(StepSchema),
+      parent: Type.Optional(Type.String()),
     }),
   });
   ```
 
-- [x] Export from `src/shared/schemas/index.ts`
-- [x] Unit tests for schema validation (22 tests)
+- [ ] Export from `src/shared/schemas/index.ts`
+- [ ] Unit tests for schema validation
 
-## 3. Use Case TOML Parser ✅
+## 3. Extend Service/UseCase with Domain
 
-- [x] Extend `src/adapters/parsers/toml.parser.ts` to handle use case sidecars
-- [x] Create `parseUseCaseToml()` function
-- [x] Unit tests with fixtures (5 tests):
-  - `tests/fixtures/valid-use-case.toml`
-  - `tests/fixtures/invalid-use-case.toml`
+- [ ] Update `Service` interface: add `domain?: string`
+- [ ] Update `UseCase` interface: add `domain?: string`
+- [ ] Update TypeBox schemas for both
+- [ ] Update parsers to handle domain field
+- [ ] Update existing tests
 
-## 4. Catalog Domain Extension ✅
+## 4. Domain TOML Parser
 
-- [x] Update `src/core/domain/catalog.ts`:
+- [ ] Create `parseDomainToml()` function
+- [ ] Support `domain.toml` sidecar files
+- [ ] Unit tests with fixtures
+
+## 5. Catalog Domain Extension
+
+- [ ] Update `src/core/domain/catalog.ts`:
 
   ```typescript
   export interface Catalog {
     services: Service[];
     useCases: UseCase[];
+    domains: Domain[];
   }
   ```
 
-- [x] Update `createCatalog()` to accept use cases
-- [x] Add `findUseCase(catalog, id)` function
-- [x] Add `getServiceUseCases(catalog, serviceId)` - returns use cases a service participates in
-- [x] Update existing tests (16 tests total)
+- [ ] Add `findDomain(catalog, id)` function
+- [ ] Add `getDomainUseCases(catalog, domainId)` function
+- [ ] Add `getDomainServices(catalog, domainId)` function
+- [ ] Add `getChildDomains(catalog, parentId)` function
+- [ ] Update existing tests
 
-## 5. Filesystem Loader Extension ✅
+## 6. Filesystem Loader Extension
 
-- [x] Update `FilesystemLoader` to find `use-case.toml` files
-- [x] Load use cases alongside services
-- [x] Integration tests (10 tests total, 3 new)
+- [ ] Update `FilesystemLoader` to find `domain.toml` files
+- [ ] Load domains alongside services and use cases
+- [ ] Integration tests
 
-## 6. BPMN Sketch Miner Parser ⏭️ (Deferred)
+## 7. Demo Domains
 
-> **TODO (Future):** BPMN Sketch Miner has no npm package - it's web-only.
-> When needed, implement a simple line-based DSL parser for `.bpmn.txt` files.
-> For now, use standard BPMN 2.0 XML files with bpmn-js.
+- [ ] Create domain structure in demo-catalog:
+  - `demo-catalog/domains/commerce/domain.toml`
+  - `demo-catalog/domains/platform/domain.toml`
+- [ ] Assign existing services to domains
+- [ ] Assign existing use cases to domains
 
-- [x] Research bpmn-sketch-miner library (no npm package available)
-- [ ] ~~Create DSL parser~~ → Deferred to future phase
-- [x] Decision: Use bpmn-js with BPMN 2.0 XML only
+## 8. Domain List Page
 
-## 7. BPMN Renderer ✅
+- [ ] Create `src/routes/domains/+page.svelte`:
+  - Grid of domain cards
+  - Show name, description, use case count, service count
+- [ ] Create `src/routes/domains/+page.ts` loader
+- [ ] Create `src/lib/components/DomainCard.svelte`
 
-- [x] Install `bpmn-js` for rendering
-- [x] Create `src/lib/components/BpmnDiagram.svelte`:
-  - Accept BPMN XML as prop
-  - Render with bpmn-js NavigatedViewer
-  - Optional interactive mode (zoom/pan)
-  - Error handling for invalid XML
-- [ ] Component tests (deferred - bpmn-js requires browser, test via E2E)
+## 9. Domain Detail Page
 
-## 8. Use Case List Page ✅
+- [ ] Create `src/routes/domains/[id]/+page.svelte`:
+  - Domain description
+  - **Use cases first** (primary content)
+  - Services list (secondary)
+  - Child domains (if any)
+- [ ] Create `src/routes/domains/[id]/+page.ts` loader
+- [ ] Handle 404 for unknown domain
 
-- [x] Create `src/routes/use-cases/+page.svelte`:
-  - Grid of use case cards
-  - Show name, description preview, participant count
-- [x] Create `src/routes/use-cases/+page.ts` loader
-- [x] Create `src/lib/components/UseCaseCard.svelte`
-- [x] Component tests for UseCaseCard (10 tests)
+## 10. Hierarchical Navigation
 
-## 9. Use Case Detail Page ✅
+- [ ] Create `src/lib/components/NavTree.svelte`:
+  - Collapsible tree view
+  - Domains → Use Cases → Services hierarchy
+- [ ] Add tree/flat toggle to header
+- [ ] Persist preference in localStorage
 
-- [x] Create `src/routes/use-cases/[id]/+page.svelte`:
-  - Business description (plain text, markdown rendering deferred)
-  - BPMN diagram placeholder
-  - Step-by-step flow table
-  - Participating services (linked to service pages)
-- [x] Create `src/routes/use-cases/[id]/+page.ts` loader
-- [x] Handle 404 for unknown use case
+## 11. Breadcrumb Navigation
 
-## 10. Service → Use Case Linking ✅
+- [ ] Create `src/lib/components/Breadcrumbs.svelte`
+- [ ] Add breadcrumbs to:
+  - Domain detail pages
+  - Use case detail pages (when in domain)
+  - Service detail pages (when in domain)
+- [ ] Support nested domains (parent chain)
 
-- [x] Update `src/routes/services/[id]/+page.svelte`:
-  - Add "Participates in Use Cases" section
-  - List use cases with links
-- [x] Update service detail loader to include use cases
+## 12. URL Structure Update
 
-## 11. Auto-link BPMN Participants ⏭️ (Deferred)
+- [ ] Add routes:
+  - `/domains` - domain list
+  - `/domains/[id]` - domain detail
+  - `/domains/[id]/use-cases/[ucId]` - use case within domain context
+  - `/domains/[id]/services/[svcId]` - service within domain context
+- [ ] Keep existing flat routes working (`/use-cases/[id]`, `/services/[id]`)
+- [ ] Canonical URLs for SEO
 
-> **TODO (Future):** Requires BPMN XML files with lane/participant data.
-> When needed, parse BPMN XML and match lane names to service IDs.
+## 13. Navigation Updates
 
-- [ ] ~~Parse BPMN lanes/participants~~ → Deferred
-- [ ] ~~Match participant names to service IDs~~ → Deferred
-- [ ] ~~Warn on unmatched participants~~ → Deferred
+- [ ] Update `Header.svelte`:
+  - Add "Domains" nav link
+  - Reorder: Domains > Use Cases > Services
+- [ ] Update home page:
+  - Show domain overview
+  - Maintain use-case-first emphasis
 
-## 12. Navigation Updates ✅
+## 14. JSON Output Extension
 
-- [x] Update `src/lib/components/Header.svelte`:
-  - Add "Use Cases" nav link (prominent position)
-- [x] Update mobile nav (automatic via shared navLinks)
+- [ ] Update `CatalogSchema` to include `domains` array
+- [ ] Ensure JSON writer handles domains
+- [ ] Update `fetchCatalog` for web
 
-## 13. Home Page Updates ✅
+## 15. E2E Tests
 
-- [x] Update `src/routes/+page.svelte`:
-  - Add "Featured Use Cases" section
-  - Show use case count
-  - Use cases first in visual hierarchy
-
-## 14. Demo Use Cases ✅
-
-- [x] Create `demo-catalog/use-cases/checkout/use-case.toml`
-- [x] Create `demo-catalog/use-cases/profile-update/use-case.toml`
-- [x] Create `demo-catalog/use-cases/customer-onboarding/use-case.toml`
-- [x] Verify build includes use cases (3 use cases in catalog.json)
-
-## 15. JSON Output Extension ✅
-
-- [x] `JsonWriter` already handles full catalog (including useCases)
-- [x] Update `CatalogSchema` to include `useCases` array
-- [x] `fetchCatalog` already uses updated schema
-
-## 16. E2E Tests ✅
-
-- [x] Create `tests/e2e/use-cases.spec.ts` (9 tests):
-  - Use case list page loads
-  - Shows correct count
-  - Navigate to use case detail
-  - Use case detail shows steps
-  - Participating services linked
-  - Back link works
-  - Service detail shows use cases
-  - Home page shows featured use cases
-  - Navigation has Use Cases link
-- Note: BPMN diagram rendering deferred (needs actual BPMN XML files)
+- [ ] Create `tests/e2e/domains.spec.ts`:
+  - Domain list page loads
+  - Domain detail shows use cases first
+  - Breadcrumbs work correctly
+  - Tree navigation works
+  - Tree/flat toggle persists
+  - Domain → use case → service drill-down
+  - Flat routes still work
 
 ---
 
@@ -193,46 +166,86 @@ pnpm verify  # All checks must pass
 
 ## Acceptance Criteria
 
-- [x] Use case list page shows 3 demo use cases
-- [ ] Use case detail renders BPMN diagram (deferred - needs BPMN XML)
-- [x] Step-by-step flow displays correctly
-- [x] Services link to their use cases
-- [x] Use cases link to participating services
-- [x] Navigation highlights use cases prominently
-- [x] All use-cases E2E tests pass (9 tests)
+- [ ] Domain list page shows demo domains
+- [ ] Domain detail shows use cases prominently (before services)
+- [ ] Hierarchical tree navigation works
+- [ ] Breadcrumbs show full path
+- [ ] All E2E tests pass
+- [ ] Flat routes (`/services/[id]`) remain functional
 
 ---
 
-## Sidecar Format v0.2
+## Sidecar Format v0.3
 
 ```toml
+# domain.toml
+[domain]
+id = "commerce"
+name = "Commerce"
+description = "E-commerce domain"
+parent = "platform"  # optional subdomain
+```
+
+```toml
+# service.toml (extended)
+[service]
+id = "order-service"
+name = "Order Service"
+domain = "commerce"  # NEW
+```
+
+```toml
+# use-case.toml (extended)
 [use_case]
 id = "checkout-flow"
 name = "Customer Checkout"
-description = "./checkout.md"
-bpmn = "./checkout.bpmn.txt"
-
-[[use_case.participants]]
-service = "order-service"
-role = "Creates and manages order"
-
-[[use_case.participants]]
-service = "billing-service"
-role = "Processes payment"
-
-[[use_case.steps]]
-sequence = 1
-actor = "Customer"
-action = "Submits order"
-
-[[use_case.steps]]
-sequence = 2
-service = "order-service"
-action = "Validates order"
-endpoint = "POST /orders"
+domain = "commerce"  # NEW
 ```
 
 ---
+
+<details>
+<summary>📦 Phase 2 Archive (Complete)</summary>
+
+# Phase 2: Use Cases + BPMN ✅
+
+**Status:** Complete (BPMN XML rendering parked)
+
+## Summary
+
+- Use case domain entity, schema, parser
+- Use case list/detail pages
+- Service ↔ UseCase bidirectional linking
+- Navigation and home page updates
+- 9 E2E tests passing
+
+## Parked Items
+
+- BPMN XML file creation for demo use cases
+- BPMN diagram rendering verification (component built, needs real XML)
+- BPMN Sketch Miner DSL parser (no npm package)
+- Auto-link BPMN participants to services
+
+## Completed Tasks
+
+1. ✅ Use case domain entity (27 tests)
+2. ✅ Use case TypeBox schema (22 tests)
+3. ✅ Use case TOML parser (5 tests)
+4. ✅ Catalog domain extension (16 tests)
+5. ✅ Filesystem loader extension (10 tests)
+6. ⏸️ BPMN Sketch Miner parser (deferred)
+7. ✅ BPMN renderer component (bpmn-js)
+8. ✅ Use case list page (10 tests)
+9. ✅ Use case detail page
+10. ✅ Service → Use Case linking
+11. ⏸️ Auto-link BPMN participants (deferred)
+12. ✅ Navigation updates
+13. ✅ Home page updates
+14. ✅ Demo use cases (3)
+15. ✅ JSON output extension
+16. ✅ E2E tests (9 tests)
+
+</details>
 
 <details>
 <summary>📦 Phase 1 Archive (Complete)</summary>
@@ -274,15 +287,5 @@ endpoint = "POST /orders"
 20. ✅ Build integration
 21. ✅ E2E tests (15 tests)
 22. ✅ Documentation (README)
-
-## Acceptance Criteria Met
-
-- ✅ `pnpm verify` passes
-- ✅ Site displays 6 demo services
-- ✅ Dark mode toggle works
-- ✅ Mobile responsive
-- ✅ Test coverage >80% for core (100%)
-- ✅ Zero lint/type errors
-- ✅ Hexagonal architecture enforced
 
 </details>
