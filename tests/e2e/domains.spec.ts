@@ -40,9 +40,13 @@ test('domain detail shows services', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Billing Service' })).toBeVisible();
 });
 
-test('domain detail back link works', async ({ page }) => {
+test('domain detail breadcrumb navigation works', async ({ page }) => {
   await page.goto('/domains/commerce');
-  await page.getByRole('link', { name: '← Back to Domains' }).click();
+  // Breadcrumbs: Domains / Commerce
+  await page
+    .getByRole('navigation', { name: 'Breadcrumb' })
+    .getByRole('link', { name: 'Domains' })
+    .click();
   await expect(page).toHaveURL('/domains');
 });
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import BpmnDiagram from '$lib/components/BpmnDiagram.svelte';
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -8,6 +9,11 @@
   let bpmnXml = $state<string | null>(null);
   let bpmnLoading = $state(false);
   let bpmnError = $state<string | null>(null);
+
+  const breadcrumbItems = $derived([
+    ...data.domainAncestors.map((d) => ({ label: d.name, href: `/domains/${d.id}` })),
+    { label: 'Use Cases', href: '/use-cases' },
+  ]);
 
   onMount(async () => {
     if (data.useCase.bpmn) {
@@ -32,14 +38,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-  <nav class="mb-6">
-    <a
-      href="/use-cases"
-      class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200"
-    >
-      ← Back to Use Cases
-    </a>
-  </nav>
+  <Breadcrumbs items={breadcrumbItems} current={data.useCase.name} />
 
   <div
     class="rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800"

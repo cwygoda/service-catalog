@@ -37,9 +37,13 @@ test('use case detail shows participating services', async ({ page }) => {
   await expect(page.getByRole('link', { name: /Billing Service/i })).toBeVisible();
 });
 
-test('use case detail back link works', async ({ page }) => {
+test('use case detail breadcrumb navigation works', async ({ page }) => {
   await page.goto('/use-cases/checkout');
-  await page.getByRole('link', { name: '← Back to Use Cases' }).click();
+  // Breadcrumbs: Commerce / Use Cases / Customer Checkout
+  await page
+    .getByRole('navigation', { name: 'Breadcrumb' })
+    .getByRole('link', { name: 'Use Cases' })
+    .click();
   await expect(page).toHaveURL('/use-cases');
 });
 

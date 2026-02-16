@@ -4,9 +4,9 @@
 
 ---
 
-## 1. Domain Entity
+## 1. Domain Entity ✅
 
-- [ ] Create `src/core/domain/domain.ts`:
+- [x] Create `src/core/domain/domain.ts`:
 
   ```typescript
   export interface Domain {
@@ -17,13 +17,13 @@
   }
   ```
 
-- [ ] Create factory function `createDomain()`
-- [ ] Create type guard `isDomain()`
-- [ ] Unit tests for domain entity
+- [x] Create factory function `createDomain()`
+- [x] Create type guard `isDomain()`
+- [x] Unit tests for domain entity
 
-## 2. Domain TypeBox Schema
+## 2. Domain TypeBox Schema ✅
 
-- [ ] Create `src/shared/schemas/domain.schema.ts`:
+- [x] Create `src/shared/schemas/domain.schema.ts`:
 
   ```typescript
   export const DomainSchema = Type.Object({
@@ -36,26 +36,26 @@
   });
   ```
 
-- [ ] Export from `src/shared/schemas/index.ts`
-- [ ] Unit tests for schema validation
+- [x] Export from `src/shared/schemas/index.ts`
+- [x] Unit tests for schema validation
 
-## 3. Extend Service/UseCase with Domain
+## 3. Extend Service/UseCase with Domain ✅
 
-- [ ] Update `Service` interface: add `domain?: string`
-- [ ] Update `UseCase` interface: add `domain?: string`
-- [ ] Update TypeBox schemas for both
-- [ ] Update parsers to handle domain field
-- [ ] Update existing tests
+- [x] Update `Service` interface: add `domain?: string`
+- [x] Update `UseCase` interface: add `domain?: string`
+- [x] Update TypeBox schemas for both
+- [x] Update parsers to handle domain field
+- [x] Update existing tests
 
-## 4. Domain TOML Parser
+## 4. Domain TOML Parser ✅
 
-- [ ] Create `parseDomainToml()` function
-- [ ] Support `domain.toml` sidecar files
-- [ ] Unit tests with fixtures
+- [x] Create `parseDomainToml()` function
+- [x] Support `domain.toml` sidecar files
+- [x] Unit tests with fixtures
 
-## 5. Catalog Domain Extension
+## 5. Catalog Domain Extension ✅
 
-- [ ] Update `src/core/domain/catalog.ts`:
+- [x] Update `src/core/domain/catalog.ts`:
 
   ```typescript
   export interface Catalog {
@@ -65,43 +65,43 @@
   }
   ```
 
-- [ ] Add `findDomain(catalog, id)` function
-- [ ] Add `getDomainUseCases(catalog, domainId)` function
-- [ ] Add `getDomainServices(catalog, domainId)` function
-- [ ] Add `getChildDomains(catalog, parentId)` function
-- [ ] Update existing tests
+- [x] Add `findDomain(catalog, id)` function
+- [x] Add `getDomainUseCases(catalog, domainId)` function
+- [x] Add `getDomainServices(catalog, domainId)` function
+- [x] Add `getChildDomains(catalog, parentId)` function
+- [x] Update existing tests
 
-## 6. Filesystem Loader Extension
+## 6. Filesystem Loader Extension ✅
 
-- [ ] Update `FilesystemLoader` to find `domain.toml` files
-- [ ] Load domains alongside services and use cases
-- [ ] Integration tests
+- [x] Update `FilesystemLoader` to find `domain.toml` files
+- [x] Load domains alongside services and use cases
+- [x] Integration tests
 
-## 7. Demo Domains
+## 7. Demo Domains ✅
 
-- [ ] Create domain structure in demo-catalog:
+- [x] Create domain structure in demo-catalog:
   - `demo-catalog/domains/commerce/domain.toml`
   - `demo-catalog/domains/platform/domain.toml`
-- [ ] Assign existing services to domains
-- [ ] Assign existing use cases to domains
+- [x] Assign existing services to domains
+- [x] Assign existing use cases to domains
 
-## 8. Domain List Page
+## 8. Domain List Page ✅
 
-- [ ] Create `src/routes/domains/+page.svelte`:
+- [x] Create `src/routes/domains/+page.svelte`:
   - Grid of domain cards
   - Show name, description, use case count, service count
-- [ ] Create `src/routes/domains/+page.ts` loader
-- [ ] Create `src/lib/components/DomainCard.svelte`
+- [x] Create `src/routes/domains/+page.ts` loader
+- [x] Create `src/lib/components/DomainCard.svelte`
 
-## 9. Domain Detail Page
+## 9. Domain Detail Page ✅
 
-- [ ] Create `src/routes/domains/[id]/+page.svelte`:
+- [x] Create `src/routes/domains/[id]/+page.svelte`:
   - Domain description
   - **Use cases first** (primary content)
   - Services list (secondary)
   - Child domains (if any)
-- [ ] Create `src/routes/domains/[id]/+page.ts` loader
-- [ ] Handle 404 for unknown domain
+- [x] Create `src/routes/domains/[id]/+page.ts` loader
+- [x] Handle 404 for unknown domain
 
 ## 10. Hierarchical Navigation
 
@@ -111,14 +111,14 @@
 - [ ] Add tree/flat toggle to header
 - [ ] Persist preference in localStorage
 
-## 11. Breadcrumb Navigation
+## 11. Breadcrumb Navigation ✅
 
-- [ ] Create `src/lib/components/Breadcrumbs.svelte`
-- [ ] Add breadcrumbs to:
+- [x] Create `src/lib/components/Breadcrumbs.svelte`
+- [x] Add breadcrumbs to:
   - Domain detail pages
   - Use case detail pages (when in domain)
   - Service detail pages (when in domain)
-- [ ] Support nested domains (parent chain)
+- [x] Support nested domains (parent chain)
 
 ## 12. URL Structure Update
 
@@ -130,31 +130,31 @@
 - [ ] Keep existing flat routes working (`/use-cases/[id]`, `/services/[id]`)
 - [ ] Canonical URLs for SEO
 
-## 13. Navigation Updates
+## 13. Navigation Updates ✅
 
-- [ ] Update `Header.svelte`:
+- [x] Update `Header.svelte`:
   - Add "Domains" nav link
   - Reorder: Domains > Use Cases > Services
-- [ ] Update home page:
+- [x] Update home page:
   - Show domain overview
   - Maintain use-case-first emphasis
 
-## 14. JSON Output Extension
+## 14. JSON Output Extension ✅
 
-- [ ] Update `CatalogSchema` to include `domains` array
-- [ ] Ensure JSON writer handles domains
-- [ ] Update `fetchCatalog` for web
+- [x] Update `CatalogSchema` to include `domains` array
+- [x] Ensure JSON writer handles domains
+- [x] Update `fetchCatalog` for web
 
-## 15. E2E Tests
+## 15. E2E Tests ✅
 
-- [ ] Create `tests/e2e/domains.spec.ts`:
+- [x] Create `tests/e2e/domains.spec.ts`:
   - Domain list page loads
   - Domain detail shows use cases first
-  - Breadcrumbs work correctly
-  - Tree navigation works
-  - Tree/flat toggle persists
-  - Domain → use case → service drill-down
-  - Flat routes still work
+  - [x] Domain → use case → service drill-down
+  - [x] Flat routes still work
+  - [x] Breadcrumbs work correctly
+  - [ ] Tree navigation works (pending Task 10)
+  - [ ] Tree/flat toggle persists (pending Task 10)
 
 ---
 

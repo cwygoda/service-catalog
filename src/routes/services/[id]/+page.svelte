@@ -1,7 +1,13 @@
 <script lang="ts">
+  import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
+
+  const breadcrumbItems = $derived([
+    ...data.domainAncestors.map((d) => ({ label: d.name, href: `/domains/${d.id}` })),
+    { label: 'Services', href: '/services' },
+  ]);
 </script>
 
 <svelte:head>
@@ -9,14 +15,7 @@
 </svelte:head>
 
 <div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
-  <nav class="mb-6">
-    <a
-      href="/services"
-      class="text-sm text-primary-600 hover:text-primary-800 dark:text-primary-400 dark:hover:text-primary-200"
-    >
-      ← Back to Services
-    </a>
-  </nav>
+  <Breadcrumbs items={breadcrumbItems} current={data.service.name} />
 
   <div
     class="rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800"

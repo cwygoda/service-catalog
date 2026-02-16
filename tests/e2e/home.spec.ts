@@ -33,8 +33,12 @@ test('navigates to service detail', async ({ page }) => {
   await expect(page.getByText('OIDC identity provider')).toBeVisible();
 });
 
-test('service detail shows back link', async ({ page }) => {
+test('service detail breadcrumb navigation works', async ({ page }) => {
   await page.goto('/services/auth-service');
-  await page.getByRole('link', { name: '← Back to Services' }).click();
+  // Breadcrumbs: Services / Auth Service
+  await page
+    .getByRole('navigation', { name: 'Breadcrumb' })
+    .getByRole('link', { name: 'Services' })
+    .click();
   await expect(page).toHaveURL('/services');
 });
