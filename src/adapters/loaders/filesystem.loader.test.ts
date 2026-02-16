@@ -21,6 +21,7 @@ describe('FilesystemLoader', () => {
     const catalog = await loader.load(tempDir);
     expect(catalog.services).toEqual([]);
     expect(catalog.useCases).toEqual([]);
+    expect(catalog.domains).toEqual([]);
   });
 
   it('loads single service', async () => {
@@ -203,5 +204,93 @@ steps = []
     expect(catalog.useCases).toHaveLength(1);
     expect(catalog.services[0]?.id).toBe('order-service');
     expect(catalog.useCases[0]?.id).toBe('checkout');
+  });
+
+  it('loads single domain', async () => {
+    const domainDir = join(tempDir, 'commerce');
+    await mkdir(domainDir);
+    await writeFile(
+      join(domainDir, 'domain.toml'),
+      `[domain]
+id = "commerce"
+name = "Commerce"
+description = "E-commerce domain"
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.domains).toHaveLength(1);
+    expect(catalog.domains[0]?.id).toBe('commerce');
+    expect(catalog.domains[0]?.name).toBe('Commerce');
+  });
+
+  it('loads domain with parent', async () => {
+    const domainDir = join(tempDir, 'orders');
+    await mkdir(domainDir);
+    await writeFile(
+      join(domainDir, 'domain.toml'),
+      `[domain]
+id = "orders"
+name = "Orders"
+description = "Order subdomain"
+parent = "commerce"
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.domains[0]?.parent).toBe('commerce');
+  });
+
+  it('loads services, use cases, and domains together', async () => {
+    // Create domain
+    const domainDir = join(tempDir, 'domains', 'commerce');
+    await mkdir(domainDir, { recursive: true });
+    await writeFile(
+      join(domainDir, 'domain.toml'),
+      `[domain]
+id = "commerce"
+name = "Commerce"
+description = "E-commerce domain"
+`
+    );
+
+    // Create service
+    const serviceDir = join(tempDir, 'services', 'order');
+    await mkdir(serviceDir, { recursive: true });
+    await writeFile(
+      join(serviceDir, 'service.toml'),
+      `[service]
+id = "order-service"
+name = "Order Service"
+description = "Handles orders"
+domain = "commerce"
+`
+    );
+
+    // Create use case
+    const useCaseDir = join(tempDir, 'use-cases', 'checkout');
+    await mkdir(useCaseDir, { recursive: true });
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "checkout"
+name = "Checkout"
+description = "Checkout flow"
+domain = "commerce"
+participants = []
+steps = []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.domains).toHaveLength(1);
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.domains[0]?.id).toBe('commerce');
+    expect(catalog.services[0]?.domain).toBe('commerce');
+    expect(catalog.useCases[0]?.domain).toBe('commerce');
   });
 });
