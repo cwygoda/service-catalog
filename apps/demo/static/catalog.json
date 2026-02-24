@@ -1,0 +1,312 @@
+{
+  "services": [
+    {
+      "id": "auth-service",
+      "name": "Auth Service",
+      "description": "OIDC identity provider for user authentication",
+      "domain": "platform",
+      "metadata": {
+        "version": "2.1.0"
+      }
+    },
+    {
+      "id": "billing-service",
+      "name": "Billing Service",
+      "description": "Two-stage payment processing with authorize and capture",
+      "domain": "commerce",
+      "metadata": {
+        "version": "2.0.0"
+      }
+    },
+    {
+      "id": "catalog-service",
+      "name": "Catalog Service",
+      "description": "Product catalog with search and inventory management",
+      "domain": "commerce",
+      "metadata": {
+        "version": "1.8.0"
+      }
+    },
+    {
+      "id": "crm-service",
+      "name": "CRM Service",
+      "description": "Customer relationship management and profile data",
+      "domain": "platform",
+      "metadata": {
+        "version": "3.0.2"
+      }
+    },
+    {
+      "id": "orders-service",
+      "name": "Orders Service",
+      "description": "Order lifecycle management from cart to fulfillment",
+      "domain": "commerce",
+      "metadata": {
+        "version": "4.2.1"
+      }
+    },
+    {
+      "id": "policy-service",
+      "name": "Policy Service",
+      "description": "Authorization policy evaluation using Open Policy Agent",
+      "domain": "platform",
+      "metadata": {
+        "version": "1.4.0"
+      }
+    }
+  ],
+  "useCases": [
+    {
+      "id": "checkout",
+      "name": "Customer Checkout",
+      "description": "End-to-end checkout flow when a customer completes their purchase. Coordinates order creation, payment processing, and inventory updates.",
+      "participants": [
+        {
+          "service": "orders-service",
+          "role": "Creates and manages order lifecycle"
+        },
+        {
+          "service": "billing-service",
+          "role": "Processes payment and generates invoice"
+        },
+        {
+          "service": "catalog-service",
+          "role": "Validates product availability and updates inventory"
+        }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "action": "Initiates checkout",
+          "actor": "Customer"
+        },
+        {
+          "sequence": 2,
+          "action": "Creates pending order",
+          "service": "orders-service",
+          "endpoint": "POST /orders"
+        },
+        {
+          "sequence": 3,
+          "action": "Reserves inventory",
+          "service": "catalog-service",
+          "endpoint": "POST /inventory/reserve"
+        },
+        {
+          "sequence": 4,
+          "action": "Processes payment",
+          "service": "billing-service",
+          "endpoint": "POST /payments"
+        },
+        {
+          "sequence": 5,
+          "action": "Confirms order",
+          "service": "orders-service",
+          "endpoint": "PATCH /orders/{id}/confirm"
+        }
+      ],
+      "domain": "commerce",
+      "bpmn": "/bpmn/checkout.bpmn",
+      "bpmnSource": {
+        "type": "xml",
+        "path": "/bpmn/checkout.bpmn"
+      }
+    },
+    {
+      "id": "customer-onboarding",
+      "name": "Customer Onboarding",
+      "description": "New customer registration and account setup. Creates authentication credentials, initializes customer profile, and sets up billing preferences.",
+      "participants": [
+        {
+          "service": "auth-service",
+          "role": "Creates user account and credentials"
+        },
+        {
+          "service": "crm-service",
+          "role": "Creates customer profile record"
+        },
+        {
+          "service": "billing-service",
+          "role": "Sets up payment method and billing preferences"
+        },
+        {
+          "service": "policy-service",
+          "role": "Evaluates onboarding eligibility rules"
+        }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "action": "Initiates registration",
+          "actor": "Customer"
+        },
+        {
+          "sequence": 2,
+          "action": "Checks eligibility rules",
+          "service": "policy-service",
+          "endpoint": "POST /evaluate"
+        },
+        {
+          "sequence": 3,
+          "action": "Creates user account",
+          "service": "auth-service",
+          "endpoint": "POST /users"
+        },
+        {
+          "sequence": 4,
+          "action": "Creates customer profile",
+          "service": "crm-service",
+          "endpoint": "POST /customers"
+        },
+        {
+          "sequence": 5,
+          "action": "Sets up billing account",
+          "service": "billing-service",
+          "endpoint": "POST /accounts"
+        },
+        {
+          "sequence": 6,
+          "action": "Receives welcome email",
+          "actor": "Customer"
+        }
+      ],
+      "domain": "platform",
+      "bpmn": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" id=\"Definitions_1\" targetNamespace=\"http://bpmn.io/schema/bpmn\" exporter=\"bpmn-txt\" exporterVersion=\"0.1.0\">\n  <bpmn:process id=\"customer-onboarding\" isExecutable=\"false\" name=\"Customer Onboarding\">\n    <bpmn:startEvent id=\"registration-started\" name=\"Registration Started\"/>\n    <bpmn:serviceTask id=\"check-eligibility\" name=\"Check Eligibility\"/>\n    <bpmn:serviceTask id=\"create-account\" name=\"Create User Account\"/>\n    <bpmn:serviceTask id=\"create-profile\" name=\"Create Customer Profile\"/>\n    <bpmn:serviceTask id=\"setup-billing\" name=\"Setup Billing Account\"/>\n    <bpmn:exclusiveGateway id=\"eligibility-decision\" name=\"Eligible?\" default=\"rejected\"/>\n    <bpmn:endEvent id=\"rejected\" name=\"Registration Rejected\"/>\n    <bpmn:endEvent id=\"onboarding-complete\" name=\"Onboarding Complete\"/>\n    <bpmn:sequenceFlow id=\"flow_registration-started_check-eligibility_0\" sourceRef=\"registration-started\" targetRef=\"check-eligibility\"/>\n    <bpmn:sequenceFlow id=\"flow_check-eligibility_eligibility-decision_1\" sourceRef=\"check-eligibility\" targetRef=\"eligibility-decision\"/>\n    <bpmn:sequenceFlow id=\"flow_eligibility-decision_create-account_2\" sourceRef=\"eligibility-decision\" targetRef=\"create-account\"/>\n    <bpmn:sequenceFlow id=\"flow_create-account_create-profile_3\" sourceRef=\"create-account\" targetRef=\"create-profile\"/>\n    <bpmn:sequenceFlow id=\"flow_create-profile_setup-billing_4\" sourceRef=\"create-profile\" targetRef=\"setup-billing\"/>\n    <bpmn:sequenceFlow id=\"flow_setup-billing_onboarding-complete_5\" sourceRef=\"setup-billing\" targetRef=\"onboarding-complete\"/>\n  </bpmn:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"customer-onboarding\">\n      <bpmndi:BPMNShape id=\"registration-started_di\" bpmnElement=\"registration-started\">\n        <dc:Bounds x=\"12\" y=\"90\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"check-eligibility_di\" bpmnElement=\"check-eligibility\">\n        <dc:Bounds x=\"148\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"eligibility-decision_di\" bpmnElement=\"eligibility-decision\">\n        <dc:Bounds x=\"348\" y=\"83\" width=\"50\" height=\"50\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"rejected_di\" bpmnElement=\"rejected\">\n        <dc:Bounds x=\"12\" y=\"12\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"create-account_di\" bpmnElement=\"create-account\">\n        <dc:Bounds x=\"498\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"create-profile_di\" bpmnElement=\"create-profile\">\n        <dc:Bounds x=\"698\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"setup-billing_di\" bpmnElement=\"setup-billing\">\n        <dc:Bounds x=\"898\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"onboarding-complete_di\" bpmnElement=\"onboarding-complete\">\n        <dc:Bounds x=\"1098\" y=\"90\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNEdge id=\"flow_registration-started_check-eligibility_0_di\" bpmnElement=\"flow_registration-started_check-eligibility_0\">\n        <di:waypoint x=\"48\" y=\"108\"/>\n        <di:waypoint x=\"148\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_check-eligibility_eligibility-decision_1_di\" bpmnElement=\"flow_check-eligibility_eligibility-decision_1\">\n        <di:waypoint x=\"248\" y=\"108\"/>\n        <di:waypoint x=\"348\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_eligibility-decision_create-account_2_di\" bpmnElement=\"flow_eligibility-decision_create-account_2\">\n        <di:waypoint x=\"398\" y=\"108\"/>\n        <di:waypoint x=\"498\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_create-account_create-profile_3_di\" bpmnElement=\"flow_create-account_create-profile_3\">\n        <di:waypoint x=\"598\" y=\"108\"/>\n        <di:waypoint x=\"698\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_create-profile_setup-billing_4_di\" bpmnElement=\"flow_create-profile_setup-billing_4\">\n        <di:waypoint x=\"798\" y=\"108\"/>\n        <di:waypoint x=\"898\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_setup-billing_onboarding-complete_5_di\" bpmnElement=\"flow_setup-billing_onboarding-complete_5\">\n        <di:waypoint x=\"998\" y=\"108\"/>\n        <di:waypoint x=\"1098\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn:definitions>\n",
+      "bpmnSource": {
+        "type": "bpmn-txt",
+        "path": "customer-onboarding.bpmn.txt"
+      }
+    },
+    {
+      "id": "profile-update",
+      "name": "Profile Update",
+      "description": "Customer updates their profile information including contact details and preferences. Changes are validated, persisted, and synchronized across services.",
+      "participants": [
+        {
+          "service": "crm-service",
+          "role": "Stores and manages customer profile data"
+        },
+        {
+          "service": "auth-service",
+          "role": "Updates authentication credentials if email changes"
+        }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "action": "Submits profile changes",
+          "actor": "Customer"
+        },
+        {
+          "sequence": 2,
+          "action": "Validates profile data",
+          "service": "crm-service",
+          "endpoint": "PUT /customers/{id}"
+        },
+        {
+          "sequence": 3,
+          "action": "Updates credentials if email changed",
+          "service": "auth-service",
+          "endpoint": "PATCH /users/{id}/email"
+        },
+        {
+          "sequence": 4,
+          "action": "Confirms update",
+          "service": "crm-service",
+          "endpoint": "GET /customers/{id}"
+        }
+      ],
+      "domain": "platform"
+    }
+  ],
+  "domains": [
+    {
+      "id": "commerce",
+      "name": "Commerce",
+      "description": "E-commerce capabilities including orders, payments, and product catalog management."
+    },
+    {
+      "id": "platform",
+      "name": "Platform",
+      "description": "Core platform services for authentication, customer relationship management, and policy enforcement."
+    }
+  ],
+  "graph": {
+    "nodes": [
+      {
+        "id": "auth-service",
+        "name": "Auth Service",
+        "domain": "platform"
+      },
+      {
+        "id": "billing-service",
+        "name": "Billing Service",
+        "domain": "commerce"
+      },
+      {
+        "id": "catalog-service",
+        "name": "Catalog Service",
+        "domain": "commerce"
+      },
+      {
+        "id": "crm-service",
+        "name": "CRM Service",
+        "domain": "platform"
+      },
+      {
+        "id": "orders-service",
+        "name": "Orders Service",
+        "domain": "commerce"
+      },
+      {
+        "id": "policy-service",
+        "name": "Policy Service",
+        "domain": "platform"
+      }
+    ],
+    "edges": [
+      {
+        "source": "auth-service",
+        "target": "crm-service",
+        "type": "http",
+        "endpoints": ["POST /customers", "GET /customers/{id}"]
+      },
+      {
+        "source": "billing-service",
+        "target": "orders-service",
+        "type": "http",
+        "endpoints": ["PATCH /orders/{id}/confirm"]
+      },
+      {
+        "source": "catalog-service",
+        "target": "billing-service",
+        "type": "http",
+        "endpoints": ["POST /payments"]
+      },
+      {
+        "source": "crm-service",
+        "target": "billing-service",
+        "type": "http",
+        "endpoints": ["POST /accounts"]
+      },
+      {
+        "source": "crm-service",
+        "target": "auth-service",
+        "type": "http",
+        "endpoints": ["PATCH /users/{id}/email"]
+      },
+      {
+        "source": "orders-service",
+        "target": "catalog-service",
+        "type": "http",
+        "endpoints": ["POST /inventory/reserve"]
+      },
+      {
+        "source": "policy-service",
+        "target": "auth-service",
+        "type": "http",
+        "endpoints": ["POST /users"]
+      }
+    ]
+  }
+}

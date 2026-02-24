@@ -1,0 +1,36 @@
+{
+  "name": "@service-catalog/demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm build:catalog && vite dev",
+    "build": "pnpm build:catalog && vite build",
+    "build:catalog": "service-catalog build -i demo-catalog -o static",
+    "preview": "vite preview",
+    "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+    "test:e2e": "playwright test"
+  },
+  "dependencies": {
+    "@service-catalog/core": "workspace:*",
+    "@service-catalog/ui": "workspace:*",
+    "bpmn-js": "^18.12.0",
+    "d3": "^7.9.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.50.0",
+    "@service-catalog/cli": "workspace:*",
+    "@sveltejs/adapter-static": "^3.0.0",
+    "@sveltejs/kit": "^2.50.2",
+    "@sveltejs/vite-plugin-svelte": "^6.2.4",
+    "@tailwindcss/typography": "^0.5.19",
+    "@tailwindcss/vite": "^4.1.18",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "svelte": "^5.49.2",
+    "svelte-check": "^4.3.6",
+    "tailwindcss": "^4.1.18",
+    "typescript": "^5.7.0",
+    "vite": "^7.3.1"
+  }
+}

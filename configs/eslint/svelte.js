@@ -22,7 +22,6 @@ export default tseslint.config(
       },
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
         extraFileExtensions: ['.svelte'],
       },
     },
@@ -52,16 +51,13 @@ export default tseslint.config(
   },
   {
     ignores: [
-      '**/dist/**',
-      '**/build/**',
-      '**/node_modules/**',
-      '**/.svelte-kit/**',
-      '**/coverage/**',
-      '**/*.config.js',
-      '**/*.config.ts',
-      '**/vitest.setup.ts',
-      'configs/**',
-      '**/bin/**',
+      'dist/**',
+      'build/**',
+      'node_modules/**',
+      '.svelte-kit/**',
+      'coverage/**',
+      '*.config.js',
+      '*.config.ts',
     ],
   }
 );
