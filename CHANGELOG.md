@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/cwygoda/service-catalog/compare/v1.0.0...v1.0.1) (2026-02-24)
+
+### Bug Fixes
+
+- **ci:** update Playwright install to use correct package name ([93b15bd](https://github.com/cwygoda/service-catalog/commit/93b15bd509badd14fd0375697b5b6b347eee43b3))
+- correct package names to [@cwygoda](https://github.com/cwygoda) scope ([0c4df36](https://github.com/cwygoda/service-catalog/commit/0c4df363a70243d2358bb27b08070c3dc10ec4b0))
+
 # 1.0.0 (2026-02-24)
 
 ### Bug Fixes
