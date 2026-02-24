@@ -14,7 +14,7 @@
       "@semantic-release/exec",
       {
         "prepareCmd": "pnpm -r --filter './packages/*' exec npm version ${nextRelease.version} --no-git-tag-version --allow-same-version",
-        "publishCmd": "pnpm -r --filter './packages/*' publish --access public --no-git-checks"
+        "publishCmd": "pnpm -r --filter './packages/*' publish --access public --no-git-checks --provenance"
       }
     ],
     [
