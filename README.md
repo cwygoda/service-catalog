@@ -1,104 +1,88 @@
 # Service Catalog
 
-Use-case-driven service catalog. Product-down, not infrastructure-up.
+Use-case-driven service catalog. **Product-down, not infrastructure-up.**
 
 The catalog answers "what does the business do?" before "what services exist?" Use cases are primary; services implement them.
 
-## Prerequisites
+## Packages
 
-- Node.js 20+
-- pnpm
+| Package                                  | Description                                                 |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| [@service-catalog/core](./packages/core) | Domain models, schemas, adapters (TOML parser, JSON writer) |
+| [@service-catalog/cli](./packages/cli)   | CLI to build catalog from TOML files                        |
+| [@service-catalog/ui](./packages/ui)     | Svelte components for rendering catalogs                    |
 
 ## Quick Start
 
 ```bash
-# Install dependencies
-pnpm install
+# Install packages
+pnpm add @service-catalog/core @service-catalog/cli @service-catalog/ui
 
-# Build and preview
-pnpm build
-pnpm preview
+# Create catalog structure
+mkdir -p my-catalog/services/api-gateway
+cat > my-catalog/services/api-gateway/service.toml << 'EOF'
+[service]
+id = "api-gateway"
+name = "API Gateway"
+description = "Routes external requests to internal services"
+EOF
+
+# Build catalog
+npx service-catalog build -i my-catalog -o static
+
+# Output: static/catalog.json
 ```
 
-Open http://localhost:4173 to view the catalog.
+## Documentation
 
-## Development
+### For Users
+
+- [Getting Started](./docs/getting-started.md) - Create your first catalog
+- [Catalog Format](./docs/catalog-format.md) - TOML schema reference
+- [CLI Reference](./docs/cli.md) - Build command options
+- [UI Integration](./docs/ui-integration.md) - SvelteKit setup
+
+### For Developers
+
+- [Contributing](./CONTRIBUTING.md) - Development setup and guidelines
+
+## Demo
+
+The [demo app](./apps/demo) showcases a complete catalog with 6 services across 2 domains and 3 use cases.
 
 ```bash
-# Start dev server
-pnpm dev
-
-# Run all checks
-pnpm verify
-
-# Individual commands
-pnpm typecheck      # TypeScript check
-pnpm lint           # ESLint
-pnpm format         # Prettier
-pnpm test:unit      # Vitest
-pnpm test:e2e       # Playwright (requires build)
+# Run demo locally
+git clone https://github.com/user/service-catalog
+cd service-catalog
+pnpm install
+pnpm build
+pnpm preview
+# Open http://localhost:4173
 ```
 
 ## Architecture
 
-Hexagonal (Ports & Adapters):
-
 ```
-src/
-├── core/           # Pure domain logic, no I/O
-│   ├── domain/     # Entities (Service, Catalog)
-│   └── ports/      # Interfaces for external deps
-├── adapters/       # Implement ports
-│   ├── loaders/    # Filesystem catalog loader
-│   ├── parsers/    # TOML parser
-│   └── persistence/# JSON writer
-├── cli/            # CLI commands
-├── lib/            # SvelteKit frontend
-│   ├── adapters/   # Static JSON adapter
-│   ├── components/ # Svelte components
-│   └── stores/     # State (theme)
-├── routes/         # SvelteKit pages
-└── shared/         # TypeBox schemas
+┌─────────────────────────────────────────────────────────┐
+│                      Your App                            │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │ SvelteKit   │  │ catalog.json│  │ @service-catalog│  │
+│  │ Routes      │◄─┤ (static)    │◄─┤ /cli build      │  │
+│  └──────┬──────┘  └─────────────┘  └────────┬────────┘  │
+│         │                                    │           │
+│         ▼                                    ▼           │
+│  ┌─────────────┐                    ┌───────────────┐   │
+│  │ @service-   │                    │ TOML sidecars │   │
+│  │ catalog/ui  │                    │ (source)      │   │
+│  └─────────────┘                    └───────────────┘   │
+└─────────────────────────────────────────────────────────┘
 ```
 
 **Data flow:**
 
 ```
-TOML sidecars → CLI parse → catalog.json → SvelteKit static build
+TOML sidecars → CLI build → catalog.json → SvelteKit static site
 ```
-
-## Demo Catalog
-
-The `demo-catalog/` directory contains 6 example services:
-
-```bash
-# Build catalog from TOML files
-pnpm build:catalog
-
-# Output: static/catalog.json
-```
-
-### Service Definition
-
-Each service is defined in `service.toml`:
-
-```toml
-[service]
-id = "auth-service"
-name = "Auth Service"
-description = "OIDC identity provider for user authentication"
-
-[service.metadata]
-version = "2.1.0"
-```
-
-## Tech Stack
-
-- **SvelteKit** - Static site generation
-- **Tailwind CSS v4** - Styling
-- **TypeBox** - Schema validation
-- **Vitest** - Unit/integration tests
-- **Playwright** - E2E tests
 
 ## License
 
