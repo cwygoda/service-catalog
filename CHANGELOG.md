@@ -1,0 +1,38 @@
+# 1.0.0 (2026-02-24)
+
+### Bug Fixes
+
+- add runtime validation and error handling to route loaders ([c18458d](https://github.com/cwygoda/service-catalog/commit/c18458d8ccf36cf99b439722c89fcc5782cf1cfb))
+- **ci:** add postinstall to build bpmn-txt dependency ([34a7e23](https://github.com/cwygoda/service-catalog/commit/34a7e2384da3b783739d37003cefc638265dc56f))
+- **ci:** build packages before typecheck ([403ea57](https://github.com/cwygoda/service-catalog/commit/403ea57ffba3bba61cf86e7fffbcb44cd9eb57e8))
+- **ci:** enable bpmn-txt build in CI ([2d1119c](https://github.com/cwygoda/service-catalog/commit/2d1119ccd256e61149a473b8f2f1134c67df5561))
+- **ci:** format generated files after build ([6bb8304](https://github.com/cwygoda/service-catalog/commit/6bb83049478e16e6c325c381445e6fb6a85c4c08))
+- enable class-based dark mode in Tailwind v4 ([e6595d5](https://github.com/cwygoda/service-catalog/commit/e6595d56d9ec5cdf0ad3c802707b74b0aea532f8))
+- improve theme store SSR compatibility ([c62de12](https://github.com/cwygoda/service-catalog/commit/c62de12a6f6cc9a3a86eb10ec6083f40f830f984))
+- resolve E2E test failures ([e1410f9](https://github.com/cwygoda/service-catalog/commit/e1410f9fbc972542767e30ad40a44561e5db9604))
+
+### Features
+
+- add BpmnDiagram component with bpmn-js ([d322799](https://github.com/cwygoda/service-catalog/commit/d3227993a35f266bab9898a51344cc998bc1ccaf))
+- add breadcrumb navigation to detail pages ([e3bac92](https://github.com/cwygoda/service-catalog/commit/e3bac925e2311b457dd08ff1c367701a42728d0c))
+- add dark mode with persistence ([6164604](https://github.com/cwygoda/service-catalog/commit/6164604a5ea1133741c779f1dde3d6e5a4ab9ca3))
+- add demo domains and assign services/use cases ([adfcf9e](https://github.com/cwygoda/service-catalog/commit/adfcf9ef285d323f8d9d14c5c736854ffa1c9164))
+- add Domain entity for Phase 3 ([1371704](https://github.com/cwygoda/service-catalog/commit/13717041f32f466eb8b6a52387836d4ce84e4fd6))
+- add domain field to Service and UseCase ([e64a39f](https://github.com/cwygoda/service-catalog/commit/e64a39f48d4e63411e27cd93aaab690987c4b3a4))
+- add domain list and detail pages with navigation ([c0c18ab](https://github.com/cwygoda/service-catalog/commit/c0c18ab8a8ab9fd09a52357a64fbdb7dcb4470a9))
+- add Domain TOML parser ([dbd55e3](https://github.com/cwygoda/service-catalog/commit/dbd55e3937d76e9f80af04465a7612f2751bd0af))
+- add Domain TypeBox schema ([6fbfe91](https://github.com/cwygoda/service-catalog/commit/6fbfe91199fdfaeacfd5cce031bc1a9d3a7221fc))
+- add hierarchical tree navigation with toggle ([7ba7cba](https://github.com/cwygoda/service-catalog/commit/7ba7cba00a2552ea239df9fd8b6d761484f17bbc))
+- add mobile responsive navigation ([79b9785](https://github.com/cwygoda/service-catalog/commit/79b9785031eb2fb7c9d965752a93ed892e0e3a23))
+- add service catalog web UI ([11443db](https://github.com/cwygoda/service-catalog/commit/11443db5c59baccae6f55d0d652d0daa1941d74a))
+- add service connections graph with use case overlay ([5743e98](https://github.com/cwygoda/service-catalog/commit/5743e98dda8d9112cf42ab7606413495d7ce11a7))
+- add SvelteKit with Tailwind CSS v4 ([c2caf23](https://github.com/cwygoda/service-catalog/commit/c2caf23229a7fb569c58406f642bd5bf1fee504a))
+- add use case schema, TOML parser, and catalog extension ([c9f22e2](https://github.com/cwygoda/service-catalog/commit/c9f22e28d639f36754e321031bd9cb3aeb9cc2cb))
+- add UseCase domain entity with type guards ([c08943b](https://github.com/cwygoda/service-catalog/commit/c08943b2755f97b8766629fa9e922e1461ac3a2b))
+- **bpmn:** add bpmn-txt DSL support with linting ([64e8927](https://github.com/cwygoda/service-catalog/commit/64e8927ec782b648e7f85a1aefd747e905f22d1e))
+- extend Catalog with domains support ([975a0f2](https://github.com/cwygoda/service-catalog/commit/975a0f2d82c260bed6da6dddf65539220b33f599))
+- extend FilesystemLoader to load domains ([393bc0c](https://github.com/cwygoda/service-catalog/commit/393bc0c8886766356195db92b9da19bb9aa9156a))
+- extend FilesystemLoader to load use cases ([90a95ee](https://github.com/cwygoda/service-catalog/commit/90a95eecf0a66d07a9e87b9ac02688870aa04fe0))
+- implement Phase 2 use cases UI and demo content ([dbdc552](https://github.com/cwygoda/service-catalog/commit/dbdc5522598ab7dc0307df27102ca0c57d6b863d))
+- phase 1 core foundation ([7542e2b](https://github.com/cwygoda/service-catalog/commit/7542e2b3cc015a2e530dd62f55c5bf9818f94f80))
+- wire up BPMN diagram rendering for use cases ([81bb6b2](https://github.com/cwygoda/service-catalog/commit/81bb6b2a696498071508005092d10dd1ef6da927))
