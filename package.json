@@ -18,6 +18,7 @@
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm test:e2e",
     "dev": "pnpm -F @service-catalog/demo dev",
     "preview": "pnpm -F @service-catalog/demo preview",
+    "postinstall": "pnpm -F @service-catalog/core exec sh -c 'cd $(dirname $(node -e \"console.log(require.resolve(\\\"bpmn-txt/package.json\\\"))\")) && pnpm build' || true",
     "prepare": "husky"
   },
   "devDependencies": {
