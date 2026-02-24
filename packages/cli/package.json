@@ -1,5 +1,5 @@
 {
-  "name": "@service-catalog/cli",
+  "name": "@cwygoda/service-catalog-cli",
   "version": "1.0.0",
   "type": "module",
   "bin": {
@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@service-catalog/core": "workspace:*",
+    "@cwygoda/service-catalog-core": "workspace:*",
     "chalk": "^5.4.0",
     "commander": "^13.0.0"
   },

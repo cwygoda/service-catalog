@@ -1,5 +1,5 @@
 {
-  "name": "@service-catalog/core",
+  "name": "@cwygoda/service-catalog-core",
   "version": "1.0.0",
   "type": "module",
   "exports": {

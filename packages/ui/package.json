@@ -1,5 +1,5 @@
 {
-  "name": "@service-catalog/ui",
+  "name": "@cwygoda/service-catalog-ui",
   "version": "1.0.0",
   "type": "module",
   "svelte": "./dist/index.js",
@@ -27,7 +27,7 @@
     "typecheck": "svelte-kit sync && svelte-check"
   },
   "dependencies": {
-    "@service-catalog/core": "workspace:*",
+    "@cwygoda/service-catalog-core": "workspace:*",
     "@sinclair/typebox": "^0.34.0"
   },
   "peerDependencies": {
