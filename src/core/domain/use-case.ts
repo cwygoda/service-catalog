@@ -3,6 +3,14 @@ export interface Participant {
   role: string;
 }
 
+export type BpmnSourceType = 'xml' | 'bpmn-txt';
+
+export interface BpmnSource {
+  type: BpmnSourceType;
+  path?: string;
+  content?: string;
+}
+
 export interface Step {
   sequence: number;
   actor?: string;
@@ -17,6 +25,7 @@ export interface UseCase {
   description: string;
   domain?: string;
   bpmn?: string;
+  bpmnSource?: BpmnSource;
   participants: Participant[];
   steps: Step[];
 }
@@ -27,7 +36,7 @@ export function createUseCase(
   description: string,
   participants: Participant[] = [],
   steps: Step[] = [],
-  options?: { domain?: string; bpmn?: string }
+  options?: { domain?: string; bpmn?: string; bpmnSource?: BpmnSource }
 ): UseCase {
   return {
     id,
@@ -35,6 +44,7 @@ export function createUseCase(
     description,
     ...(options?.domain !== undefined && { domain: options.domain }),
     ...(options?.bpmn !== undefined && { bpmn: options.bpmn }),
+    ...(options?.bpmnSource !== undefined && { bpmnSource: options.bpmnSource }),
     participants,
     steps,
   };

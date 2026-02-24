@@ -4,7 +4,8 @@ import { ServiceSidecarSchema, type ServiceSidecar } from '../../shared/schemas/
 import { UseCaseSidecarSchema, type UseCaseSidecar } from '../../shared/schemas/use-case.schema.js';
 import { DomainSidecarSchema, type DomainSidecar } from '../../shared/schemas/domain.schema.js';
 import type { Service } from '../../core/domain/service.js';
-import type { UseCase } from '../../core/domain/use-case.js';
+import type { UseCase, BpmnSource } from '../../core/domain/use-case.js';
+import { detectBpmnTxtContent } from './bpmn-txt.parser.js';
 import type { Domain } from '../../core/domain/domain.js';
 
 const compiledServiceSchema = TypeCompiler.Compile(ServiceSidecarSchema);
@@ -122,6 +123,19 @@ export function parseUseCaseToml(content: string, filePath: string): UseCaseSide
   return parsed;
 }
 
+function detectBpmnSource(bpmnValue: string): BpmnSource {
+  if (bpmnValue.endsWith('.bpmn.txt')) {
+    return { type: 'bpmn-txt', path: bpmnValue };
+  }
+  if (bpmnValue.endsWith('.bpmn')) {
+    return { type: 'xml', path: bpmnValue };
+  }
+  if (detectBpmnTxtContent(bpmnValue)) {
+    return { type: 'bpmn-txt', content: bpmnValue };
+  }
+  return { type: 'xml', path: bpmnValue };
+}
+
 export function sidecarToUseCase(sidecar: UseCaseSidecar): UseCase {
   const uc = sidecar.use_case;
 
@@ -148,6 +162,7 @@ export function sidecarToUseCase(sidecar: UseCaseSidecar): UseCase {
 
   if (uc.bpmn !== undefined) {
     useCase.bpmn = uc.bpmn;
+    useCase.bpmnSource = detectBpmnSource(uc.bpmn);
   }
 
   return useCase;

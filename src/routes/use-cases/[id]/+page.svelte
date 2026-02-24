@@ -6,9 +6,17 @@
 
   let { data }: { data: PageData } = $props();
 
+  function isInlineXml(value: string | undefined): boolean {
+    if (!value) return false;
+    const trimmed = value.trim();
+    return trimmed.startsWith('<?xml') || trimmed.startsWith('<bpmn:');
+  }
+
+  const inlineXml = $derived(isInlineXml(data.useCase.bpmn) ? data.useCase.bpmn : null);
   let bpmnXml = $state<string | null>(null);
   let bpmnLoading = $state(false);
   let bpmnError = $state<string | null>(null);
+  const effectiveXml = $derived(inlineXml ?? bpmnXml);
 
   const breadcrumbItems = $derived([
     ...data.domainAncestors.map((d) => ({ label: d.name, href: `/domains/${d.id}` })),
@@ -16,7 +24,7 @@
   ]);
 
   onMount(async () => {
-    if (data.useCase.bpmn) {
+    if (data.useCase.bpmn && !isInlineXml(data.useCase.bpmn)) {
       bpmnLoading = true;
       try {
         const response = await fetch(data.useCase.bpmn);
@@ -95,8 +103,8 @@
             <p class="font-medium">Failed to load diagram</p>
             <p class="mt-1 text-sm">{bpmnError}</p>
           </div>
-        {:else if bpmnXml}
-          <BpmnDiagram xml={bpmnXml} interactive />
+        {:else if effectiveXml}
+          <BpmnDiagram xml={effectiveXml} interactive />
         {/if}
       </div>
     {/if}

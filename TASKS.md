@@ -1,10 +1,43 @@
-# Phase 4: Service Connections Graph
+# Phase 5: bpmn-txt DSL Support
+
+**Status:** Complete
+
+**Goal:** Support bpmn-txt DSL format for BPMN diagrams as alternative to XML, with linting.
+
+---
+
+## Summary
+
+- bpmn-txt dependency from GitHub with postinstall build
+- BpmnSource type supporting xml/bpmn-txt paths and inline content
+- bpmn-txt parser adapter with linting support
+- Auto-detection by extension (.bpmn = XML, .bpmn.txt = bpmn-txt) or content
+- Catalog config for bpmn_lint level (error/warn/off)
+- Demo customer-onboarding.bpmn.txt use case
+- 39 E2E tests passing
+
+## Completed Tasks
+
+1. ✅ Install bpmn-txt from GitHub
+2. ✅ Create bpmn-txt parser adapter
+3. ✅ Extend UseCase domain with BpmnSource type
+4. ✅ Update catalog schema for bpmn_lint config
+5. ✅ Update TOML parser for bpmn-txt detection
+6. ✅ Update build command for bpmn-txt conversion
+7. ✅ Create demo use case with .bpmn.txt file
+8. ✅ Add unit tests for bpmn-txt parser
+9. ✅ E2E test - verify diagram renders from bpmn-txt
+
+---
+
+<details>
+<summary>📦 Phase 4 Archive (Complete)</summary>
+
+# Phase 4: Service Connections Graph ✅
 
 **Status:** Complete
 
 **Goal:** Visualize service dependencies derived from use cases.
-
----
 
 ## Summary
 
@@ -40,7 +73,7 @@
 - Demo sidecar explicit connections (using derived connections instead)
 - Reset view button (zoom/pan sufficient)
 
----
+</details>
 
 <details>
 <summary>📦 Phase 3 Archive (Complete)</summary>

@@ -218,8 +218,8 @@
       );
 
     // Force simulation - D3's forceSimulation has complex generics that don't match our SimNode
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
     simulation = d3
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
       .forceSimulation(simNodes as any)
       .force(
         'link',

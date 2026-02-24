@@ -4,10 +4,12 @@ import chalk from 'chalk';
 import { createFilesystemLoader } from '../../adapters/loaders/filesystem.loader.js';
 import { createJsonWriter } from '../../adapters/persistence/json.writer.js';
 import { buildServiceGraph } from '../../core/services/graph-builder.js';
+import type { BpmnLintLevel } from '../../shared/schemas/catalog-config.schema.js';
 
 interface BuildOptions {
   input: string;
   output: string;
+  bpmnLint: BpmnLintLevel;
 }
 
 async function build(options: BuildOptions): Promise<void> {
@@ -18,7 +20,7 @@ async function build(options: BuildOptions): Promise<void> {
   console.log(chalk.gray(`  Input:  ${inputPath}`));
   console.log(chalk.gray(`  Output: ${outputPath}`));
 
-  const loader = createFilesystemLoader();
+  const loader = createFilesystemLoader({ bpmnLint: options.bpmnLint });
   const writer = createJsonWriter();
 
   try {
@@ -49,4 +51,5 @@ export const buildCommand = new Command('build')
   .description('Build the service catalog from source files')
   .option('-i, --input <path>', 'Input directory containing service definitions', '.')
   .option('-o, --output <path>', 'Output directory for built catalog', 'dist')
+  .option('--bpmn-lint <level>', 'BPMN lint level: error, warn, off', 'warn')
   .action(build);

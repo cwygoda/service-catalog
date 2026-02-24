@@ -163,12 +163,22 @@ actor = "Customer"
 action = "Submit order"
 `
     );
+    // Create bpmn-txt file
+    await writeFile(
+      join(useCaseDir, 'checkout.bpmn.txt'),
+      `process: checkout
+  start: begin
+    -> finish
+  end: finish
+`
+    );
 
     const catalog = await loader.load(tempDir);
 
     expect(catalog.useCases[0]?.participants).toHaveLength(1);
     expect(catalog.useCases[0]?.steps).toHaveLength(1);
-    expect(catalog.useCases[0]?.bpmn).toBe('./checkout.bpmn.txt');
+    // bpmn field now contains generated XML
+    expect(catalog.useCases[0]?.bpmn).toContain('<?xml');
   });
 
   it('loads services and use cases together', async () => {

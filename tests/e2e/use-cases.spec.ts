@@ -74,8 +74,24 @@ test('use case with BPMN shows diagram', async ({ page }) => {
   await expect(page.getByText('BPMN', { exact: true })).toBeVisible();
   // Check for Process Diagram section
   await expect(page.getByText('Process Diagram')).toBeVisible();
+  // Wait for loading to complete
+  await expect(page.getByText('Loading diagram...')).not.toBeVisible({ timeout: 10000 });
   // Wait for BPMN container to render (bpmn-js creates a .djs-container inside)
-  await expect(page.locator('.bpmn-container')).toBeVisible();
+  await expect(page.locator('.bpmn-container')).toBeVisible({ timeout: 10000 });
   // Wait for actual diagram content (djs-container is created by bpmn-js)
-  await expect(page.locator('.djs-container')).toBeVisible({ timeout: 5000 });
+  await expect(page.locator('.djs-container')).toBeVisible({ timeout: 10000 });
+});
+
+test('use case with bpmn-txt renders diagram', async ({ page }) => {
+  await page.goto('/use-cases/customer-onboarding');
+  // Check for BPMN badge
+  await expect(page.getByText('BPMN', { exact: true })).toBeVisible();
+  // Check for Process Diagram section
+  await expect(page.getByText('Process Diagram')).toBeVisible();
+  // Wait for loading to complete
+  await expect(page.getByText('Loading diagram...')).not.toBeVisible({ timeout: 10000 });
+  // Wait for BPMN container to render
+  await expect(page.locator('.bpmn-container')).toBeVisible({ timeout: 10000 });
+  // Wait for actual diagram content
+  await expect(page.locator('.djs-container')).toBeVisible({ timeout: 10000 });
 });
