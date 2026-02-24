@@ -48,5 +48,10 @@
     "*.{json,md,css,html}": [
       "prettier --write"
     ]
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "bpmn-txt"
+    ]
   }
 }
