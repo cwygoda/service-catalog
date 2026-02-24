@@ -46,7 +46,7 @@ jobs:
         run: pnpm test
 
       - name: Install Playwright
-        run: pnpm -F @service-catalog/demo exec playwright install --with-deps chromium
+        run: pnpm -F @cwygoda/service-catalog-demo exec playwright install --with-deps chromium
 
       - name: E2E tests
         run: pnpm test:e2e
