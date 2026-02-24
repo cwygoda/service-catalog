@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import chalk from 'chalk';
 import { createFilesystemLoader } from '../../adapters/loaders/filesystem.loader.js';
 import { createJsonWriter } from '../../adapters/persistence/json.writer.js';
+import { buildServiceGraph } from '../../core/services/graph-builder.js';
 
 interface BuildOptions {
   input: string;
@@ -24,7 +25,18 @@ async function build(options: BuildOptions): Promise<void> {
     const catalog = await loader.load(inputPath);
     console.log(chalk.gray(`  Found ${String(catalog.services.length)} service(s)`));
 
-    await writer.write(catalog, outputPath);
+    // Build service graph
+    const graph = buildServiceGraph(catalog);
+    console.log(
+      chalk.gray(
+        `  Built graph: ${String(graph.nodes.length)} nodes, ${String(graph.edges.length)} edges`
+      )
+    );
+
+    // Add graph to catalog output
+    const catalogWithGraph = { ...catalog, graph };
+
+    await writer.write(catalogWithGraph, outputPath);
     console.log(chalk.green('✓ Catalog built successfully'));
   } catch (error) {
     console.error(chalk.red('✗ Build failed:'));

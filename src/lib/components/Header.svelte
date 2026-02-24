@@ -8,6 +8,7 @@
     { href: '/domains', label: 'Domains' },
     { href: '/use-cases', label: 'Use Cases' },
     { href: '/services', label: 'Services' },
+    { href: '/graph', label: 'Graph' },
   ];
 
   let mobileMenuOpen = $state(false);

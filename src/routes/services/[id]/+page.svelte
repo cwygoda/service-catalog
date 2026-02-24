@@ -1,5 +1,6 @@
 <script lang="ts">
   import Breadcrumbs from '$lib/components/Breadcrumbs.svelte';
+  import ServiceGraph from '$lib/components/ServiceGraph.svelte';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -8,6 +9,10 @@
     ...data.domainAncestors.map((d) => ({ label: d.name, href: `/domains/${d.id}` })),
     { label: 'Services', href: '/services' },
   ]);
+
+  const hasConnections = $derived(
+    data.outgoingConnections.length > 0 || data.incomingConnections.length > 0
+  );
 </script>
 
 <svelte:head>
@@ -74,6 +79,98 @@
       </div>
     {/if}
 
+    {#if hasConnections}
+      <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+        <h2
+          class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+        >
+          Service Connections
+        </h2>
+
+        <!-- Mini graph -->
+        {#if data.miniGraph.nodes.length > 1}
+          <div class="mb-6">
+            <ServiceGraph nodes={data.miniGraph.nodes} edges={data.miniGraph.edges} height={300} />
+          </div>
+        {/if}
+
+        <!-- Connection lists -->
+        <div class="grid gap-6 sm:grid-cols-2">
+          {#if data.outgoingConnections.length > 0}
+            <div>
+              <h3 class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Calls ({data.outgoingConnections.length})
+              </h3>
+              <ul class="space-y-2">
+                {#each data.outgoingConnections as conn (conn.target)}
+                  <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+                    <a
+                      href="/services/{conn.target}"
+                      class="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                    >
+                      {conn.targetName}
+                    </a>
+                    <div
+                      class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400"
+                    >
+                      <span
+                        class="rounded px-1.5 py-0.5 {conn.type === 'http'
+                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
+                          : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}"
+                      >
+                        {conn.type.toUpperCase()}
+                      </span>
+                      {#if conn.endpoints && conn.endpoints.length > 0}
+                        <span class="truncate" title={conn.endpoints.join(', ')}>
+                          {conn.endpoints.join(', ')}
+                        </span>
+                      {/if}
+                    </div>
+                  </li>
+                {/each}
+              </ul>
+            </div>
+          {/if}
+
+          {#if data.incomingConnections.length > 0}
+            <div>
+              <h3 class="mb-3 text-sm font-medium text-gray-700 dark:text-gray-300">
+                Called by ({data.incomingConnections.length})
+              </h3>
+              <ul class="space-y-2">
+                {#each data.incomingConnections as conn (conn.source)}
+                  <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+                    <a
+                      href="/services/{conn.source}"
+                      class="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
+                    >
+                      {conn.sourceName}
+                    </a>
+                    <div
+                      class="mt-1 flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400"
+                    >
+                      <span
+                        class="rounded px-1.5 py-0.5 {conn.type === 'http'
+                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
+                          : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}"
+                      >
+                        {conn.type.toUpperCase()}
+                      </span>
+                      {#if conn.endpoints && conn.endpoints.length > 0}
+                        <span class="truncate" title={conn.endpoints.join(', ')}>
+                          {conn.endpoints.join(', ')}
+                        </span>
+                      {/if}
+                    </div>
+                  </li>
+                {/each}
+              </ul>
+            </div>
+          {/if}
+        </div>
+      </div>
+    {/if}
+
     <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
       <h2
         class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
@@ -81,10 +178,6 @@
         Coming Soon
       </h2>
       <div class="grid gap-4 text-sm text-gray-500 dark:text-gray-400 sm:grid-cols-2">
-        <div class="rounded bg-gray-50 p-4 dark:bg-gray-900">
-          <span class="font-medium">Dependencies</span>
-          <p class="mt-1">Services this depends on and dependents</p>
-        </div>
         <div class="rounded bg-gray-50 p-4 dark:bg-gray-900">
           <span class="font-medium">API Documentation</span>
           <p class="mt-1">OpenAPI and AsyncAPI specs</p>

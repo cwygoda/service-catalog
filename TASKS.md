@@ -1,209 +1,82 @@
+# Phase 4: Service Connections Graph
+
+**Status:** Complete
+
+**Goal:** Visualize service dependencies derived from use cases.
+
+---
+
+## Summary
+
+- Connection entity with type guards and factory functions
+- Connection TypeBox schema with validation
+- Service extended with optional connections array
+- Graph builder service deriving connections from use case steps
+- D3 force-directed graph with zoom/pan/fullscreen
+- Use case overlay highlighting participants
+- Service detail mini-graph with connection lists
+- /graph page with domain legend
+- 38 E2E tests passing
+
+## Completed Tasks
+
+1. ✅ Connection Entity (`src/core/domain/connection.ts`)
+2. ✅ Connection TypeBox Schema (`src/shared/schemas/connection.schema.ts`)
+3. ✅ Extended Service with connections
+4. ✅ Graph Builder Service (`src/core/services/graph-builder.ts`)
+5. ✅ Installed D3 dependencies
+6. ✅ Graph model with nodes/edges
+7. ✅ Serializable graph output in catalog.json
+8. ✅ D3 Force-Directed Graph Component (`ServiceGraph.svelte`)
+9. ✅ Graph interactions (click→nav, hover tooltip, zoom/pan, fullscreen)
+10. ✅ Use case overlay with dropdown filter
+11. ✅ Service detail mini-graph + connection lists
+12. ✅ Graph page with domain legend
+13. ✅ JSON output includes graph field (6 nodes, 7 edges)
+14. ✅ E2E tests (38 tests passing)
+
+## Deferred
+
+- Demo sidecar explicit connections (using derived connections instead)
+- Reset view button (zoom/pan sufficient)
+
+---
+
+<details>
+<summary>📦 Phase 3 Archive (Complete)</summary>
+
 # Phase 3: Domains + Hierarchy ✅
 
 **Status:** Complete
 
 **Goal:** Organize use cases and services into business domains with hierarchical navigation.
 
----
+## Summary
 
-## 1. Domain Entity ✅
+- Domain entity, schema, parser
+- Domain list/detail pages
+- Hierarchical tree navigation with toggle
+- Breadcrumb navigation
+- 38 E2E tests passing
 
-- [x] Create `src/core/domain/domain.ts`:
+## Completed Tasks
 
-  ```typescript
-  export interface Domain {
-    id: string;
-    name: string;
-    description: string;
-    parent?: string; // optional subdomain
-  }
-  ```
+1. ✅ Domain entity (with createDomain, isDomain)
+2. ✅ Domain TypeBox schema
+3. ✅ Service/UseCase domain field extension
+4. ✅ Domain TOML parser
+5. ✅ Catalog domain extension (find, get, child functions)
+6. ✅ Filesystem loader extension
+7. ✅ Demo domains (commerce, platform)
+8. ✅ Domain list page
+9. ✅ Domain detail page (use cases first)
+10. ✅ Hierarchical nav tree with toggle
+11. ✅ Breadcrumb navigation
+12. ✅ Navigation updates (Domains > Use Cases > Services)
+13. ✅ JSON output extension
+14. ✅ E2E tests (38 tests)
 
-- [x] Create factory function `createDomain()`
-- [x] Create type guard `isDomain()`
-- [x] Unit tests for domain entity
-
-## 2. Domain TypeBox Schema ✅
-
-- [x] Create `src/shared/schemas/domain.schema.ts`:
-
-  ```typescript
-  export const DomainSchema = Type.Object({
-    domain: Type.Object({
-      id: Type.String({ minLength: 1 }),
-      name: Type.String({ minLength: 1 }),
-      description: Type.String(),
-      parent: Type.Optional(Type.String()),
-    }),
-  });
-  ```
-
-- [x] Export from `src/shared/schemas/index.ts`
-- [x] Unit tests for schema validation
-
-## 3. Extend Service/UseCase with Domain ✅
-
-- [x] Update `Service` interface: add `domain?: string`
-- [x] Update `UseCase` interface: add `domain?: string`
-- [x] Update TypeBox schemas for both
-- [x] Update parsers to handle domain field
-- [x] Update existing tests
-
-## 4. Domain TOML Parser ✅
-
-- [x] Create `parseDomainToml()` function
-- [x] Support `domain.toml` sidecar files
-- [x] Unit tests with fixtures
-
-## 5. Catalog Domain Extension ✅
-
-- [x] Update `src/core/domain/catalog.ts`:
-
-  ```typescript
-  export interface Catalog {
-    services: Service[];
-    useCases: UseCase[];
-    domains: Domain[];
-  }
-  ```
-
-- [x] Add `findDomain(catalog, id)` function
-- [x] Add `getDomainUseCases(catalog, domainId)` function
-- [x] Add `getDomainServices(catalog, domainId)` function
-- [x] Add `getChildDomains(catalog, parentId)` function
-- [x] Update existing tests
-
-## 6. Filesystem Loader Extension ✅
-
-- [x] Update `FilesystemLoader` to find `domain.toml` files
-- [x] Load domains alongside services and use cases
-- [x] Integration tests
-
-## 7. Demo Domains ✅
-
-- [x] Create domain structure in demo-catalog:
-  - `demo-catalog/domains/commerce/domain.toml`
-  - `demo-catalog/domains/platform/domain.toml`
-- [x] Assign existing services to domains
-- [x] Assign existing use cases to domains
-
-## 8. Domain List Page ✅
-
-- [x] Create `src/routes/domains/+page.svelte`:
-  - Grid of domain cards
-  - Show name, description, use case count, service count
-- [x] Create `src/routes/domains/+page.ts` loader
-- [x] Create `src/lib/components/DomainCard.svelte`
-
-## 9. Domain Detail Page ✅
-
-- [x] Create `src/routes/domains/[id]/+page.svelte`:
-  - Domain description
-  - **Use cases first** (primary content)
-  - Services list (secondary)
-  - Child domains (if any)
-- [x] Create `src/routes/domains/[id]/+page.ts` loader
-- [x] Handle 404 for unknown domain
-
-## 10. Hierarchical Navigation ✅
-
-- [x] Create `src/lib/components/NavTree.svelte`:
-  - Collapsible tree view
-  - Domains → Use Cases → Services hierarchy
-- [x] Add tree/flat toggle to header
-- [x] Persist preference in localStorage
-
-## 11. Breadcrumb Navigation ✅
-
-- [x] Create `src/lib/components/Breadcrumbs.svelte`
-- [x] Add breadcrumbs to:
-  - Domain detail pages
-  - Use case detail pages (when in domain)
-  - Service detail pages (when in domain)
-- [x] Support nested domains (parent chain)
-
-## 12. URL Structure Update (Deferred)
-
-- [x] `/domains` - domain list
-- [x] `/domains/[id]` - domain detail
-- [ ] `/domains/[id]/use-cases/[ucId]` - deferred (breadcrumbs provide context)
-- [ ] `/domains/[id]/services/[svcId]` - deferred (breadcrumbs provide context)
-- [x] Keep existing flat routes working (`/use-cases/[id]`, `/services/[id]`)
-- [ ] Canonical URLs for SEO - not needed without nested routes
-
-## 13. Navigation Updates ✅
-
-- [x] Update `Header.svelte`:
-  - Add "Domains" nav link
-  - Reorder: Domains > Use Cases > Services
-- [x] Update home page:
-  - Show domain overview
-  - Maintain use-case-first emphasis
-
-## 14. JSON Output Extension ✅
-
-- [x] Update `CatalogSchema` to include `domains` array
-- [x] Ensure JSON writer handles domains
-- [x] Update `fetchCatalog` for web
-
-## 15. E2E Tests ✅
-
-- [x] Create `tests/e2e/domains.spec.ts`:
-  - Domain list page loads
-  - Domain detail shows use cases first
-  - [x] Domain → use case → service drill-down
-  - [x] Flat routes still work
-  - [x] Breadcrumbs work correctly
-  - [x] Tree navigation works
-  - [x] Tree/flat toggle persists
-
----
-
-## Verification Commands
-
-```bash
-pnpm verify  # All checks must pass
-```
-
-## Acceptance Criteria ✅
-
-- [x] Domain list page shows demo domains
-- [x] Domain detail shows use cases prominently (before services)
-- [x] Hierarchical tree navigation works
-- [x] Breadcrumbs show full path
-- [x] All E2E tests pass (38 tests)
-- [x] Flat routes (`/services/[id]`) remain functional
-
----
-
-## Sidecar Format v0.3
-
-```toml
-# domain.toml
-[domain]
-id = "commerce"
-name = "Commerce"
-description = "E-commerce domain"
-parent = "platform"  # optional subdomain
-```
-
-```toml
-# service.toml (extended)
-[service]
-id = "order-service"
-name = "Order Service"
-domain = "commerce"  # NEW
-```
-
-```toml
-# use-case.toml (extended)
-[use_case]
-id = "checkout-flow"
-name = "Customer Checkout"
-domain = "commerce"  # NEW
-```
-
----
+</details>
 
 <details>
 <summary>📦 Phase 2 Archive (Complete)</summary>

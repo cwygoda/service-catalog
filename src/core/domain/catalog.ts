@@ -1,11 +1,13 @@
 import type { Service } from './service.js';
 import type { UseCase } from './use-case.js';
 import type { Domain } from './domain.js';
+import type { ServiceGraph } from '../services/graph-builder.js';
 
 export interface Catalog {
   services: Service[];
   useCases: UseCase[];
   domains: Domain[];
+  graph?: ServiceGraph;
 }
 
 export function createCatalog(

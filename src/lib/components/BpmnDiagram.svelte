@@ -31,10 +31,31 @@
 
   let { xml, interactive = false }: Props = $props();
 
+  let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
   let viewer: BpmnViewer | null = $state(null);
   let error: string | null = $state(null);
   let ready = $state(false);
+
+  // Fullscreen state
+  let isFullscreen = $state(false);
+
+  function toggleFullscreen() {
+    if (!browser) return;
+    if (!document.fullscreenElement) {
+      void wrapper.requestFullscreen();
+    } else {
+      void document.exitFullscreen();
+    }
+  }
+
+  function handleFullscreenChange() {
+    isFullscreen = !!document.fullscreenElement;
+    // Re-fit diagram when entering/exiting fullscreen
+    if (ready) {
+      setTimeout(fitWithPadding, 100);
+    }
+  }
 
   function getCanvas(): BpmnCanvas | null {
     if (!viewer) return null;
@@ -97,6 +118,8 @@
   onMount(async () => {
     if (!browser || !xml) return;
 
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+
     try {
       // Dynamic import to avoid SSR issues
       const { default: BpmnViewer } = await import('bpmn-js/lib/NavigatedViewer');
@@ -118,6 +141,9 @@
   });
 
   onDestroy(() => {
+    if (browser) {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }
     if (viewer?.destroy) {
       viewer.destroy();
     }
@@ -146,11 +172,16 @@
     <p class="mt-1 text-sm">{error}</p>
   </div>
 {:else}
-  <div class="bpmn-wrapper relative">
+  <div
+    bind:this={wrapper}
+    class="bpmn-wrapper relative {isFullscreen ? 'bg-white dark:bg-gray-900' : ''}"
+  >
     <div
       bind:this={container}
-      class="bpmn-container h-96 w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+      class="bpmn-container w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
       class:cursor-grab={interactive}
+      class:h-96={!isFullscreen}
+      class:h-screen={isFullscreen}
     ></div>
 
     <!-- Zoom controls -->
@@ -197,6 +228,7 @@
           aria-label="Fit to view"
           title="Fit to view"
         >
+          <!-- Viewfinder/target icon for fit-to-view -->
           <svg
             class="h-4 w-4"
             fill="none"
@@ -207,9 +239,46 @@
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"
+              d="M7.5 3.75H6A2.25 2.25 0 003.75 6v1.5M16.5 3.75H18A2.25 2.25 0 0120.25 6v1.5m0 9V18A2.25 2.25 0 0118 20.25h-1.5m-9 0H6A2.25 2.25 0 013.75 18v-1.5M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
+        </button>
+        <div class="my-0.5 border-t border-gray-200 dark:border-gray-600"></div>
+        <button
+          onclick={toggleFullscreen}
+          class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+          title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
+        >
+          {#if isFullscreen}
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25"
+              />
+            </svg>
+          {:else}
+            <svg
+              class="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15"
+              />
+            </svg>
+          {/if}
         </button>
       </div>
     {/if}

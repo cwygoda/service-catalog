@@ -85,6 +85,15 @@ export function sidecarToService(sidecar: ServiceSidecar): Service {
     service.metadata = sidecar.service.metadata;
   }
 
+  if (sidecar.service.connections && sidecar.service.connections.length > 0) {
+    service.connections = sidecar.service.connections.map((c) => ({
+      target: c.target,
+      type: c.type,
+      ...(c.endpoints && { endpoints: c.endpoints }),
+      ...(c.events && { events: c.events }),
+    }));
+  }
+
   return service;
 }
 
