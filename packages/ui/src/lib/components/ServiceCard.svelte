@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Service } from '@service-catalog/core/domain';
+  import type { Service } from '@cwygoda/service-catalog-core/domain';
 
   let { service }: { service: Service } = $props();
 </script>

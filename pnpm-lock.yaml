@@ -65,10 +65,10 @@ importers:
 
   apps/demo:
     dependencies:
-      '@service-catalog/core':
+      '@cwygoda/service-catalog-core':
         specifier: workspace:*
         version: link:../../packages/core
-      '@service-catalog/ui':
+      '@cwygoda/service-catalog-ui':
         specifier: workspace:*
         version: link:../../packages/ui
       bpmn-js:
@@ -78,12 +78,12 @@ importers:
         specifier: ^7.9.0
         version: 7.9.0
     devDependencies:
+      '@cwygoda/service-catalog-cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
       '@playwright/test':
         specifier: ^1.50.0
         version: 1.58.2
-      '@service-catalog/cli':
-        specifier: workspace:*
-        version: link:../../packages/cli
       '@sveltejs/adapter-static':
         specifier: ^3.0.0
         version: 3.0.10(@sveltejs/kit@2.51.0(@sveltejs/vite-plugin-svelte@6.2.4(svelte@5.50.3)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))(svelte@5.50.3)(typescript@5.9.3)(vite@7.3.1(@types/node@22.19.11)(jiti@2.6.1)(lightningcss@1.30.2)(yaml@2.8.2)))
@@ -149,7 +149,7 @@ importers:
 
   packages/cli:
     dependencies:
-      '@service-catalog/core':
+      '@cwygoda/service-catalog-core':
         specifier: workspace:*
         version: link:../core
       chalk:
@@ -196,7 +196,7 @@ importers:
 
   packages/ui:
     dependencies:
-      '@service-catalog/core':
+      '@cwygoda/service-catalog-core':
         specifier: workspace:*
         version: link:../core
       '@sinclair/typebox':

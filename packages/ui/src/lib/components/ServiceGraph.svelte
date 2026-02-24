@@ -2,7 +2,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
-  import type { GraphNode, GraphEdge } from '@service-catalog/core/domain';
+  import type { GraphNode, GraphEdge } from '@cwygoda/service-catalog-core/domain';
   import type * as D3 from 'd3';
 
   interface Props {

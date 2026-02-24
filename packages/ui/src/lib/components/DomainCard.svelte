@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Domain } from '@service-catalog/core/domain';
+  import type { Domain } from '@cwygoda/service-catalog-core/domain';
 
   interface Props {
     domain: Domain;

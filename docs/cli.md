@@ -1,11 +1,11 @@
 # CLI Reference
 
-The `@service-catalog/cli` package provides the `service-catalog` command for building catalogs.
+The `@cwygoda/service-catalog-cli` package provides the `service-catalog` command for building catalogs.
 
 ## Installation
 
 ```bash
-pnpm add -D @service-catalog/cli
+pnpm add -D @cwygoda/service-catalog-cli
 ```
 
 Or run directly with npx:
@@ -92,10 +92,14 @@ Building catalog...
 
 ## Programmatic Usage
 
-For advanced use cases, use `@service-catalog/core` directly:
+For advanced use cases, use `@cwygoda/service-catalog-core` directly:
 
 ```typescript
-import { createFilesystemLoader, createJsonWriter, buildServiceGraph } from '@service-catalog/core';
+import {
+  createFilesystemLoader,
+  createJsonWriter,
+  buildServiceGraph,
+} from '@cwygoda/service-catalog-core';
 
 const loader = createFilesystemLoader({ bpmnLint: 'warn' });
 const writer = createJsonWriter();

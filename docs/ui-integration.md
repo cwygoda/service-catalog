@@ -11,8 +11,8 @@ Integrate the service catalog UI components into your SvelteKit application.
 ## Installation
 
 ```bash
-pnpm add @service-catalog/core @service-catalog/ui
-pnpm add -D @service-catalog/cli
+pnpm add @cwygoda/service-catalog-core @cwygoda/service-catalog-ui
+pnpm add -D @cwygoda/service-catalog-cli
 ```
 
 Peer dependencies (if not already installed):
@@ -31,7 +31,7 @@ The UI components use Tailwind CSS. Add a `@source` directive to scan the packag
 
 ```css
 @import 'tailwindcss';
-@source "../node_modules/@service-catalog/ui/dist";
+@source "../node_modules/@cwygoda/service-catalog-ui/dist";
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -72,7 +72,7 @@ Create a layout load function to fetch the catalog:
 **src/routes/+layout.ts:**
 
 ```typescript
-import { fetchCatalog } from '@service-catalog/ui';
+import { fetchCatalog } from '@cwygoda/service-catalog-ui';
 
 export const prerender = true;
 
@@ -92,7 +92,7 @@ Set up the theme store in your layout:
 <script lang="ts">
   import { onMount } from 'svelte';
   import '../app.css';
-  import { Header, theme } from '@service-catalog/ui';
+  import { Header, theme } from '@cwygoda/service-catalog-ui';
   import type { LayoutData } from './$types';
   import type { Snippet } from 'svelte';
 
@@ -119,7 +119,7 @@ Navigation header with theme toggle.
 
 ```svelte
 <script>
-  import { Header } from '@service-catalog/ui';
+  import { Header } from '@cwygoda/service-catalog-ui';
 </script>
 
 <Header />
@@ -131,8 +131,8 @@ Display a service summary.
 
 ```svelte
 <script>
-  import { ServiceCard } from '@service-catalog/ui';
-  import type { Service } from '@service-catalog/core/domain';
+  import { ServiceCard } from '@cwygoda/service-catalog-ui';
+  import type { Service } from '@cwygoda/service-catalog-core/domain';
 
   let { service }: { service: Service } = $props();
 </script>
@@ -146,8 +146,8 @@ Display a use case summary.
 
 ```svelte
 <script>
-  import { UseCaseCard } from '@service-catalog/ui';
-  import type { UseCase } from '@service-catalog/core/domain';
+  import { UseCaseCard } from '@cwygoda/service-catalog-ui';
+  import type { UseCase } from '@cwygoda/service-catalog-core/domain';
 
   let { useCase }: { useCase: UseCase } = $props();
 </script>
@@ -161,8 +161,8 @@ Display a domain summary with counts.
 
 ```svelte
 <script>
-  import { DomainCard } from '@service-catalog/ui';
-  import type { Domain } from '@service-catalog/core/domain';
+  import { DomainCard } from '@cwygoda/service-catalog-ui';
+  import type { Domain } from '@cwygoda/service-catalog-core/domain';
 
   let {
     domain,
@@ -184,8 +184,8 @@ Interactive D3-based service dependency graph.
 
 ```svelte
 <script>
-  import { ServiceGraph } from '@service-catalog/ui';
-  import type { ServiceGraph as GraphType } from '@service-catalog/core/domain';
+  import { ServiceGraph } from '@cwygoda/service-catalog-ui';
+  import type { ServiceGraph as GraphType } from '@cwygoda/service-catalog-core/domain';
 
   let { graph }: { graph: GraphType } = $props();
 </script>
@@ -201,7 +201,7 @@ Render BPMN process diagrams.
 
 ```svelte
 <script>
-  import { BpmnDiagram } from '@service-catalog/ui';
+  import { BpmnDiagram } from '@cwygoda/service-catalog-ui';
 
   let { bpmnPath }: { bpmnPath: string } = $props();
 </script>
@@ -215,7 +215,7 @@ Hierarchical navigation tree.
 
 ```svelte
 <script>
-  import { NavTree } from '@service-catalog/ui';
+  import { NavTree } from '@cwygoda/service-catalog-ui';
 
   let { domains, useCases, services } = $props();
 </script>
@@ -229,7 +229,7 @@ Navigation breadcrumbs.
 
 ```svelte
 <script>
-  import { Breadcrumbs } from '@service-catalog/ui';
+  import { Breadcrumbs } from '@cwygoda/service-catalog-ui';
 </script>
 
 <Breadcrumbs
@@ -248,7 +248,7 @@ Navigation breadcrumbs.
 Manages light/dark theme with localStorage persistence.
 
 ```typescript
-import { theme } from '@service-catalog/ui';
+import { theme } from '@cwygoda/service-catalog-ui';
 
 // Initialize (call once in layout onMount)
 theme.init();
@@ -269,7 +269,7 @@ theme.toggle();
 Toggle between flat list and tree navigation.
 
 ```typescript
-import { navModeStore } from '@service-catalog/ui';
+import { navModeStore } from '@cwygoda/service-catalog-ui';
 
 // Get mode
 console.log(navModeStore.mode); // 'flat' | 'tree'
@@ -280,10 +280,16 @@ navModeStore.toggle();
 
 ## Types
 
-Import domain types from `@service-catalog/core`:
+Import domain types from `@cwygoda/service-catalog-core`:
 
 ```typescript
-import type { Catalog, Domain, Service, UseCase, ServiceGraph } from '@service-catalog/core/domain';
+import type {
+  Catalog,
+  Domain,
+  Service,
+  UseCase,
+  ServiceGraph,
+} from '@cwygoda/service-catalog-core/domain';
 ```
 
 ## Example Pages
@@ -294,7 +300,7 @@ import type { Catalog, Domain, Service, UseCase, ServiceGraph } from '@service-c
 
 ```svelte
 <script lang="ts">
-  import { ServiceCard } from '@service-catalog/ui';
+  import { ServiceCard } from '@cwygoda/service-catalog-ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();
@@ -313,7 +319,7 @@ import type { Catalog, Domain, Service, UseCase, ServiceGraph } from '@service-c
 **src/routes/services/[id]/+page.ts:**
 
 ```typescript
-import { findService } from '@service-catalog/core/domain';
+import { findService } from '@cwygoda/service-catalog-core/domain';
 import { error } from '@sveltejs/kit';
 
 export async function load({ params, parent }) {

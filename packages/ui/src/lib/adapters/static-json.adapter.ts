@@ -1,7 +1,7 @@
 import { Value } from '@sinclair/typebox/value';
-import type { Catalog, Service } from '@service-catalog/core/domain';
-import { findService } from '@service-catalog/core/domain';
-import { CatalogSchema } from '@service-catalog/core/schemas';
+import type { Catalog, Service } from '@cwygoda/service-catalog-core/domain';
+import { findService } from '@cwygoda/service-catalog-core/domain';
+import { CatalogSchema } from '@cwygoda/service-catalog-core/schemas';
 import type { CatalogPort } from '../ports/catalog.port.js';
 
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes

@@ -1,4 +1,4 @@
-import type { Catalog, Service } from '@service-catalog/core/domain';
+import type { Catalog, Service } from '@cwygoda/service-catalog-core/domain';
 
 export interface CatalogPort {
   getCatalog(): Promise<Catalog>;

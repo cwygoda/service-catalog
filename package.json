@@ -1,5 +1,5 @@
 {
-  "name": "@service-catalog/monorepo",
+  "name": "@cwygoda/service-catalog-monorepo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,16 +9,16 @@
   "scripts": {
     "build": "pnpm -r build",
     "test": "pnpm -r test",
-    "test:e2e": "pnpm -F @service-catalog/demo test:e2e",
+    "test:e2e": "pnpm -F @cwygoda/service-catalog-demo test:e2e",
     "typecheck": "pnpm -r typecheck",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm test:e2e",
-    "dev": "pnpm -F @service-catalog/demo dev",
-    "preview": "pnpm -F @service-catalog/demo preview",
-    "postinstall": "pnpm -F @service-catalog/core exec sh -c 'cd $(dirname $(node -e \"console.log(require.resolve(\\\"bpmn-txt/package.json\\\"))\")) && pnpm build' || true",
+    "dev": "pnpm -F @cwygoda/service-catalog-demo dev",
+    "preview": "pnpm -F @cwygoda/service-catalog-demo preview",
+    "postinstall": "pnpm -F @cwygoda/service-catalog-core exec sh -c 'cd $(dirname $(node -e \"console.log(require.resolve(\\\"bpmn-txt/package.json\\\"))\")) && pnpm build' || true",
     "prepare": "husky"
   },
   "devDependencies": {

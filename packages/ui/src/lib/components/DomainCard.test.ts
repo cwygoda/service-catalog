@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import DomainCard from './DomainCard.svelte';
-import type { Domain } from '@service-catalog/core/domain';
+import type { Domain } from '@cwygoda/service-catalog-core/domain';
 
 describe('DomainCard', () => {
   const baseDomain: Domain = {

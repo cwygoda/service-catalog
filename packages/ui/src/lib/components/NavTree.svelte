@@ -1,6 +1,6 @@
 <script lang="ts">
   import { SvelteSet } from 'svelte/reactivity';
-  import type { Domain, UseCase, Service } from '@service-catalog/core/domain';
+  import type { Domain, UseCase, Service } from '@cwygoda/service-catalog-core/domain';
 
   interface Props {
     domains: Domain[];

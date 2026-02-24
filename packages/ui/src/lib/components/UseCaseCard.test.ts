@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import UseCaseCard from './UseCaseCard.svelte';
-import type { UseCase } from '@service-catalog/core/domain';
+import type { UseCase } from '@cwygoda/service-catalog-core/domain';
 
 describe('UseCaseCard', () => {
   const baseUseCase: UseCase = {

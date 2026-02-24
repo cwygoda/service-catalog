@@ -6,17 +6,17 @@ The catalog answers "what does the business do?" before "what services exist?" U
 
 ## Packages
 
-| Package                                  | Description                                                 |
-| ---------------------------------------- | ----------------------------------------------------------- |
-| [@service-catalog/core](./packages/core) | Domain models, schemas, adapters (TOML parser, JSON writer) |
-| [@service-catalog/cli](./packages/cli)   | CLI to build catalog from TOML files                        |
-| [@service-catalog/ui](./packages/ui)     | Svelte components for rendering catalogs                    |
+| Package                                          | Description                                                 |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| [@cwygoda/service-catalog-core](./packages/core) | Domain models, schemas, adapters (TOML parser, JSON writer) |
+| [@cwygoda/service-catalog-cli](./packages/cli)   | CLI to build catalog from TOML files                        |
+| [@cwygoda/service-catalog-ui](./packages/ui)     | Svelte components for rendering catalogs                    |
 
 ## Quick Start
 
 ```bash
 # Install packages
-pnpm add @service-catalog/core @service-catalog/cli @service-catalog/ui
+pnpm add @cwygoda/service-catalog-core @cwygoda/service-catalog-cli @cwygoda/service-catalog-ui
 
 # Create catalog structure
 mkdir -p my-catalog/services/api-gateway

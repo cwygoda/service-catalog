@@ -2,7 +2,7 @@
 import { render, screen } from '@testing-library/svelte';
 import { describe, expect, it } from 'vitest';
 import ServiceCard from './ServiceCard.svelte';
-import type { Service } from '@service-catalog/core/domain';
+import type { Service } from '@cwygoda/service-catalog-core/domain';
 
 describe('ServiceCard', () => {
   const baseService: Service = {

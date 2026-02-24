@@ -1,5 +1,5 @@
 {
-  "name": "@service-catalog/demo",
+  "name": "@cwygoda/service-catalog-demo",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -12,14 +12,14 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@service-catalog/core": "workspace:*",
-    "@service-catalog/ui": "workspace:*",
+    "@cwygoda/service-catalog-core": "workspace:*",
+    "@cwygoda/service-catalog-ui": "workspace:*",
     "bpmn-js": "^18.12.0",
     "d3": "^7.9.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",
-    "@service-catalog/cli": "workspace:*",
+    "@cwygoda/service-catalog-cli": "workspace:*",
     "@sveltejs/adapter-static": "^3.0.0",
     "@sveltejs/kit": "^2.50.2",
     "@sveltejs/vite-plugin-svelte": "^6.2.4",

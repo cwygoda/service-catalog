@@ -6,7 +6,7 @@ import {
   createJsonWriter,
   buildServiceGraph,
   type BpmnLintLevel,
-} from '@service-catalog/core';
+} from '@cwygoda/service-catalog-core';
 
 interface BuildOptions {
   input: string;

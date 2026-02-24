@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { DomainCard } from '@service-catalog/ui';
+  import { DomainCard } from '@cwygoda/service-catalog-ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

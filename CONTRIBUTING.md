@@ -20,9 +20,9 @@ pnpm install
 ```
 service-catalog/
 ├── packages/
-│   ├── core/     # @service-catalog/core - domain, adapters, schemas
-│   ├── cli/      # @service-catalog/cli - CLI binary
-│   └── ui/       # @service-catalog/ui - Svelte components
+│   ├── core/     # @cwygoda/service-catalog-core - domain, adapters, schemas
+│   ├── cli/      # @cwygoda/service-catalog-cli - CLI binary
+│   └── ui/       # @cwygoda/service-catalog-ui - Svelte components
 ├── apps/
 │   └── demo/     # Demo app (private, not published)
 ├── configs/
@@ -51,12 +51,12 @@ pnpm format:check  # Prettier (check only)
 
 ```bash
 # Run command in specific package
-pnpm -F @service-catalog/core test
-pnpm -F @service-catalog/ui build
-pnpm -F @service-catalog/demo dev
+pnpm -F @cwygoda/service-catalog-core test
+pnpm -F @cwygoda/service-catalog-ui build
+pnpm -F @cwygoda/service-catalog-demo dev
 
 # Run single test file
-pnpm -F @service-catalog/core test src/domain/service.test.ts
+pnpm -F @cwygoda/service-catalog-core test src/domain/service.test.ts
 ```
 
 ## Development Workflow
@@ -129,25 +129,25 @@ Each package uses subpath exports:
 
 ```typescript
 // Core
-import { Catalog, Service } from '@service-catalog/core/domain';
-import { createFilesystemLoader } from '@service-catalog/core/adapters';
-import { CatalogSchema } from '@service-catalog/core/schemas';
+import { Catalog, Service } from '@cwygoda/service-catalog-core/domain';
+import { createFilesystemLoader } from '@cwygoda/service-catalog-core/adapters';
+import { CatalogSchema } from '@cwygoda/service-catalog-core/schemas';
 
 // UI (browser-safe only)
-import { ServiceCard, theme } from '@service-catalog/ui';
+import { ServiceCard, theme } from '@cwygoda/service-catalog-ui';
 ```
 
 ### Browser vs Node
 
-`@service-catalog/core` has Node.js-only adapters (filesystem). The UI package imports only browser-safe subpaths:
+`@cwygoda/service-catalog-core` has Node.js-only adapters (filesystem). The UI package imports only browser-safe subpaths:
 
 ```typescript
 // OK in browser
-import type { Catalog } from '@service-catalog/core/domain';
-import { CatalogSchema } from '@service-catalog/core/schemas';
+import type { Catalog } from '@cwygoda/service-catalog-core/domain';
+import { CatalogSchema } from '@cwygoda/service-catalog-core/schemas';
 
 // NOT OK in browser (Node.js only)
-import { createFilesystemLoader } from '@service-catalog/core/adapters';
+import { createFilesystemLoader } from '@cwygoda/service-catalog-core/adapters';
 ```
 
 ## Testing
@@ -174,7 +174,7 @@ Tests are in `apps/demo/tests/`.
 ### Coverage
 
 ```bash
-pnpm -F @service-catalog/core test -- --coverage
+pnpm -F @cwygoda/service-catalog-core test -- --coverage
 ```
 
 Target: >80% for core package.
@@ -186,10 +186,10 @@ Target: >80% for core package.
 
 ```bash
 # Runtime dependency
-pnpm -F @service-catalog/core add some-package
+pnpm -F @cwygoda/service-catalog-core add some-package
 
 # Dev dependency
-pnpm -F @service-catalog/ui add -D some-dev-package
+pnpm -F @cwygoda/service-catalog-ui add -D some-dev-package
 ```
 
 ## Package Publishing

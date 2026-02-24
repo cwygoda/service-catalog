@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ServiceGraph } from '@service-catalog/ui';
+  import { ServiceGraph } from '@cwygoda/service-catalog-ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

@@ -10,13 +10,13 @@ Create a use-case-driven service catalog in minutes.
 ## Installation
 
 ```bash
-pnpm add @service-catalog/core @service-catalog/cli
+pnpm add @cwygoda/service-catalog-core @cwygoda/service-catalog-cli
 ```
 
 For the web UI:
 
 ```bash
-pnpm add @service-catalog/ui
+pnpm add @cwygoda/service-catalog-ui
 ```
 
 ## Create Your Catalog

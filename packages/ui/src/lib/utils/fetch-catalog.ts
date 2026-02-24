@@ -1,7 +1,7 @@
 import { error } from '@sveltejs/kit';
 import { Value } from '@sinclair/typebox/value';
-import type { Catalog } from '@service-catalog/core/domain';
-import { CatalogSchema } from '@service-catalog/core/schemas';
+import type { Catalog } from '@cwygoda/service-catalog-core/domain';
+import { CatalogSchema } from '@cwygoda/service-catalog-core/schemas';
 
 /**
  * Fetches and validates catalog.json with proper error handling.

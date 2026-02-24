@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { UseCase } from '@service-catalog/core/domain';
+  import type { UseCase } from '@cwygoda/service-catalog-core/domain';
 
   let { useCase }: { useCase: UseCase } = $props();
 
