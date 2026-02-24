@@ -8,25 +8,9 @@
 
 import type { Catalog } from '../domain/catalog.js';
 import type { Connection, ConnectionType } from '../domain/connection.js';
+import type { GraphNode, GraphEdge, ServiceGraph } from '../domain/graph.js';
 
-export interface GraphNode {
-  id: string;
-  name: string;
-  domain?: string;
-}
-
-export interface GraphEdge {
-  source: string;
-  target: string;
-  type: ConnectionType;
-  endpoints?: string[];
-  events?: string[];
-}
-
-export interface ServiceGraph {
-  nodes: GraphNode[];
-  edges: GraphEdge[];
-}
+export type { GraphNode, GraphEdge, ServiceGraph };
 
 /**
  * Derives connections from use case steps.
