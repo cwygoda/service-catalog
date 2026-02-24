@@ -4,18 +4,7 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
-
-  interface GraphNode {
-    id: string;
-    name: string;
-    domain?: string;
-  }
-
-  interface GraphEdge {
-    source: string;
-    target: string;
-    type: 'http' | 'event';
-  }
+  import type { GraphNode, GraphEdge } from '../../core/domain/graph.js';
 
   interface Props {
     nodes: GraphNode[];

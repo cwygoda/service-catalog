@@ -60,6 +60,3 @@ export const CatalogSchema = Type.Object({
 });
 
 export type CatalogData = Static<typeof CatalogSchema>;
-export type GraphNode = Static<typeof GraphNodeSchema>;
-export type GraphEdge = Static<typeof GraphEdgeSchema>;
-export type ServiceGraph = Static<typeof ServiceGraphSchema>;
