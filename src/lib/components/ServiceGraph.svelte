@@ -1,10 +1,9 @@
 <script lang="ts">
-  /* eslint-disable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-explicit-any, @typescript-eslint/no-floating-promises, @typescript-eslint/no-non-null-assertion, @typescript-eslint/restrict-template-expressions, @typescript-eslint/no-unnecessary-condition, no-undef */
-  // D3.js is dynamically imported and has complex typing that doesn't play well with strict TS
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import type { GraphNode, GraphEdge } from '../../core/domain/graph.js';
+  import type * as D3 from 'd3';
 
   interface Props {
     nodes: GraphNode[];
@@ -24,17 +23,32 @@
 
   function getDomainColor(domain?: string): string {
     const key = domain ?? 'default';
-    return domainColors[key] ?? domainColors['default']!;
+    return domainColors[key] ?? '#6b7280';
   }
 
   let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
   let svg: SVGSVGElement | null = null;
-  let simulation: d3.Simulation<d3.SimulationNodeDatum, undefined> | null = null;
+  let simulation: D3.Simulation<D3.SimulationNodeDatum, undefined> | null = null;
+
+  // Simulation node type with position
+  interface SimNode extends GraphNode {
+    x: number;
+    y: number;
+    fx?: number | null;
+    fy?: number | null;
+  }
+
+  // Simulation link type with node references
+  interface SimLink {
+    source: SimNode;
+    target: SimNode;
+    type: string;
+  }
 
   // D3 selection refs for highlight updates
-  let nodeSelection: d3.Selection<SVGGElement, any, SVGGElement, unknown> | null = null;
-  let linkSelection: d3.Selection<SVGLineElement, any, SVGGElement, unknown> | null = null;
+  let nodeSelection: D3.Selection<SVGGElement, SimNode, SVGGElement, unknown> | null = null;
+  let linkSelection: D3.Selection<SVGLineElement, SimLink, SVGGElement, unknown> | null = null;
 
   // Tooltip state
   let tooltip = $state({ visible: false, x: 0, y: 0, content: '' });
@@ -42,16 +56,16 @@
   // Fullscreen state
   let isFullscreen = $state(false);
 
-  function toggleFullscreen() {
+  function toggleFullscreen(): void {
     if (!browser) return;
     if (!document.fullscreenElement) {
-      wrapper.requestFullscreen();
+      void wrapper.requestFullscreen();
     } else {
-      document.exitFullscreen();
+      void document.exitFullscreen();
     }
   }
 
-  function handleFullscreenChange() {
+  function handleFullscreenChange(): void {
     isFullscreen = !!document.fullscreenElement;
   }
 
@@ -65,12 +79,6 @@
     const width = container.clientWidth;
 
     // Create simulation nodes with positions
-    interface SimNode extends GraphNode {
-      x: number;
-      y: number;
-      fx?: number | null;
-      fy?: number | null;
-    }
     const simNodes: SimNode[] = nodes.map((n) => ({
       ...n,
       x: width / 2 + (Math.random() - 0.5) * 100,
@@ -78,11 +86,6 @@
     }));
 
     // Create links referencing node objects
-    interface SimLink {
-      source: SimNode;
-      target: SimNode;
-      type: string;
-    }
     const nodeById = new Map(simNodes.map((n) => [n.id, n]));
     const simLinks: SimLink[] = [];
     for (const e of edges) {
@@ -99,7 +102,7 @@
       .append('svg')
       .attr('width', '100%')
       .attr('height', height)
-      .attr('viewBox', `0 0 ${width} ${height}`);
+      .attr('viewBox', `0 0 ${String(width)} ${String(height)}`);
 
     svg = svgEl.node();
 
@@ -125,7 +128,7 @@
     const zoom = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.25, 4])
-      .on('zoom', (event: d3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+      .on('zoom', (event: D3.D3ZoomEvent<SVGSVGElement, unknown>) => {
         g.attr('transform', event.transform.toString());
       });
 
@@ -134,7 +137,7 @@
     // Draw edges
     linkSelection = g
       .append('g')
-      .selectAll('line')
+      .selectAll<SVGLineElement, SimLink>('line')
       .data(simLinks)
       .join('line')
       .attr('class', (d) =>
@@ -144,18 +147,17 @@
       )
       .attr('stroke-width', 2)
       .attr('stroke-dasharray', (d) => (d.type === 'event' ? '5,5' : 'none'))
-      .attr('marker-end', 'url(#arrowhead)') as typeof linkSelection;
+      .attr('marker-end', 'url(#arrowhead)');
 
     // Draw nodes
     const nodeGroups = g
       .append('g')
-      .selectAll('g')
+      .selectAll<SVGGElement, SimNode>('g')
       .data(simNodes)
       .join('g')
       .attr('class', 'cursor-pointer');
 
     // Add drag behavior
-
     nodeGroups.call(
       d3
         .drag<SVGGElement, SimNode>()
@@ -165,28 +167,28 @@
           d.fy = d.y;
         })
         .on('drag', (event, d) => {
-          d.fx = event.x;
-          d.fy = event.y;
+          d.fx = event.x as number;
+          d.fy = event.y as number;
         })
         .on('end', (event, d) => {
           if (!event.active) simulation?.alphaTarget(0);
           d.fx = null;
           d.fy = null;
-        }) as any
+        })
     );
 
-    nodeSelection = nodeGroups as any;
+    nodeSelection = nodeGroups;
 
     // Node circles
-    nodeSelection!
+    nodeSelection
       .append('circle')
       .attr('r', 20)
       .attr('fill', (d) => getDomainColor(d.domain))
       .attr('class', 'stroke-2 stroke-white dark:stroke-gray-800 transition-opacity')
       .on('click', (_, d) => {
-        goto(`/services/${d.id}`);
+        void goto(`/services/${d.id}`);
       })
-      .on('mouseenter', function (event, d) {
+      .on('mouseenter', function (event: MouseEvent, d: SimNode) {
         d3.select(this).attr('r', 24);
         tooltip = {
           visible: true,
@@ -195,7 +197,7 @@
           content: `${d.name}${d.domain ? ` (${d.domain})` : ''}`,
         };
       })
-      .on('mousemove', (event) => {
+      .on('mousemove', (event: MouseEvent) => {
         tooltip.x = event.pageX;
         tooltip.y = event.pageY - 10;
       })
@@ -205,9 +207,9 @@
       });
 
     // Node labels
-    nodeSelection!
+    nodeSelection
       .append('text')
-      .text((d) => d.name.split(' ')[0]) // First word only
+      .text((d) => d.name.split(' ')[0] ?? d.name)
       .attr('text-anchor', 'middle')
       .attr('dy', 35)
       .attr(
@@ -215,13 +217,15 @@
         'text-xs fill-gray-700 dark:fill-gray-300 pointer-events-none transition-opacity'
       );
 
-    // Force simulation
-    simulation = (d3.forceSimulation(simNodes) as any)
+    // Force simulation - D3's forceSimulation has complex generics that don't match our SimNode
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
+    simulation = d3
+      .forceSimulation(simNodes as any)
       .force(
         'link',
         d3
           .forceLink(simLinks)
-          .id((d: any) => d.id)
+          .id((d) => (d as SimNode).id)
           .distance(120)
       )
       .force('charge', d3.forceManyBody().strength(-400))
@@ -229,12 +233,12 @@
       .force('collision', d3.forceCollide().radius(40))
       .on('tick', () => {
         linkSelection
-          ?.attr('x1', (d: SimLink) => d.source.x ?? 0)
-          .attr('y1', (d: SimLink) => d.source.y ?? 0)
-          .attr('x2', (d: SimLink) => d.target.x ?? 0)
-          .attr('y2', (d: SimLink) => d.target.y ?? 0);
+          ?.attr('x1', (d) => d.source.x)
+          .attr('y1', (d) => d.source.y)
+          .attr('x2', (d) => d.target.x)
+          .attr('y2', (d) => d.target.y);
 
-        nodeSelection?.attr('transform', (d: SimNode) => `translate(${d.x ?? 0},${d.y ?? 0})`);
+        nodeSelection?.attr('transform', (d) => `translate(${String(d.x)},${String(d.y)})`);
       });
   });
 
@@ -249,22 +253,17 @@
       const highlightSet = new Set(highlighted);
 
       // Dim non-highlighted nodes
-      nodeSelection.attr('opacity', (d: GraphNode) => (highlightSet.has(d.id) ? 1 : 0.2));
+      nodeSelection.attr('opacity', (d) => (highlightSet.has(d.id) ? 1 : 0.2));
 
       // Dim edges not between highlighted nodes
-      linkSelection.attr('opacity', (d: { source: unknown; target: unknown }) => {
-        const sourceId = typeof d.source === 'object' ? (d.source as GraphNode).id : d.source;
-        const targetId = typeof d.target === 'object' ? (d.target as GraphNode).id : d.target;
-        return highlightSet.has(sourceId as string) && highlightSet.has(targetId as string)
-          ? 1
-          : 0.1;
+      linkSelection.attr('opacity', (d) => {
+        return highlightSet.has(d.source.id) && highlightSet.has(d.target.id) ? 1 : 0.1;
       });
     } else {
       // Reset all to full opacity
       nodeSelection.attr('opacity', 1);
       linkSelection.attr('opacity', 1);
     }
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument */
   });
 
   onDestroy(() => {
@@ -280,7 +279,7 @@
   <div
     bind:this={container}
     class="w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-    style="height: {isFullscreen ? '100vh' : `${height}px`}"
+    style="height: {isFullscreen ? '100vh' : `${String(height)}px`}"
   ></div>
 
   <!-- Tooltip -->
