@@ -25,13 +25,13 @@ pnpm add bpmn-js d3
 
 ### 1. Configure Tailwind
 
-The UI components use Tailwind CSS. Add a `@source` directive to scan the package:
+The UI components use Tailwind CSS. The package ships its own `@source` declaration, so just `@import` it — no manual path needed:
 
 **src/app.css:**
 
 ```css
 @import 'tailwindcss';
-@source "../node_modules/@cwygoda/service-catalog-ui/dist";
+@import '@cwygoda/service-catalog-ui';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

@@ -6,14 +6,17 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
+      "style": "./dist/source.css",
       "svelte": "./dist/index.js"
     },
     "./components": {
       "types": "./dist/components/index.d.ts",
+      "style": "./dist/source.css",
       "svelte": "./dist/components/index.js"
     },
     "./stores": {
       "types": "./dist/stores/index.d.ts",
+      "style": "./dist/source.css",
       "svelte": "./dist/stores/index.js"
     }
   },
