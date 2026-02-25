@@ -11,6 +11,7 @@
 
 <a
   href="/use-cases/{useCase.id}"
+  aria-label="View {useCase.name} use case"
   class="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
 >
   <div class="mb-2 flex items-center justify-between">

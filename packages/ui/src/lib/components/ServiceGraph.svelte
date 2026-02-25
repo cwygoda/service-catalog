@@ -102,7 +102,12 @@
       .append('svg')
       .attr('width', '100%')
       .attr('height', height)
-      .attr('viewBox', `0 0 ${String(width)} ${String(height)}`);
+      .attr('viewBox', `0 0 ${String(width)} ${String(height)}`)
+      .attr('role', 'img')
+      .attr(
+        'aria-label',
+        `Service dependency graph with ${String(nodes.length)} services and ${String(edges.length)} connections`
+      );
 
     svg = svgEl.node();
 
@@ -330,19 +335,19 @@
   >
     <div class="flex items-center gap-1.5">
       <span class="h-3 w-3 rounded-full bg-blue-500"></span>
-      <span class="text-gray-600 dark:text-gray-400">Commerce</span>
+      <span class="text-gray-700 dark:text-gray-300">Commerce</span>
     </div>
     <div class="flex items-center gap-1.5">
-      <span class="h-3 w-3 rounded-full bg-green-500"></span>
-      <span class="text-gray-600 dark:text-gray-400">Platform</span>
+      <span class="h-3 w-3 rounded-sm bg-green-500"></span>
+      <span class="text-gray-700 dark:text-gray-300">Platform</span>
     </div>
     <div class="flex items-center gap-1.5">
       <span class="mr-1 h-0.5 w-4 bg-gray-500"></span>
-      <span class="text-gray-600 dark:text-gray-400">HTTP</span>
+      <span class="text-gray-700 dark:text-gray-300">HTTP</span>
     </div>
     <div class="flex items-center gap-1.5">
       <span class="mr-1 h-0.5 w-4 border-t-2 border-dashed border-gray-400"></span>
-      <span class="text-gray-600 dark:text-gray-400">Event</span>
+      <span class="text-gray-700 dark:text-gray-300">Event</span>
     </div>
   </div>
 </div>

@@ -10,6 +10,7 @@
   aria-label={navModeStore.mode === 'flat' ? 'Switch to tree view' : 'Switch to flat view'}
   title={navModeStore.mode === 'flat' ? 'Switch to tree view' : 'Switch to flat view'}
 >
+  <span class="sr-only" aria-live="polite">Navigation: {navModeStore.mode} view</span>
   {#if navModeStore.mode === 'flat'}
     <!-- List icon -->
     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

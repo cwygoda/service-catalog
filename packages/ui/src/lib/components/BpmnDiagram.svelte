@@ -182,6 +182,8 @@
       class:cursor-grab={interactive}
       class:h-96={!isFullscreen}
       class:h-screen={isFullscreen}
+      role="img"
+      aria-label="BPMN process diagram"
     ></div>
 
     <!-- Zoom controls -->

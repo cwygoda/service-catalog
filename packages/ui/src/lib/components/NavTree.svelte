@@ -65,7 +65,7 @@
             onclick={() => {
               toggleDomain(domain.id);
             }}
-            class="flex h-5 w-5 items-center justify-center rounded text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+            class="flex h-5 w-5 items-center justify-center rounded text-gray-500 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:text-gray-400 dark:hover:bg-gray-700"
             aria-expanded={expandedDomains.has(domain.id)}
             aria-label={expandedDomains.has(domain.id) ? 'Collapse' : 'Expand'}
           >
@@ -115,7 +115,7 @@
                       onclick={() => {
                         toggleUseCase(useCase.id);
                       }}
-                      class="flex h-5 w-5 items-center justify-center rounded text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      class="flex h-5 w-5 items-center justify-center rounded text-gray-400 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:hover:bg-gray-700"
                       aria-expanded={expandedUseCases.has(useCase.id)}
                       aria-label={expandedUseCases.has(useCase.id) ? 'Collapse' : 'Expand'}
                     >
@@ -152,7 +152,7 @@
                       <li>
                         <a
                           href="/services/{service.id}"
-                          class="block rounded px-2 py-1 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                          class="block rounded px-2 py-1 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                         >
                           {service.name}
                         </a>
@@ -168,7 +168,7 @@
               <li>
                 <a
                   href="/services/{service.id}"
-                  class="ml-5 block rounded px-2 py-1 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                  class="ml-5 block rounded px-2 py-1 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   {service.name}
                 </a>

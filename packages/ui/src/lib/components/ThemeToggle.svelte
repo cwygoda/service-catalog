@@ -9,6 +9,7 @@
   class="rounded-md p-2 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
   aria-label="Toggle theme"
 >
+  <span class="sr-only" aria-live="polite">Theme: {theme.resolved}</span>
   {#if theme.resolved === 'dark'}
     <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
       <path

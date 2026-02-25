@@ -22,6 +22,7 @@
   <div class="flex">
     {#if navModeStore.mode === 'tree'}
       <aside
+        aria-label="Catalog navigation"
         class="hidden w-64 shrink-0 border-r border-gray-200 bg-white p-4 lg:block dark:border-gray-700 dark:bg-gray-900"
       >
         <NavTree

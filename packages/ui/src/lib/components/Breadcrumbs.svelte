@@ -25,7 +25,7 @@
         <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
       </li>
     {/each}
-    <li class="text-gray-600 dark:text-gray-400" aria-current="page">
+    <li class="text-gray-700 dark:text-gray-300" aria-current="page">
       {current}
     </li>
   </ol>
