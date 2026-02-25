@@ -53,6 +53,10 @@
   // Tooltip state
   let tooltip = $state({ visible: false, x: 0, y: 0, content: '' });
 
+  // Responsive height — scales with container width on narrow screens
+  let responsiveHeight = $state(height);
+  let resizeObserver: ResizeObserver | null = null;
+
   // Fullscreen state
   let isFullscreen = $state(false);
 
@@ -77,12 +81,13 @@
     const d3 = await import('d3');
 
     const width = container.clientWidth;
+    responsiveHeight = Math.max(300, Math.min(width * 0.6, height));
 
     // Create simulation nodes with positions
     const simNodes: SimNode[] = nodes.map((n) => ({
       ...n,
       x: width / 2 + (Math.random() - 0.5) * 100,
-      y: height / 2 + (Math.random() - 0.5) * 100,
+      y: responsiveHeight / 2 + (Math.random() - 0.5) * 100,
     }));
 
     // Create links referencing node objects
@@ -101,8 +106,8 @@
       .select(container)
       .append('svg')
       .attr('width', '100%')
-      .attr('height', height)
-      .attr('viewBox', `0 0 ${String(width)} ${String(height)}`)
+      .attr('height', responsiveHeight)
+      .attr('viewBox', `0 0 ${String(width)} ${String(responsiveHeight)}`)
       .attr('role', 'img')
       .attr(
         'aria-label',
@@ -234,7 +239,7 @@
           .distance(120)
       )
       .force('charge', d3.forceManyBody().strength(-400))
-      .force('center', d3.forceCenter(width / 2, height / 2))
+      .force('center', d3.forceCenter(width / 2, responsiveHeight / 2))
       .force('collision', d3.forceCollide().radius(40))
       .on('tick', () => {
         linkSelection
@@ -245,6 +250,24 @@
 
         nodeSelection?.attr('transform', (d) => `translate(${String(d.x)},${String(d.y)})`);
       });
+
+    // Resize observer for responsive height
+    resizeObserver = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const newWidth = entry.contentRect.width;
+      const newHeight = Math.max(300, Math.min(newWidth * 0.6, height));
+      if (Math.abs(newHeight - responsiveHeight) < 10) return;
+      responsiveHeight = newHeight;
+      svgEl
+        .attr('height', newHeight)
+        .attr('viewBox', `0 0 ${String(newWidth)} ${String(newHeight)}`);
+      simulation
+        ?.force('center', d3.forceCenter(newWidth / 2, newHeight / 2))
+        .alpha(0.3)
+        .restart();
+    });
+    resizeObserver.observe(container);
   });
 
   // Effect to update highlighting when highlightedNodes changes
@@ -275,6 +298,7 @@
     if (browser) {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }
+    resizeObserver?.disconnect();
     simulation?.stop();
     svg?.remove();
   });
@@ -284,7 +308,7 @@
   <div
     bind:this={container}
     class="w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
-    style="height: {isFullscreen ? '100vh' : `${String(height)}px`}"
+    style="height: {isFullscreen ? '100vh' : `${String(responsiveHeight)}px`}"
   ></div>
 
   <!-- Tooltip -->
@@ -303,13 +327,13 @@
   >
     <button
       onclick={toggleFullscreen}
-      class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+      class="flex min-h-11 min-w-11 items-center justify-center rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
       aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
       title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
     >
       {#if isFullscreen}
         <!-- Exit fullscreen icon -->
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
@@ -318,7 +342,7 @@
         </svg>
       {:else}
         <!-- Enter fullscreen icon -->
-        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path
             stroke-linecap="round"
             stroke-linejoin="round"

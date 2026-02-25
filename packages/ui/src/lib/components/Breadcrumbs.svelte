@@ -13,7 +13,7 @@
 </script>
 
 <nav aria-label="Breadcrumb" class="mb-6">
-  <ol class="flex flex-wrap items-center gap-1 text-sm">
+  <ol class="flex flex-wrap items-center gap-1 text-xs sm:text-sm">
     {#each items as item (item.href)}
       <li class="flex items-center">
         <a
@@ -22,7 +22,7 @@
         >
           {item.label}
         </a>
-        <span class="mx-2 text-gray-400" aria-hidden="true">/</span>
+        <span class="mx-1 sm:mx-2 text-gray-400" aria-hidden="true">/</span>
       </li>
     {/each}
     <li class="text-gray-700 dark:text-gray-300" aria-current="page">

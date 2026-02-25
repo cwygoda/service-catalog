@@ -24,7 +24,7 @@
       <p class="text-gray-600 dark:text-gray-400">No use cases found in the catalog.</p>
     </div>
   {:else}
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="grid gap-3 sm:gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {#each data.useCases as useCase (useCase.id)}
         <UseCaseCard {useCase} />
       {/each}

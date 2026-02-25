@@ -65,12 +65,12 @@
             onclick={() => {
               toggleDomain(domain.id);
             }}
-            class="flex h-5 w-5 items-center justify-center rounded text-gray-500 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:text-gray-400 dark:hover:bg-gray-700"
+            class="flex min-h-11 min-w-11 items-center justify-center rounded text-gray-500 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:text-gray-400 dark:hover:bg-gray-700"
             aria-expanded={expandedDomains.has(domain.id)}
             aria-label={expandedDomains.has(domain.id) ? 'Collapse' : 'Expand'}
           >
             <svg
-              class="h-3 w-3 transition-transform {expandedDomains.has(domain.id)
+              class="h-4 w-4 transition-transform {expandedDomains.has(domain.id)
                 ? 'rotate-90'
                 : ''}"
               fill="currentColor"
@@ -115,12 +115,12 @@
                       onclick={() => {
                         toggleUseCase(useCase.id);
                       }}
-                      class="flex h-5 w-5 items-center justify-center rounded text-gray-400 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:hover:bg-gray-700"
+                      class="flex min-h-11 min-w-11 items-center justify-center rounded text-gray-400 hover:bg-gray-100 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-primary-600 dark:hover:bg-gray-700"
                       aria-expanded={expandedUseCases.has(useCase.id)}
                       aria-label={expandedUseCases.has(useCase.id) ? 'Collapse' : 'Expand'}
                     >
                       <svg
-                        class="h-3 w-3 transition-transform {expandedUseCases.has(useCase.id)
+                        class="h-4 w-4 transition-transform {expandedUseCases.has(useCase.id)
                           ? 'rotate-90'
                           : ''}"
                         fill="currentColor"
@@ -134,7 +134,7 @@
                       </svg>
                     </button>
                   {:else}
-                    <span class="w-5"></span>
+                    <span class="min-w-11"></span>
                   {/if}
                   <a
                     href="/use-cases/{useCase.id}"

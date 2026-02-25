@@ -33,6 +33,7 @@
 
   let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
+  let resizeObserver: ResizeObserver | null = null;
   let viewer: BpmnViewer | null = $state(null);
   let error: string | null = $state(null);
   let ready = $state(false);
@@ -134,6 +135,12 @@
       // Fit diagram to container with padding
       fitWithPadding();
       ready = true;
+
+      // Re-fit on resize
+      resizeObserver = new ResizeObserver(() => {
+        if (ready) fitWithPadding();
+      });
+      resizeObserver.observe(container);
     } catch (e) {
       error = e instanceof Error ? e.message : 'Failed to render BPMN diagram';
       console.error('BPMN render error:', e);
@@ -144,6 +151,7 @@
     if (browser) {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
     }
+    resizeObserver?.disconnect();
     if (viewer?.destroy) {
       viewer.destroy();
     }
@@ -178,10 +186,10 @@
   >
     <div
       bind:this={container}
-      class="bpmn-container w-full rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800"
+      class="bpmn-container w-full rounded-lg border border-gray-200 bg-white {isFullscreen
+        ? 'h-screen'
+        : 'h-64 sm:h-80 md:h-96'} dark:border-gray-700 dark:bg-gray-800"
       class:cursor-grab={interactive}
-      class:h-96={!isFullscreen}
-      class:h-screen={isFullscreen}
       role="img"
       aria-label="BPMN process diagram"
     ></div>
@@ -193,12 +201,12 @@
       >
         <button
           onclick={zoomIn}
-          class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          class="flex min-h-11 min-w-11 items-center justify-center rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           aria-label="Zoom in"
           title="Zoom in"
         >
           <svg
-            class="h-4 w-4"
+            class="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -209,12 +217,12 @@
         </button>
         <button
           onclick={zoomOut}
-          class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          class="flex min-h-11 min-w-11 items-center justify-center rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           aria-label="Zoom out"
           title="Zoom out"
         >
           <svg
-            class="h-4 w-4"
+            class="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -226,13 +234,13 @@
         <div class="my-0.5 border-t border-gray-200 dark:border-gray-600"></div>
         <button
           onclick={resetZoom}
-          class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          class="flex min-h-11 min-w-11 items-center justify-center rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           aria-label="Fit to view"
           title="Fit to view"
         >
           <!-- Viewfinder/target icon for fit-to-view -->
           <svg
-            class="h-4 w-4"
+            class="h-5 w-5"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -248,13 +256,13 @@
         <div class="my-0.5 border-t border-gray-200 dark:border-gray-600"></div>
         <button
           onclick={toggleFullscreen}
-          class="rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          class="flex min-h-11 min-w-11 items-center justify-center rounded p-1.5 text-gray-600 transition-colors hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
           aria-label={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
           title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
         >
           {#if isFullscreen}
             <svg
-              class="h-4 w-4"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -268,7 +276,7 @@
             </svg>
           {:else}
             <svg
-              class="h-4 w-4"
+              class="h-5 w-5"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

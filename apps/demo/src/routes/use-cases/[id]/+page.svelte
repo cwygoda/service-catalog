@@ -122,25 +122,25 @@
               <tr>
                 <th
                   scope="col"
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  class="hidden px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:table-cell sm:px-4 sm:py-3 dark:text-gray-400"
                 >
                   #
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  class="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-4 sm:py-3 dark:text-gray-400"
                 >
                   Actor/Service
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  class="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-4 sm:py-3 dark:text-gray-400"
                 >
                   Action
                 </th>
                 <th
                   scope="col"
-                  class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                  class="px-2 py-2 text-left text-xs font-medium uppercase tracking-wider text-gray-500 sm:px-4 sm:py-3 dark:text-gray-400"
                 >
                   Endpoint
                 </th>
@@ -149,10 +149,12 @@
             <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
               {#each data.useCase.steps.sort((a, b) => a.sequence - b.sequence) as step (step.sequence)}
                 <tr>
-                  <td class="whitespace-nowrap px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                  <td
+                    class="hidden whitespace-nowrap px-2 py-2 text-sm text-gray-900 sm:table-cell sm:px-4 sm:py-3 dark:text-gray-100"
+                  >
                     {step.sequence}
                   </td>
-                  <td class="whitespace-nowrap px-4 py-3 text-sm">
+                  <td class="px-2 py-2 text-sm sm:px-4 sm:py-3">
                     {#if step.actor}
                       <span class="text-gray-700 dark:text-gray-300">{step.actor}</span>
                     {:else if step.service}
@@ -166,11 +168,11 @@
                       <span class="text-gray-400">—</span>
                     {/if}
                   </td>
-                  <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                  <td class="px-2 py-2 text-sm text-gray-700 sm:px-4 sm:py-3 dark:text-gray-300">
                     {step.action}
                   </td>
                   <td
-                    class="whitespace-nowrap px-4 py-3 font-mono text-sm text-gray-500 dark:text-gray-400"
+                    class="break-all px-2 py-2 font-mono text-sm text-gray-500 sm:px-4 sm:py-3 dark:text-gray-400"
                   >
                     {step.endpoint ?? '—'}
                   </td>
@@ -190,7 +192,7 @@
         >
           Participating Services
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-3 sm:gap-4 sm:grid-cols-2">
           {#each data.participantServices as participant (participant.service)}
             <a
               href="/services/{participant.service}"
