@@ -114,8 +114,8 @@
                     >
                       <span
                         class="rounded px-1.5 py-0.5 {conn.type === 'http'
-                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                          : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}"
+                          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                          : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'}"
                       >
                         {conn.type.toUpperCase()}
                       </span>
@@ -150,8 +150,8 @@
                     >
                       <span
                         class="rounded px-1.5 py-0.5 {conn.type === 'http'
-                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                          : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'}"
+                          ? 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300'
+                          : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-300'}"
                       >
                         {conn.type.toUpperCase()}
                       </span>

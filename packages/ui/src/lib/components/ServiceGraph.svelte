@@ -14,16 +14,15 @@
 
   let { nodes, edges, height = 500, highlightedNodes }: Props = $props();
 
-  // Domain color mapping
-  const domainColors: Record<string, string> = {
-    commerce: '#3b82f6', // blue
-    platform: '#10b981', // green
-    default: '#6b7280', // gray
-  };
-
-  function getDomainColor(domain?: string): string {
-    const key = domain ?? 'default';
-    return domainColors[key] ?? '#6b7280';
+  function getDomainFillClass(domain?: string): string {
+    switch (domain) {
+      case 'commerce':
+        return 'fill-blue-500 dark:fill-blue-400';
+      case 'platform':
+        return 'fill-green-500 dark:fill-green-400';
+      default:
+        return 'fill-gray-500 dark:fill-gray-400';
+    }
   }
 
   let wrapper: HTMLDivElement;
@@ -193,8 +192,11 @@
     nodeSelection
       .append('circle')
       .attr('r', 20)
-      .attr('fill', (d) => getDomainColor(d.domain))
-      .attr('class', 'stroke-2 stroke-white dark:stroke-gray-800 transition-opacity')
+      .attr(
+        'class',
+        (d) =>
+          `${getDomainFillClass(d.domain)} stroke-2 stroke-white dark:stroke-gray-800 transition-opacity`
+      )
       .on('click', (_, d) => {
         void goto(`/services/${d.id}`);
       })
@@ -358,19 +360,20 @@
     class="absolute bottom-3 left-3 flex flex-wrap gap-3 rounded-lg border border-gray-200 bg-white/90 px-3 py-2 text-xs backdrop-blur-sm dark:border-gray-600 dark:bg-gray-800/90"
   >
     <div class="flex items-center gap-1.5">
-      <span class="h-3 w-3 rounded-full bg-blue-500"></span>
+      <span class="h-3 w-3 rounded-full bg-blue-500 dark:bg-blue-400"></span>
       <span class="text-gray-700 dark:text-gray-300">Commerce</span>
     </div>
     <div class="flex items-center gap-1.5">
-      <span class="h-3 w-3 rounded-sm bg-green-500"></span>
+      <span class="h-3 w-3 rounded-sm bg-green-500 dark:bg-green-400"></span>
       <span class="text-gray-700 dark:text-gray-300">Platform</span>
     </div>
     <div class="flex items-center gap-1.5">
-      <span class="mr-1 h-0.5 w-4 bg-gray-500"></span>
+      <span class="mr-1 h-0.5 w-4 bg-gray-500 dark:bg-gray-400"></span>
       <span class="text-gray-700 dark:text-gray-300">HTTP</span>
     </div>
     <div class="flex items-center gap-1.5">
-      <span class="mr-1 h-0.5 w-4 border-t-2 border-dashed border-gray-400"></span>
+      <span class="mr-1 h-0.5 w-4 border-t-2 border-dashed border-gray-400 dark:border-gray-500"
+      ></span>
       <span class="text-gray-700 dark:text-gray-300">Event</span>
     </div>
   </div>

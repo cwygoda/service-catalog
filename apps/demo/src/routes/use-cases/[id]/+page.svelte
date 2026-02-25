@@ -62,7 +62,7 @@
       </div>
       {#if data.useCase.bpmn}
         <span
-          class="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+          class="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
         >
           BPMN
         </span>

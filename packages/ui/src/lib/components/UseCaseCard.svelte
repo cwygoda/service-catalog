@@ -20,7 +20,7 @@
     </h3>
     {#if useCase.bpmn}
       <span
-        class="rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+        class="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
       >
         BPMN
       </span>
@@ -31,7 +31,7 @@
     {truncate(useCase.description, 120)}
   </p>
 
-  <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-500">
+  <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
     <span class="flex items-center gap-1">
       <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path
