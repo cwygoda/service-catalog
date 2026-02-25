@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/cwygoda/service-catalog/compare/v1.0.1...v1.0.2) (2026-02-25)
+
+### Bug Fixes
+
+- ship Tailwind v4 [@source](https://github.com/source) declaration via CSS export ([9586f9a](https://github.com/cwygoda/service-catalog/commit/9586f9ad281d113ae6ce79bd2d83c402cecf75a8))
+
 ## [1.0.1](https://github.com/cwygoda/service-catalog/compare/v1.0.0...v1.0.1) (2026-02-24)
 
 ### Bug Fixes
