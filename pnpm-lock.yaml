@@ -182,7 +182,7 @@ importers:
         version: 0.34.48
       bpmn-txt:
         specifier: github:cwygoda/bpmn-txt
-        version: https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/f1ffead3ac577b33beb73a5c4bfb41e1d4bb30ed
+        version: https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/4284df1e842c64f18313f5756c953d71906c65bb
       graphology:
         specifier: ^0.26.0
         version: 0.26.0(graphology-types@0.24.8)
@@ -1292,9 +1292,9 @@ packages:
     resolution: {integrity: sha512-vXePD5jkatcILmM3zwJG/m6IIHIghTGB7WvgcdEraEw8E8VdJHrTgrvBUhbzqaXJpnsGQz15QS936xeBY6l9aA==}
     engines: {node: '>= 20.12'}
 
-  bpmn-txt@https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/f1ffead3ac577b33beb73a5c4bfb41e1d4bb30ed:
-    resolution: {tarball: https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/f1ffead3ac577b33beb73a5c4bfb41e1d4bb30ed}
-    version: 0.5.0
+  bpmn-txt@https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/4284df1e842c64f18313f5756c953d71906c65bb:
+    resolution: {tarball: https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/4284df1e842c64f18313f5756c953d71906c65bb}
+    version: 0.6.0
     hasBin: true
 
   bpmnlint-utils@1.1.1:
@@ -4621,7 +4621,7 @@ snapshots:
       moddle: 8.1.0
       moddle-xml: 12.0.0(moddle@8.1.0)
 
-  bpmn-txt@https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/f1ffead3ac577b33beb73a5c4bfb41e1d4bb30ed:
+  bpmn-txt@https://codeload.github.com/cwygoda/bpmn-txt/tar.gz/4284df1e842c64f18313f5756c953d71906c65bb:
     dependencies:
       bpmn-moddle: 10.0.0
       bpmnlint: 11.12.0

@@ -131,6 +131,13 @@ export class FilesystemLoader implements CatalogLoaderPort {
       const bpmnContent = parsed.bpmnBlocks[0] ?? '';
       const parseResult = parseBpmnTxtAst(bpmnContent);
 
+      if (parseResult.errors.length > 0) {
+        console.warn(`BPMN parse errors in ${filePath}:`);
+        for (const err of parseResult.errors) {
+          console.warn(`  Line ${String(err.line)}:${String(err.column)}: ${err.message}`);
+        }
+      }
+
       if (parseResult.document) {
         bpmnXml = await toBpmnXmlAsync(parseResult.document, { includeDiagram: true });
         docLinks = extractDocLinks(parseResult.document);
