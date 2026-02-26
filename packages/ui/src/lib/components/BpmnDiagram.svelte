@@ -22,6 +22,7 @@
   }
 
   const FIT_PADDING = 40; // pixels of padding around diagram when fitting
+  const FULLSCREEN_TRANSITION_MS = 100;
 
   interface BpmnViewer {
     importXML: (xml: string) => Promise<unknown>;
@@ -54,7 +55,7 @@
     isFullscreen = !!document.fullscreenElement;
     // Re-fit diagram when entering/exiting fullscreen
     if (ready) {
-      setTimeout(fitWithPadding, 100);
+      setTimeout(fitWithPadding, FULLSCREEN_TRANSITION_MS);
     }
   }
 

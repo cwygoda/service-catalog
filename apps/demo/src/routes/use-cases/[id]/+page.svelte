@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
   import { BpmnDiagram, Breadcrumbs } from '@cwygoda/service-catalog-ui';
   import type { PageData } from './$types';
 
@@ -22,21 +22,29 @@
     { label: 'Use Cases', href: '/use-cases' },
   ]);
 
+  let abortController: AbortController | undefined;
+
   onMount(async () => {
     if (data.useCase.bpmn && !isInlineXml(data.useCase.bpmn)) {
       bpmnLoading = true;
+      abortController = new AbortController();
       try {
-        const response = await fetch(data.useCase.bpmn);
+        const response = await fetch(data.useCase.bpmn, { signal: abortController.signal });
         if (!response.ok) {
           throw new Error(`Failed to load BPMN: ${String(response.status)}`);
         }
         bpmnXml = await response.text();
       } catch (e) {
+        if (e instanceof DOMException && e.name === 'AbortError') return;
         bpmnError = e instanceof Error ? e.message : 'Failed to load diagram';
       } finally {
         bpmnLoading = false;
       }
     }
+  });
+
+  onDestroy(() => {
+    abortController?.abort();
   });
 </script>
 

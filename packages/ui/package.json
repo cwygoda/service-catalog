@@ -36,7 +36,10 @@
   "peerDependencies": {
     "@sveltejs/kit": "^2.0.0",
     "bpmn-js": "^18.0.0",
-    "d3": "^7.0.0",
+    "d3-drag": "^3.0.0",
+    "d3-force": "^3.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0",
     "svelte": "^5.0.0"
   },
   "devDependencies": {
@@ -46,7 +49,10 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/svelte": "^5.2.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/d3": "^7.4.3",
+    "@types/d3-drag": "^3.0.0",
+    "@types/d3-force": "^3.0.0",
+    "@types/d3-selection": "^3.0.0",
+    "@types/d3-zoom": "^3.0.0",
     "jsdom": "^26.0.0",
     "svelte": "^5.49.2",
     "svelte-check": "^4.3.6",

@@ -8,14 +8,14 @@
   let selectedUseCaseId = $state<string>('');
 
   // Get highlighted service IDs based on selected use case
-  const highlightedNodes = $derived(() => {
+  const highlightedNodes = $derived.by(() => {
     if (!selectedUseCaseId) return undefined;
     const useCase = data.useCases.find((uc) => uc.id === selectedUseCaseId);
     if (!useCase) return undefined;
     return useCase.participants.map((p) => p.service);
   });
 
-  const selectedUseCaseName = $derived(() => {
+  const selectedUseCaseName = $derived.by(() => {
     if (!selectedUseCaseId) return null;
     return data.useCases.find((uc) => uc.id === selectedUseCaseId)?.name ?? null;
   });
@@ -82,12 +82,7 @@
   <div
     class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900"
   >
-    <ServiceGraph
-      nodes={data.nodes}
-      edges={data.edges}
-      height={600}
-      highlightedNodes={highlightedNodes()}
-    />
+    <ServiceGraph nodes={data.nodes} edges={data.edges} height={600} {highlightedNodes} />
   </div>
 
   <div class="text-sm text-gray-500 dark:text-gray-400">

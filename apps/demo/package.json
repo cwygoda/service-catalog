@@ -15,7 +15,10 @@
     "@cwygoda/service-catalog-core": "workspace:*",
     "@cwygoda/service-catalog-ui": "workspace:*",
     "bpmn-js": "^18.12.0",
-    "d3": "^7.9.0"
+    "d3-drag": "^3.0.0",
+    "d3-force": "^3.0.0",
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.50.0",

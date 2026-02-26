@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SvelteSet } from 'svelte/reactivity';
+  import { SvelteMap, SvelteSet } from 'svelte/reactivity';
   import type { Domain, UseCase, Service } from '@cwygoda/service-catalog-core/domain';
 
   interface Props {
@@ -30,28 +30,62 @@
     }
   }
 
-  // Get root domains (no parent)
+  // Pre-computed lookup maps — O(1) per query instead of O(n) filter scans
   const rootDomains = $derived(domains.filter((d) => !d.parent));
 
-  // Helper to get child domains
+  const childDomainMap = $derived.by(() => {
+    const map = new SvelteMap<string, Domain[]>();
+    for (const d of domains) {
+      if (d.parent) {
+        const arr = map.get(d.parent);
+        if (arr) arr.push(d);
+        else map.set(d.parent, [d]);
+      }
+    }
+    return map;
+  });
+
+  const domainUseCaseMap = $derived.by(() => {
+    const map = new SvelteMap<string, UseCase[]>();
+    for (const uc of useCases) {
+      if (!uc.domain) continue;
+      const arr = map.get(uc.domain);
+      if (arr) arr.push(uc);
+      else map.set(uc.domain, [uc]);
+    }
+    return map;
+  });
+
+  const domainServiceMap = $derived.by(() => {
+    const map = new SvelteMap<string, Service[]>();
+    for (const s of services) {
+      if (!s.domain) continue;
+      const arr = map.get(s.domain);
+      if (arr) arr.push(s);
+      else map.set(s.domain, [s]);
+    }
+    return map;
+  });
+
+  const serviceById = $derived.by(() => new SvelteMap(services.map((s) => [s.id, s] as const)));
+
+  // Thin wrappers — keep template call sites unchanged
   function getChildDomains(parentId: string): Domain[] {
-    return domains.filter((d) => d.parent === parentId);
+    return childDomainMap.get(parentId) ?? [];
   }
 
-  // Helper to get use cases for a domain
   function getDomainUseCases(domainId: string): UseCase[] {
-    return useCases.filter((uc) => uc.domain === domainId);
+    return domainUseCaseMap.get(domainId) ?? [];
   }
 
-  // Helper to get services for a domain
   function getDomainServices(domainId: string): Service[] {
-    return services.filter((s) => s.domain === domainId);
+    return domainServiceMap.get(domainId) ?? [];
   }
 
-  // Helper to get services for a use case
   function getUseCaseServices(useCase: UseCase): Service[] {
-    const serviceIds = useCase.participants.map((p) => p.service);
-    return services.filter((s) => serviceIds.includes(s.id));
+    return useCase.participants
+      .map((p) => serviceById.get(p.service))
+      .filter((s): s is Service => s !== undefined);
   }
 </script>
 

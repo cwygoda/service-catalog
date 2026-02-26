@@ -3,7 +3,9 @@
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import type { GraphNode, GraphEdge } from '@cwygoda/service-catalog-core/domain';
-  import type * as D3 from 'd3';
+  import type { Selection } from 'd3-selection';
+  import type { Simulation, SimulationNodeDatum } from 'd3-force';
+  import type { D3ZoomEvent } from 'd3-zoom';
 
   interface Props {
     nodes: GraphNode[];
@@ -28,7 +30,7 @@
   let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
   let svg: SVGSVGElement | null = null;
-  let simulation: D3.Simulation<D3.SimulationNodeDatum, undefined> | null = null;
+  let simulation: Simulation<SimulationNodeDatum, undefined> | null = null;
 
   // Simulation node type with position
   interface SimNode extends GraphNode {
@@ -46,8 +48,8 @@
   }
 
   // D3 selection refs for highlight updates
-  let nodeSelection: D3.Selection<SVGGElement, SimNode, SVGGElement, unknown> | null = null;
-  let linkSelection: D3.Selection<SVGLineElement, SimLink, SVGGElement, unknown> | null = null;
+  let nodeSelection: Selection<SVGGElement, SimNode, SVGGElement, unknown> | null = null;
+  let linkSelection: Selection<SVGLineElement, SimLink, SVGGElement, unknown> | null = null;
 
   // Tooltip state
   let tooltip = $state({ visible: false, x: 0, y: 0, content: '' });
@@ -76,8 +78,19 @@
     if (!browser) return;
 
     document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    const d3 = await import('d3');
+    const [
+      { select },
+      { forceSimulation, forceLink, forceManyBody, forceCenter, forceCollide },
+      { zoom },
+      { drag },
+    ] = await Promise.all([
+      import('d3-selection'),
+      import('d3-force'),
+      import('d3-zoom'),
+      import('d3-drag'),
+    ]);
 
     const width = container.clientWidth;
     responsiveHeight = Math.max(300, Math.min(width * 0.6, height));
@@ -101,8 +114,7 @@
     }
 
     // Create SVG
-    const svgEl = d3
-      .select(container)
+    const svgEl = select(container)
       .append('svg')
       .attr('width', '100%')
       .attr('height', responsiveHeight)
@@ -134,14 +146,13 @@
     const g = svgEl.append('g');
 
     // Add zoom behavior
-    const zoom = d3
-      .zoom<SVGSVGElement, unknown>()
+    const zoomBehavior = zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.25, 4])
-      .on('zoom', (event: D3.D3ZoomEvent<SVGSVGElement, unknown>) => {
+      .on('zoom', (event: D3ZoomEvent<SVGSVGElement, unknown>) => {
         g.attr('transform', event.transform.toString());
       });
 
-    svgEl.call(zoom);
+    svgEl.call(zoomBehavior);
 
     // Draw edges
     linkSelection = g
@@ -168,8 +179,7 @@
 
     // Add drag behavior
     nodeGroups.call(
-      d3
-        .drag<SVGGElement, SimNode>()
+      drag<SVGGElement, SimNode>()
         .on('start', (event, d) => {
           if (!event.active) simulation?.alphaTarget(0.3).restart();
           d.fx = d.x;
@@ -201,7 +211,7 @@
         void goto(`/services/${d.id}`);
       })
       .on('mouseenter', function (event: MouseEvent, d: SimNode) {
-        d3.select(this).attr('r', 24);
+        select(this).attr('r', 24);
         tooltip = {
           visible: true,
           x: event.pageX,
@@ -214,7 +224,7 @@
         tooltip.y = event.pageY - 10;
       })
       .on('mouseleave', function () {
-        d3.select(this).attr('r', 20);
+        select(this).attr('r', 20);
         tooltip.visible = false;
       });
 
@@ -230,28 +240,27 @@
       );
 
     // Force simulation - D3's forceSimulation has complex generics that don't match our SimNode
-    simulation = d3
+    simulation =
       // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-argument
-      .forceSimulation(simNodes as any)
-      .force(
-        'link',
-        d3
-          .forceLink(simLinks)
-          .id((d) => (d as SimNode).id)
-          .distance(120)
-      )
-      .force('charge', d3.forceManyBody().strength(-400))
-      .force('center', d3.forceCenter(width / 2, responsiveHeight / 2))
-      .force('collision', d3.forceCollide().radius(40))
-      .on('tick', () => {
-        linkSelection
-          ?.attr('x1', (d) => d.source.x)
-          .attr('y1', (d) => d.source.y)
-          .attr('x2', (d) => d.target.x)
-          .attr('y2', (d) => d.target.y);
+      forceSimulation(simNodes as any)
+        .force(
+          'link',
+          forceLink(simLinks)
+            .id((d) => (d as SimNode).id)
+            .distance(120)
+        )
+        .force('charge', forceManyBody().strength(-400))
+        .force('center', forceCenter(width / 2, responsiveHeight / 2))
+        .force('collision', forceCollide().radius(40))
+        .on('tick', () => {
+          linkSelection
+            ?.attr('x1', (d) => d.source.x)
+            .attr('y1', (d) => d.source.y)
+            .attr('x2', (d) => d.target.x)
+            .attr('y2', (d) => d.target.y);
 
-        nodeSelection?.attr('transform', (d) => `translate(${String(d.x)},${String(d.y)})`);
-      });
+          nodeSelection?.attr('transform', (d) => `translate(${String(d.x)},${String(d.y)})`);
+        });
 
     // Resize observer for responsive height
     resizeObserver = new ResizeObserver((entries) => {
@@ -265,14 +274,14 @@
         .attr('height', newHeight)
         .attr('viewBox', `0 0 ${String(newWidth)} ${String(newHeight)}`);
       simulation
-        ?.force('center', d3.forceCenter(newWidth / 2, newHeight / 2))
+        ?.force('center', forceCenter(newWidth / 2, newHeight / 2))
         .alpha(0.3)
         .restart();
     });
     resizeObserver.observe(container);
   });
 
-  // Effect to update highlighting when highlightedNodes changes
+  // Effect to update highlighting when highlightedNodes changes (CSS class-based)
   $effect(() => {
     if (!nodeSelection || !linkSelection) return;
 
@@ -282,23 +291,39 @@
     if (hasHighlight) {
       const highlightSet = new Set(highlighted);
 
-      // Dim non-highlighted nodes
-      nodeSelection.attr('opacity', (d) => (highlightSet.has(d.id) ? 1 : 0.2));
+      nodeSelection
+        .classed('graph-node-dimmed', (d) => !highlightSet.has(d.id))
+        .classed('graph-full-opacity', (d) => highlightSet.has(d.id));
 
-      // Dim edges not between highlighted nodes
-      linkSelection.attr('opacity', (d) => {
-        return highlightSet.has(d.source.id) && highlightSet.has(d.target.id) ? 1 : 0.1;
-      });
+      linkSelection
+        .classed(
+          'graph-link-dimmed',
+          (d) => !(highlightSet.has(d.source.id) && highlightSet.has(d.target.id))
+        )
+        .classed(
+          'graph-full-opacity',
+          (d) => highlightSet.has(d.source.id) && highlightSet.has(d.target.id)
+        );
     } else {
-      // Reset all to full opacity
-      nodeSelection.attr('opacity', 1);
-      linkSelection.attr('opacity', 1);
+      nodeSelection.classed('graph-node-dimmed', false).classed('graph-full-opacity', false);
+      linkSelection.classed('graph-link-dimmed', false).classed('graph-full-opacity', false);
     }
   });
+
+  // Pause simulation when tab is hidden to save CPU
+  function handleVisibilityChange(): void {
+    if (!simulation) return;
+    if (document.hidden) {
+      simulation.stop();
+    } else if (simulation.alpha() > simulation.alphaMin()) {
+      simulation.restart();
+    }
+  }
 
   onDestroy(() => {
     if (browser) {
       document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
     }
     resizeObserver?.disconnect();
     simulation?.stop();
@@ -378,3 +403,20 @@
     </div>
   </div>
 </div>
+
+<style>
+  :global(.graph-node-dimmed) {
+    opacity: 0.2;
+    transition: opacity 0.3s ease;
+  }
+
+  :global(.graph-link-dimmed) {
+    opacity: 0.1;
+    transition: opacity 0.3s ease;
+  }
+
+  :global(.graph-full-opacity) {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+</style>
