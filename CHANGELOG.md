@@ -1,3 +1,15 @@
+## [1.0.3](https://github.com/cwygoda/service-catalog/compare/v1.0.2...v1.0.3) (2026-02-26)
+
+### Bug Fixes
+
+- **a11y:** harden UI for WCAG AAA compliance ([4b863fc](https://github.com/cwygoda/service-catalog/commit/4b863fc7778885e29e14d47ba94891963cb3cd97))
+- **ui:** normalize theme colors to design system palette ([51173e3](https://github.com/cwygoda/service-catalog/commit/51173e35de81fca0bf7ef493248fa654d9240ef1))
+- **ui:** responsive adaptation for mobile and tablet viewports ([1ef31ce](https://github.com/cwygoda/service-catalog/commit/1ef31ce1fe66300f5091070914bbffee679b95cf))
+
+### Performance Improvements
+
+- **ui:** optimize D3 tree-shaking, derived reactivity, and graph rendering ([1ccafd3](https://github.com/cwygoda/service-catalog/commit/1ccafd38b2cc60f826f2638dabe6707bffa983d0))
+
 ## [1.0.2](https://github.com/cwygoda/service-catalog/compare/v1.0.1...v1.0.2) (2026-02-25)
 
 ### Bug Fixes
