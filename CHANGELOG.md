@@ -1,3 +1,14 @@
+# [1.1.0](https://github.com/cwygoda/service-catalog/compare/v1.0.3...v1.1.0) (2026-02-26)
+
+### Bug Fixes
+
+- align ElementClickEvent with exactOptionalPropertyTypes ([261296c](https://github.com/cwygoda/service-catalog/commit/261296c426484738fabae629c274637d6b727eb8))
+- regenerate lockfile after removing root bpmn-txt link ([63d813f](https://github.com/cwygoda/service-catalog/commit/63d813f50ed08d3f0faf4750457f41cc8b52c4f0))
+
+### Features
+
+- add markdown use-case format with inline BPMN and doc links ([465a408](https://github.com/cwygoda/service-catalog/commit/465a408c81318e88b56920e7c59878011935b7c0))
+
 ## [1.0.3](https://github.com/cwygoda/service-catalog/compare/v1.0.2...v1.0.3) (2026-02-26)
 
 ### Bug Fixes
