@@ -7,10 +7,6 @@ settings:
 importers:
 
   .:
-    dependencies:
-      bpmn-txt:
-        specifier: link:../bpmn-txt
-        version: link:../bpmn-txt
     devDependencies:
       '@eslint/js':
         specifier: ^9.0.0
