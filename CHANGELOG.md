@@ -1,3 +1,9 @@
+# [1.2.0](https://github.com/cwygoda/service-catalog/compare/v1.1.0...v1.2.0) (2026-02-26)
+
+### Features
+
+- **core:** warn on BPMN parse errors and update bpmn-txt to v0.6.0 ([401cbe9](https://github.com/cwygoda/service-catalog/commit/401cbe903f7addc82e613138a2c1d54ee6c8806c))
+
 # [1.1.0](https://github.com/cwygoda/service-catalog/compare/v1.0.3...v1.1.0) (2026-02-26)
 
 ### Bug Fixes
