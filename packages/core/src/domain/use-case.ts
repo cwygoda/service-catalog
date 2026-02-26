@@ -19,6 +19,16 @@ export interface Step {
   endpoint?: string;
 }
 
+export interface DocLink {
+  elementId: string;
+  anchor: string;
+}
+
+export interface ServiceRef {
+  elementId: string;
+  serviceId: string;
+}
+
 export interface UseCase {
   id: string;
   name: string;
@@ -28,6 +38,9 @@ export interface UseCase {
   bpmnSource?: BpmnSource;
   participants: Participant[];
   steps: Step[];
+  content?: string;
+  docLinks?: DocLink[];
+  serviceRefs?: ServiceRef[];
 }
 
 export function createUseCase(
