@@ -37,6 +37,7 @@
     "@sinclair/typebox": "^0.34.0",
     "bpmn-txt": "github:cwygoda/bpmn-txt",
     "graphology": "^0.26.0",
+    "gray-matter": "^4.0.3",
     "smol-toml": "^1.3.0"
   },
   "devDependencies": {

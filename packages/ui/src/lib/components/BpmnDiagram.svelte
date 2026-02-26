@@ -2,9 +2,21 @@
   import { onMount, onDestroy } from 'svelte';
   import { browser } from '$app/environment';
 
+  interface DocLink {
+    elementId: string;
+    anchor: string;
+  }
+
+  interface ElementClickEvent {
+    elementId: string;
+    docAnchor?: string;
+  }
+
   interface Props {
     xml: string;
     interactive?: boolean;
+    docLinks?: DocLink[];
+    onElementClick?: (event: ElementClickEvent) => void;
   }
 
   interface Bounds {
@@ -29,7 +41,7 @@
     destroy?: () => void;
   }
 
-  let { xml, interactive = false }: Props = $props();
+  let { xml, interactive = false, docLinks, onElementClick }: Props = $props();
 
   let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
@@ -130,6 +142,36 @@
       }) as BpmnViewer;
 
       await viewer.importXML(xml);
+
+      // Register click handler for doc links
+      if (onElementClick) {
+        const eventBus = viewer.get('eventBus') as {
+          on: (event: string, callback: (e: { element: { id: string } }) => void) => void;
+        };
+        const docLinkMap = new Map((docLinks ?? []).map((l) => [l.elementId, l.anchor]));
+
+        eventBus.on('element.click', (e) => {
+          const id = e.element.id;
+          onElementClick({
+            elementId: id,
+            docAnchor: docLinkMap.get(id),
+          });
+        });
+
+        // Add pointer cursor on clickable elements
+        if (docLinks?.length) {
+          const elementRegistry = viewer.get('elementRegistry') as {
+            forEach: (cb: (el: { id: string; type: string }) => void) => void;
+            getGraphics: (el: { id: string }) => SVGElement | null;
+          };
+          elementRegistry.forEach((el) => {
+            if (docLinkMap.has(el.id)) {
+              const gfx = elementRegistry.getGraphics(el);
+              if (gfx) gfx.style.cursor = 'pointer';
+            }
+          });
+        }
+      }
 
       // Fit diagram to container with padding
       fitWithPadding();

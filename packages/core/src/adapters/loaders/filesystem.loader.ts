@@ -15,10 +15,19 @@ import {
   sidecarToDomain,
 } from '../parsers/toml.parser.js';
 import { parseBpmnTxt } from '../parsers/bpmn-txt.parser.js';
+import { parseUseCaseMarkdown, markdownToUseCase } from '../parsers/markdown.parser.js';
+import {
+  parse as parseBpmnTxtAst,
+  toBpmnXmlAsync,
+  extractDocLinks,
+  extractServiceRefs,
+} from 'bpmn-txt';
+import type { DocLink, ServiceRef } from '../../domain/use-case.js';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
 const SERVICE_FILENAME = 'service.toml';
 const USE_CASE_FILENAME = 'use-case.toml';
+const USE_CASE_MD_FILENAME = 'use-case.md';
 const DOMAIN_FILENAME = 'domain.toml';
 
 export interface LoaderOptions {
@@ -70,11 +79,25 @@ export class FilesystemLoader implements CatalogLoaderPort {
       services.push(sidecarToService(sidecar));
     }
 
-    // Load use cases
-    const useCaseFiles = await findFiles(path, USE_CASE_FILENAME);
+    // Load use cases (markdown takes precedence over TOML per directory)
+    const useCaseTomlFiles = await findFiles(path, USE_CASE_FILENAME);
+    const useCaseMdFiles = await findFiles(path, USE_CASE_MD_FILENAME);
+
+    // Build set of directories with markdown use cases
+    const mdDirs = new Set(useCaseMdFiles.map((f) => dirname(f)));
+
     const useCases: UseCase[] = [];
 
-    for (const filePath of useCaseFiles) {
+    // Load markdown use cases
+    for (const filePath of useCaseMdFiles) {
+      const useCase = await this.loadMarkdownUseCase(filePath);
+      useCases.push(useCase);
+    }
+
+    // Load TOML use cases (skip dirs that have markdown)
+    for (const filePath of useCaseTomlFiles) {
+      if (mdDirs.has(dirname(filePath))) continue;
+
       const content = await readFile(filePath, 'utf-8');
       const sidecar = parseUseCaseToml(content, filePath);
       const useCase = sidecarToUseCase(sidecar);
@@ -94,6 +117,33 @@ export class FilesystemLoader implements CatalogLoaderPort {
     }
 
     return createCatalog(services, useCases, domains);
+  }
+
+  private async loadMarkdownUseCase(filePath: string): Promise<UseCase> {
+    const raw = await readFile(filePath, 'utf-8');
+    const parsed = parseUseCaseMarkdown(raw);
+
+    let bpmnXml: string | undefined;
+    let docLinks: DocLink[] | undefined;
+    let serviceRefs: ServiceRef[] | undefined;
+
+    if (parsed.bpmnBlocks.length > 0) {
+      const bpmnContent = parsed.bpmnBlocks[0] ?? '';
+      const parseResult = parseBpmnTxtAst(bpmnContent);
+
+      if (parseResult.document) {
+        bpmnXml = await toBpmnXmlAsync(parseResult.document, { includeDiagram: true });
+        docLinks = extractDocLinks(parseResult.document);
+        serviceRefs = extractServiceRefs(parseResult.document);
+      }
+    }
+
+    const options: { bpmnXml?: string; docLinks?: DocLink[]; serviceRefs?: ServiceRef[] } = {};
+    if (bpmnXml) options.bpmnXml = bpmnXml;
+    if (docLinks) options.docLinks = docLinks;
+    if (serviceRefs) options.serviceRefs = serviceRefs;
+
+    return markdownToUseCase(parsed, options);
   }
 
   private async processBpmnSource(useCase: UseCase, useCaseDir: string): Promise<UseCase> {

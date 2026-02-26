@@ -303,4 +303,132 @@ steps = []
     expect(catalog.services[0]?.domain).toBe('commerce');
     expect(catalog.useCases[0]?.domain).toBe('commerce');
   });
+
+  it('loads markdown use case', async () => {
+    const useCaseDir = join(tempDir, 'order-data');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.md'),
+      `---
+id: order-data
+name: Order Data Products
+domain: data-delivery
+---
+
+# Overview
+Customer browses and orders data.
+
+\`\`\`bpmn
+process: order-data
+  start: begin
+    -> browse
+  task: browse
+    name: "Browse"
+    type: user
+    service: catalog-ui
+    doc: browsing
+    -> finish
+  end: finish
+\`\`\`
+
+## Browsing {#browsing}
+
+Details about browsing...
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    const uc = catalog.useCases[0];
+    expect(uc).toBeDefined();
+    expect(uc?.id).toBe('order-data');
+    expect(uc?.name).toBe('Order Data Products');
+    expect(uc?.domain).toBe('data-delivery');
+    expect(uc?.description).toBe('Customer browses and orders data.');
+    expect(uc?.bpmn).toContain('<?xml');
+    expect(uc?.content).toContain('## Browsing');
+    expect(uc?.docLinks).toEqual([{ elementId: 'browse', anchor: 'browsing' }]);
+    expect(uc?.serviceRefs).toEqual([{ elementId: 'browse', serviceId: 'catalog-ui' }]);
+    expect(uc?.participants).toHaveLength(1);
+    expect(uc?.participants[0]?.service).toBe('catalog-ui');
+  });
+
+  it('markdown takes precedence over TOML', async () => {
+    const useCaseDir = join(tempDir, 'dual-format');
+    await mkdir(useCaseDir);
+
+    // TOML version
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "dual-format"
+name = "TOML Version"
+description = "From TOML"
+participants = []
+steps = []
+`
+    );
+
+    // Markdown version (should win)
+    await writeFile(
+      join(useCaseDir, 'use-case.md'),
+      `---
+id: dual-format
+name: Markdown Version
+---
+
+From markdown.
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.name).toBe('Markdown Version');
+  });
+
+  it('TOML still works when no markdown present', async () => {
+    const useCaseDir = join(tempDir, 'toml-only');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.toml'),
+      `[use_case]
+id = "toml-only"
+name = "TOML Only"
+description = "Still works"
+participants = []
+steps = []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.id).toBe('toml-only');
+  });
+
+  it('markdown without bpmn block has no XML', async () => {
+    const useCaseDir = join(tempDir, 'no-bpmn');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.md'),
+      `---
+id: no-bpmn
+name: No BPMN
+---
+
+Just documentation, no process.
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    const uc = catalog.useCases[0];
+    expect(uc).toBeDefined();
+    expect(uc?.bpmn).toBeUndefined();
+    expect(uc?.docLinks).toBeUndefined();
+    expect(uc?.serviceRefs).toBeUndefined();
+  });
 });

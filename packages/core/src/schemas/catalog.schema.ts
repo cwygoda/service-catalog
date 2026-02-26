@@ -1,5 +1,10 @@
 import { Type, type Static } from '@sinclair/typebox';
-import { ParticipantSchema, StepSchema } from './use-case.schema.js';
+import {
+  ParticipantSchema,
+  StepSchema,
+  DocLinkSchema,
+  ServiceRefSchema,
+} from './use-case.schema.js';
 import { ConnectionSchema } from './connection.schema.js';
 
 export const ServiceSchema = Type.Object({
@@ -23,6 +28,9 @@ export const UseCaseSchema = Type.Object({
   bpmn: Type.Optional(Type.String()),
   participants: Type.Array(ParticipantSchema),
   steps: Type.Array(StepSchema),
+  content: Type.Optional(Type.String()),
+  docLinks: Type.Optional(Type.Array(DocLinkSchema)),
+  serviceRefs: Type.Optional(Type.Array(ServiceRefSchema)),
 });
 
 export const DomainOutputSchema = Type.Object({

@@ -25,6 +25,24 @@ export const UseCaseSidecarSchema = Type.Object({
   }),
 });
 
+export const DocLinkSchema = Type.Object({
+  elementId: Type.String({ minLength: 1 }),
+  anchor: Type.String({ minLength: 1 }),
+});
+
+export const ServiceRefSchema = Type.Object({
+  elementId: Type.String({ minLength: 1 }),
+  serviceId: Type.String({ minLength: 1 }),
+});
+
+export const UseCaseMarkdownFrontmatterSchema = Type.Object({
+  id: Type.String({ minLength: 1 }),
+  name: Type.String({ minLength: 1 }),
+  domain: Type.Optional(Type.String({ minLength: 1 })),
+  participants: Type.Optional(Type.Array(ParticipantSchema)),
+});
+
 export type ParticipantInput = Static<typeof ParticipantSchema>;
 export type StepInput = Static<typeof StepSchema>;
 export type UseCaseSidecar = Static<typeof UseCaseSidecarSchema>;
+export type UseCaseMarkdownFrontmatter = Static<typeof UseCaseMarkdownFrontmatterSchema>;
