@@ -9,7 +9,7 @@
 
   interface ElementClickEvent {
     elementId: string;
-    docAnchor?: string;
+    docAnchor?: string | undefined;
   }
 
   interface Props {
