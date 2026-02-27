@@ -1,3 +1,9 @@
+## [1.2.1](https://github.com/cwygoda/service-catalog/compare/v1.2.0...v1.2.1) (2026-02-27)
+
+### Bug Fixes
+
+- **core:** switch bpmn-txt from GitHub tarball to @cwygoda/bpmn-txt npm package ([5037f40](https://github.com/cwygoda/service-catalog/commit/5037f40b4ebe1f5b3706dcdc456a3a4202e20fc0))
+
 # [1.2.0](https://github.com/cwygoda/service-catalog/compare/v1.1.0...v1.2.0) (2026-02-26)
 
 ### Features
