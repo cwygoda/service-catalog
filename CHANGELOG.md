@@ -1,3 +1,9 @@
+## [1.2.2](https://github.com/cwygoda/service-catalog/compare/v1.2.1...v1.2.2) (2026-02-27)
+
+### Bug Fixes
+
+- **core:** update @cwygoda/bpmn-txt to ^0.9.1 ([039923f](https://github.com/cwygoda/service-catalog/commit/039923f4fbfe0d93c34780c34e57ddb6473f2a28))
+
 ## [1.2.1](https://github.com/cwygoda/service-catalog/compare/v1.2.0...v1.2.1) (2026-02-27)
 
 ### Bug Fixes
