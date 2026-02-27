@@ -34,7 +34,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cwygoda/bpmn-txt": "^0.8.3",
+    "@cwygoda/bpmn-txt": "^0.9.1",
     "@sinclair/typebox": "^0.34.0",
     "graphology": "^0.26.0",
     "gray-matter": "^4.0.3",
