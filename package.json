@@ -18,7 +18,7 @@
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm test:e2e",
     "dev": "pnpm -F @cwygoda/service-catalog-demo dev",
     "preview": "pnpm -F @cwygoda/service-catalog-demo preview",
-    "postinstall": "pnpm -F @cwygoda/service-catalog-core exec sh -c 'cd $(dirname $(node -e \"console.log(require.resolve(\\\"bpmn-txt/package.json\\\"))\")) && pnpm build' || true",
+    "postinstall": "",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -51,8 +51,6 @@
     ]
   },
   "pnpm": {
-    "onlyBuiltDependencies": [
-      "bpmn-txt"
-    ]
+    "onlyBuiltDependencies": []
   }
 }

@@ -21,7 +21,7 @@ import {
   toBpmnXmlAsync,
   extractDocLinks,
   extractServiceRefs,
-} from 'bpmn-txt';
+} from '@cwygoda/bpmn-txt';
 import type { DocLink, ServiceRef } from '../../domain/use-case.js';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 

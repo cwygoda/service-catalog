@@ -1,4 +1,4 @@
-import { parse, toBpmnXmlAsync, lint, type ParseError, type LintResult } from 'bpmn-txt';
+import { parse, toBpmnXmlAsync, lint, type ParseError, type LintResult } from '@cwygoda/bpmn-txt';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
 export interface BpmnTxtParseResult {
