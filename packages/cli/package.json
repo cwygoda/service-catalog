@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cwygoda/bpmn-txt": "^0.11.0",
+    "@cwygoda/bpmn-txt": "^0.11.1",
     "@cwygoda/service-catalog-core": "workspace:*",
     "chalk": "^5.4.0",
     "commander": "^13.0.0"
