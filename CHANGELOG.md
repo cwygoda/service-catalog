@@ -1,3 +1,9 @@
+## [1.5.2](https://github.com/cwygoda/service-catalog/compare/v1.5.1...v1.5.2) (2026-03-02)
+
+### Bug Fixes
+
+- center message flow labels in BPMN diagram ([9c891ab](https://github.com/cwygoda/service-catalog/commit/9c891ab0fc0414e7af9ce86b5fc54f3c1f675d95))
+
 ## [1.5.1](https://github.com/cwygoda/service-catalog/compare/v1.5.0...v1.5.1) (2026-03-02)
 
 ### Bug Fixes
