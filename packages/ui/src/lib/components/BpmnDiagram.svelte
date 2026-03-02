@@ -54,18 +54,29 @@
   // Fullscreen state
   let isFullscreen = $state(false);
 
-  function toggleFullscreen() {
+  function setBodyOverflow(hidden: boolean) {
     if (!browser) return;
-    if (!document.fullscreenElement) {
-      void wrapper.requestFullscreen();
-    } else {
-      void document.exitFullscreen();
+    document.body.style.overflow = hidden ? 'hidden' : '';
+  }
+
+  function handleEscapeKey(e: KeyboardEvent) {
+    if (e.key === 'Escape' && isFullscreen) {
+      toggleFullscreen();
     }
   }
 
-  function handleFullscreenChange() {
-    isFullscreen = !!document.fullscreenElement;
-    // Re-fit diagram when entering/exiting fullscreen
+  function toggleFullscreen() {
+    if (!browser) return;
+    isFullscreen = !isFullscreen;
+    setBodyOverflow(isFullscreen);
+
+    if (isFullscreen) {
+      document.addEventListener('keydown', handleEscapeKey);
+    } else {
+      document.removeEventListener('keydown', handleEscapeKey);
+    }
+
+    // Re-fit diagram after layout settles
     if (ready) {
       setTimeout(fitWithPadding, FULLSCREEN_TRANSITION_MS);
     }
@@ -176,8 +187,6 @@
   onMount(async () => {
     if (!browser || !xml) return;
 
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-
     try {
       // Dynamic import to avoid SSR issues
       const { default: BpmnViewer } = await import('bpmn-js/lib/NavigatedViewer');
@@ -237,7 +246,8 @@
 
   onDestroy(() => {
     if (browser) {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('keydown', handleEscapeKey);
+      setBodyOverflow(false);
     }
     resizeObserver?.disconnect();
     if (viewer?.destroy) {
@@ -271,13 +281,15 @@
 {:else}
   <div
     bind:this={wrapper}
-    class="bpmn-wrapper relative {isFullscreen ? 'bg-white dark:bg-gray-900' : ''}"
+    class="bpmn-wrapper relative {isFullscreen
+      ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900'
+      : ''}"
   >
     <div
       bind:this={container}
-      class="bpmn-container w-full rounded-lg border border-gray-200 bg-white {isFullscreen
-        ? 'h-screen'
-        : 'h-64 sm:h-80 md:h-96'} dark:border-gray-700 dark:bg-gray-800"
+      class="bpmn-container w-full {isFullscreen
+        ? 'h-full bg-white dark:bg-gray-900'
+        : 'h-64 rounded-lg border border-gray-200 bg-white sm:h-80 md:h-96 dark:border-gray-700 dark:bg-gray-800'}"
       class:cursor-grab={interactive}
       role="img"
       aria-label="BPMN process diagram"
