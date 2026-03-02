@@ -178,8 +178,8 @@ importers:
   packages/core:
     dependencies:
       '@cwygoda/bpmn-txt':
-        specifier: ^0.9.1
-        version: 0.9.1
+        specifier: ^0.10.0
+        version: 0.10.0
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.48
@@ -352,8 +352,8 @@ packages:
     resolution: {integrity: sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==}
     engines: {node: '>=18'}
 
-  '@cwygoda/bpmn-txt@0.9.1':
-    resolution: {integrity: sha512-T0G3WXbOAHnRsstzE3S8/ghcttpmWwWNjpCpImWpVOgP6UP0gTI1BZHJjLgLEhLa2jHaAtmKao2wGDvPr0l25Q==}
+  '@cwygoda/bpmn-txt@0.10.0':
+    resolution: {integrity: sha512-k0Z1v1jWBQXjmeUNdrY3Md1Aoacx9lOFzTrJvsLU9UoJRuY/M98KdbYp8dbU7ikC5VIdPfB1apeNL4tnbbP8Og==}
     hasBin: true
 
   '@esbuild/aix-ppc64@0.27.3':
@@ -3723,7 +3723,7 @@ snapshots:
 
   '@csstools/css-tokenizer@3.0.4': {}
 
-  '@cwygoda/bpmn-txt@0.9.1':
+  '@cwygoda/bpmn-txt@0.10.0':
     dependencies:
       bpmn-moddle: 10.0.0
       bpmnlint: 11.12.0
