@@ -1,3 +1,9 @@
+# [1.3.0](https://github.com/cwygoda/service-catalog/compare/v1.2.3...v1.3.0) (2026-03-02)
+
+### Features
+
+- **core:** update @cwygoda/bpmn-txt to ^0.10.0 for improved line layouts ([0138d23](https://github.com/cwygoda/service-catalog/commit/0138d23a2ff03b9e5b98fe0269906391911cac45))
+
 ## [1.2.3](https://github.com/cwygoda/service-catalog/compare/v1.2.2...v1.2.3) (2026-02-27)
 
 ### Bug Fixes
