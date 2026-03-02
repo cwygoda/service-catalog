@@ -281,9 +281,9 @@
 {:else}
   <div
     bind:this={wrapper}
-    class="bpmn-wrapper relative {isFullscreen
+    class="bpmn-wrapper {isFullscreen
       ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900'
-      : ''}"
+      : 'relative'}"
   >
     <div
       bind:this={container}
