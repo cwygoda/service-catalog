@@ -1,3 +1,10 @@
+## [1.6.1](https://github.com/cwygoda/service-catalog/compare/v1.6.0...v1.6.1) (2026-03-02)
+
+### Bug Fixes
+
+- **ui:** BPMN fullscreen overlay not covering viewport ([fcbcfe2](https://github.com/cwygoda/service-catalog/commit/fcbcfe2c1f7995af093310cb0883392b72035a99))
+- **ui:** rewrite message flow label centering to match bpmn-js structure ([d3edc4e](https://github.com/cwygoda/service-catalog/commit/d3edc4e7396ea9e22f268a7b9206a7336ef6b456))
+
 # [1.6.0](https://github.com/cwygoda/service-catalog/compare/v1.5.2...v1.6.0) (2026-03-02)
 
 ### Features
