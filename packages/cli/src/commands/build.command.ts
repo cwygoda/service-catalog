@@ -1,12 +1,15 @@
 import { Command } from 'commander';
 import { resolve } from 'node:path';
 import chalk from 'chalk';
+import { recommendedConfig } from '@cwygoda/bpmn-txt';
 import {
-  createFilesystemLoader,
+  FilesystemLoader,
   createJsonWriter,
   buildServiceGraph,
   type BpmnLintLevel,
 } from '@cwygoda/service-catalog-core';
+import { resolveBpmnlintrc } from '../utils/resolve-bpmnlintrc.js';
+import { formatLintDiagnostics } from '../utils/format-lint.js';
 
 interface BuildOptions {
   input: string;
@@ -22,12 +25,17 @@ async function build(options: BuildOptions): Promise<void> {
   console.log(chalk.gray(`  Input:  ${inputPath}`));
   console.log(chalk.gray(`  Output: ${outputPath}`));
 
-  const loader = createFilesystemLoader({ bpmnLint: options.bpmnLint });
+  const bpmnLintConfig = (await resolveBpmnlintrc()) ?? recommendedConfig;
+  const loader = new FilesystemLoader({ bpmnLint: options.bpmnLint, bpmnLintConfig });
   const writer = createJsonWriter();
 
   try {
-    const catalog = await loader.load(inputPath);
+    const { catalog, lintDiagnostics } = await loader.loadWithDiagnostics(inputPath);
     console.log(chalk.gray(`  Found ${String(catalog.services.length)} service(s)`));
+
+    if (lintDiagnostics.length > 0) {
+      process.stderr.write('\n' + formatLintDiagnostics(lintDiagnostics) + '\n\n');
+    }
 
     // Build service graph
     const graph = buildServiceGraph(catalog);

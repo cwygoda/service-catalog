@@ -1,4 +1,11 @@
-import { parse, toBpmnXmlAsync, lint, type ParseError, type LintResult } from '@cwygoda/bpmn-txt';
+import {
+  parse,
+  toBpmnXmlAsync,
+  lint,
+  type ParseError,
+  type LintResult,
+  type LinterConfig,
+} from '@cwygoda/bpmn-txt';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
 export interface BpmnTxtParseResult {
@@ -50,7 +57,8 @@ export function detectBpmnTxtContent(content: string): boolean {
 export async function parseBpmnTxt(
   content: string,
   filePath: string,
-  lintLevel: BpmnLintLevel = 'warn'
+  lintLevel: BpmnLintLevel = 'warn',
+  lintConfig?: LinterConfig
 ): Promise<BpmnTxtParseResult> {
   const result = parse(content);
 
@@ -62,7 +70,7 @@ export async function parseBpmnTxt(
 
   let lintResults: LintResult[] = [];
   if (lintLevel !== 'off') {
-    lintResults = await lint(xml);
+    lintResults = await lint(xml, lintConfig);
 
     if (lintLevel === 'error') {
       const errors = lintResults.filter((r) => r.category === 'error');

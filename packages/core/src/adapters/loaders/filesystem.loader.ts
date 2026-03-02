@@ -21,7 +21,9 @@ import {
   toBpmnXmlAsync,
   extractDocLinks,
   extractServiceRefs,
+  lint,
 } from '@cwygoda/bpmn-txt';
+import type { LinterConfig, LintResult } from '@cwygoda/bpmn-txt';
 import type { DocLink, ServiceRef } from '../../domain/use-case.js';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
@@ -32,6 +34,17 @@ const DOMAIN_FILENAME = 'domain.toml';
 
 export interface LoaderOptions {
   bpmnLint?: BpmnLintLevel;
+  bpmnLintConfig?: LinterConfig;
+}
+
+export interface LintDiagnostic {
+  filePath: string;
+  results: LintResult[];
+}
+
+export interface LoadResult {
+  catalog: Catalog;
+  lintDiagnostics: LintDiagnostic[];
 }
 
 async function findFiles(dir: string, filename: string): Promise<string[]> {
@@ -57,9 +70,16 @@ async function findFiles(dir: string, filename: string): Promise<string[]> {
 
 export class FilesystemLoader implements CatalogLoaderPort {
   private options: LoaderOptions;
+  private lintDiagnostics: LintDiagnostic[] = [];
 
   constructor(options: LoaderOptions = {}) {
     this.options = options;
+  }
+
+  async loadWithDiagnostics(path: string): Promise<LoadResult> {
+    this.lintDiagnostics = [];
+    const catalog = await this.load(path);
+    return { catalog, lintDiagnostics: this.lintDiagnostics };
   }
 
   async load(path: string): Promise<Catalog> {
@@ -142,6 +162,13 @@ export class FilesystemLoader implements CatalogLoaderPort {
         bpmnXml = await toBpmnXmlAsync(parseResult.document, { includeDiagram: true });
         docLinks = extractDocLinks(parseResult.document);
         serviceRefs = extractServiceRefs(parseResult.document);
+
+        if (bpmnXml && this.options.bpmnLint !== 'off') {
+          const lintResults = await lint(bpmnXml, this.options.bpmnLintConfig);
+          if (lintResults.length > 0) {
+            this.lintDiagnostics.push({ filePath, results: lintResults });
+          }
+        }
       }
     }
 
@@ -180,7 +207,10 @@ export class FilesystemLoader implements CatalogLoaderPort {
     }
 
     const lintLevel = this.options.bpmnLint ?? 'warn';
-    const result = await parseBpmnTxt(content, filePath, lintLevel);
+    const result = await parseBpmnTxt(content, filePath, lintLevel, this.options.bpmnLintConfig);
+    if (result.lintResults.length > 0) {
+      this.lintDiagnostics.push({ filePath, results: result.lintResults });
+    }
     return { ...useCase, bpmn: result.xml };
   }
 }
