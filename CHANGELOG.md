@@ -1,3 +1,9 @@
+# [1.6.0](https://github.com/cwygoda/service-catalog/compare/v1.5.2...v1.6.0) (2026-03-02)
+
+### Features
+
+- **ui:** replace native fullscreen with fixed-viewport overlay ([5ff420e](https://github.com/cwygoda/service-catalog/commit/5ff420eb96c320b1175b2f6176f9b8c3dcf9061c))
+
 ## [1.5.2](https://github.com/cwygoda/service-catalog/compare/v1.5.1...v1.5.2) (2026-03-02)
 
 ### Bug Fixes
