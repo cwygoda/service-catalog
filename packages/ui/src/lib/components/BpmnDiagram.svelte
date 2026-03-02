@@ -150,37 +150,45 @@
 
     const elementRegistry = viewer.get('elementRegistry') as {
       forEach: (cb: (el: { id: string; type: string }) => void) => void;
+      get: (id: string) => { id: string } | undefined;
       getGraphics: (el: { id: string }) => SVGElement | null;
     };
 
     elementRegistry.forEach((el) => {
       if (el.type !== 'bpmn:MessageFlow') return;
 
-      const gfx = elementRegistry.getGraphics(el);
-      if (!gfx) return;
+      // Get the connection's SVG group
+      const connGfx = elementRegistry.getGraphics(el);
+      if (!connGfx) return;
 
-      const visual = gfx.querySelector('.djs-visual');
+      const visual = connGfx.querySelector('.djs-visual');
       if (!visual) return;
 
+      // The actual line path is a direct child of .djs-visual;
+      // the arrow marker path lives inside <defs> and must be skipped.
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- needed for svelte-check
-      const label = visual.querySelector('text.djs-label') as SVGTextElement | null;
-      if (!label) return;
+      const linePath = visual.querySelector(':scope > path') as SVGPathElement | null;
+      if (!linePath?.getTotalLength) return;
+
+      // bpmn-js renders labels as separate shape elements: {flowId}_label
+      const labelEl = elementRegistry.get(el.id + '_label');
+      if (!labelEl) return;
+
+      const labelGfx = elementRegistry.getGraphics(labelEl);
+      if (!labelGfx) return;
 
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- needed for svelte-check
-      const pathEl = visual.querySelector('path') as SVGPathElement | null;
-      if (!pathEl?.getTotalLength) return;
+      const textEl = labelGfx.querySelector('text') as SVGTextElement | null;
+      if (!textEl) return;
 
-      const midPoint = pathEl.getPointAtLength(pathEl.getTotalLength() / 2);
-      const bbox = label.getBBox();
+      const bbox = textEl.getBBox();
       if (bbox.width <= 0) return;
 
-      // Preserve current Y from the existing translate transform
-      const { baseVal } = label.transform;
-      if (baseVal.numberOfItems < 1) return;
-
-      const t = baseVal.getItem(0);
-      const newTx = midPoint.x - bbox.width / 2;
-      t.setTranslate(newTx, t.matrix.f);
+      // Center the label on the midpoint of the connection path
+      const midPoint = linePath.getPointAtLength(linePath.getTotalLength() / 2);
+      const newX = midPoint.x - bbox.width / 2 - bbox.x;
+      const newY = midPoint.y - bbox.height / 2 - bbox.y;
+      labelGfx.setAttribute('transform', `matrix(1 0 0 1 ${String(newX)} ${String(newY)})`);
     });
   }
 
