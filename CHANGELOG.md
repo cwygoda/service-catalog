@@ -1,3 +1,9 @@
+## [1.6.2](https://github.com/cwygoda/service-catalog/compare/v1.6.1...v1.6.2) (2026-03-02)
+
+### Bug Fixes
+
+- update @cwygoda/bpmn-txt to ^0.13.2 for lane stacking fix ([f3e8535](https://github.com/cwygoda/service-catalog/commit/f3e853572fd161ef78927722573c8a0569e1b52e))
+
 ## [1.6.1](https://github.com/cwygoda/service-catalog/compare/v1.6.0...v1.6.1) (2026-03-02)
 
 ### Bug Fixes
