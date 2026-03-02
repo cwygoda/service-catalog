@@ -1,3 +1,9 @@
+## [1.4.1](https://github.com/cwygoda/service-catalog/compare/v1.4.0...v1.4.1) (2026-03-02)
+
+### Bug Fixes
+
+- update bpmn-txt to 0.11.1 for XML flow reference fix ([37c3da8](https://github.com/cwygoda/service-catalog/commit/37c3da8d76b0217777a103abfe999e71990d774e))
+
 # [1.4.0](https://github.com/cwygoda/service-catalog/compare/v1.3.0...v1.4.0) (2026-03-02)
 
 ### Features
