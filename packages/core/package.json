@@ -34,16 +34,16 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cwygoda/bpmn-txt": "^0.13.0",
-    "@sinclair/typebox": "^0.34.0",
+    "@cwygoda/bpmn-txt": "^0.13.1",
+    "@sinclair/typebox": "^0.34.48",
     "graphology": "^0.26.0",
     "gray-matter": "^4.0.3",
-    "smol-toml": "^1.3.0"
+    "smol-toml": "^1.6.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
+    "@types/node": "^22.19.13",
     "graphology-types": "^0.24.8",
-    "typescript": "^5.7.0",
-    "vitest": "^3.0.0"
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4"
   }
 }

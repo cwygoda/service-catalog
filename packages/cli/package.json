@@ -20,13 +20,13 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@cwygoda/bpmn-txt": "^0.13.0",
+    "@cwygoda/bpmn-txt": "^0.13.1",
     "@cwygoda/service-catalog-core": "workspace:*",
-    "chalk": "^5.4.0",
-    "commander": "^13.0.0"
+    "chalk": "^5.6.2",
+    "commander": "^13.1.0"
   },
   "devDependencies": {
-    "@types/node": "^22.0.0",
-    "typescript": "^5.7.0"
+    "@types/node": "^22.19.13",
+    "typescript": "^5.9.3"
   }
 }

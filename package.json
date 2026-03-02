@@ -22,24 +22,24 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "@eslint/js": "^9.0.0",
+    "@eslint/js": "^9.39.3",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/exec": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
-    "@types/node": "^22.0.0",
-    "eslint": "^9.0.0",
-    "eslint-config-prettier": "^10.0.0",
-    "eslint-plugin-svelte": "^3.0.0",
-    "globals": "^16.0.0",
+    "@types/node": "^22.19.13",
+    "eslint": "^9.39.3",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-svelte": "^3.15.0",
+    "globals": "^16.5.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.2.7",
-    "markdownlint-cli2": "^0.17.0",
-    "prettier": "^3.4.0",
-    "prettier-plugin-svelte": "^3.3.0",
-    "semantic-release": "^24.0.0",
-    "svelte-eslint-parser": "^1.4.1",
-    "typescript": "^5.7.0",
-    "typescript-eslint": "^8.0.0"
+    "lint-staged": "^16.3.1",
+    "markdownlint-cli2": "^0.17.2",
+    "prettier": "^3.8.1",
+    "prettier-plugin-svelte": "^3.5.0",
+    "semantic-release": "^24.2.9",
+    "svelte-eslint-parser": "^1.5.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
   },
   "lint-staged": {
     "*.{js,ts,svelte}": [
