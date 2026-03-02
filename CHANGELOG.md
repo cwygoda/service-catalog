@@ -1,3 +1,9 @@
+# [1.4.0](https://github.com/cwygoda/service-catalog/compare/v1.3.0...v1.4.0) (2026-03-02)
+
+### Features
+
+- add lint command, surface bpmnlint diagnostics ([f4d85f4](https://github.com/cwygoda/service-catalog/commit/f4d85f4c5dd5c604614a867e09d55e2e14e1c453))
+
 # [1.3.0](https://github.com/cwygoda/service-catalog/compare/v1.2.3...v1.3.0) (2026-03-02)
 
 ### Features
