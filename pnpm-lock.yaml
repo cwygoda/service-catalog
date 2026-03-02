@@ -159,8 +159,8 @@ importers:
   packages/cli:
     dependencies:
       '@cwygoda/bpmn-txt':
-        specifier: ^0.12.0
-        version: 0.12.0
+        specifier: ^0.13.0
+        version: 0.13.0
       '@cwygoda/service-catalog-core':
         specifier: workspace:*
         version: link:../core
@@ -181,8 +181,8 @@ importers:
   packages/core:
     dependencies:
       '@cwygoda/bpmn-txt':
-        specifier: ^0.12.0
-        version: 0.12.0
+        specifier: ^0.13.0
+        version: 0.13.0
       '@sinclair/typebox':
         specifier: ^0.34.0
         version: 0.34.48
@@ -355,8 +355,8 @@ packages:
     resolution: {integrity: sha512-Vd/9EVDiu6PPJt9yAh6roZP6El1xHrdvIVGjyBsHR0RYwNHgL7FJPyIIW4fANJNG6FtyZfvlRPpFI4ZM/lubvw==}
     engines: {node: '>=18'}
 
-  '@cwygoda/bpmn-txt@0.12.0':
-    resolution: {integrity: sha512-Ix92YlOSvJ60j3DPeGdXrErfY5VllJsMW6GqHYnvFYz+56HU4EsbaKaZHXDJYKeRUQDjqX20NllRj7fiaE8ZVg==}
+  '@cwygoda/bpmn-txt@0.13.0':
+    resolution: {integrity: sha512-BvrrH286Sox6ebwtxRT2sg5/lblWpiZIovAPzbnZpDj/Agwe1hYDS81f5MufPvVxBHdPPn4t/g67aAXITWeaxg==}
     hasBin: true
 
   '@esbuild/aix-ppc64@0.27.3':
@@ -3726,7 +3726,7 @@ snapshots:
 
   '@csstools/css-tokenizer@3.0.4': {}
 
-  '@cwygoda/bpmn-txt@0.12.0':
+  '@cwygoda/bpmn-txt@0.13.0':
     dependencies:
       bpmn-moddle: 10.0.0
       bpmnlint: 11.12.0
