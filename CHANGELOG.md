@@ -1,3 +1,9 @@
+## [1.5.1](https://github.com/cwygoda/service-catalog/compare/v1.5.0...v1.5.1) (2026-03-02)
+
+### Bug Fixes
+
+- update @cwygoda/bpmn-txt to ^0.13.0 ([432397a](https://github.com/cwygoda/service-catalog/commit/432397a4dc6e8b57a5b59d6ccd51e272e932e356))
+
 # [1.5.0](https://github.com/cwygoda/service-catalog/compare/v1.4.1...v1.5.0) (2026-03-02)
 
 ### Features
