@@ -129,6 +129,50 @@
     fitWithPadding();
   }
 
+  /**
+   * Re-center inline message-flow labels rendered by bpmn-js.
+   * bpmn-js positions these labels using getBBox() which can return
+   * incorrect widths before fonts are loaded, causing left-aligned labels.
+   */
+  function fixMessageFlowLabels() {
+    if (!viewer) return;
+
+    const elementRegistry = viewer.get('elementRegistry') as {
+      forEach: (cb: (el: { id: string; type: string }) => void) => void;
+      getGraphics: (el: { id: string }) => SVGElement | null;
+    };
+
+    elementRegistry.forEach((el) => {
+      if (el.type !== 'bpmn:MessageFlow') return;
+
+      const gfx = elementRegistry.getGraphics(el);
+      if (!gfx) return;
+
+      const visual = gfx.querySelector('.djs-visual');
+      if (!visual) return;
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- needed for svelte-check
+      const label = visual.querySelector('text.djs-label') as SVGTextElement | null;
+      if (!label) return;
+
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion -- needed for svelte-check
+      const pathEl = visual.querySelector('path') as SVGPathElement | null;
+      if (!pathEl?.getTotalLength) return;
+
+      const midPoint = pathEl.getPointAtLength(pathEl.getTotalLength() / 2);
+      const bbox = label.getBBox();
+      if (bbox.width <= 0) return;
+
+      // Preserve current Y from the existing translate transform
+      const { baseVal } = label.transform;
+      if (baseVal.numberOfItems < 1) return;
+
+      const t = baseVal.getItem(0);
+      const newTx = midPoint.x - bbox.width / 2;
+      t.setTranslate(newTx, t.matrix.f);
+    });
+  }
+
   onMount(async () => {
     if (!browser || !xml) return;
 
@@ -144,6 +188,7 @@
       }) as BpmnViewer;
 
       await viewer.importXML(xml);
+      fixMessageFlowLabels();
 
       // Register click handler for doc links
       if (onElementClick) {
@@ -206,6 +251,7 @@
       viewer
         .importXML(xml)
         .then(() => {
+          fixMessageFlowLabels();
           fitWithPadding();
         })
         .catch((e: unknown) => {
