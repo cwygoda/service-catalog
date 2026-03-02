@@ -1,3 +1,9 @@
+# [1.5.0](https://github.com/cwygoda/service-catalog/compare/v1.4.1...v1.5.0) (2026-03-02)
+
+### Features
+
+- update bpmn-txt to 0.12.0 for message flow envelope support ([8f6b5b7](https://github.com/cwygoda/service-catalog/commit/8f6b5b764d359d2c609240937b09251197231d0c))
+
 ## [1.4.1](https://github.com/cwygoda/service-catalog/compare/v1.4.0...v1.4.1) (2026-03-02)
 
 ### Bug Fixes
