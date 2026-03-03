@@ -1,3 +1,9 @@
+# [1.8.0](https://github.com/cwygoda/service-catalog/compare/v1.7.0...v1.8.0) (2026-03-03)
+
+### Features
+
+- **ui:** responsive BPMN diagram sizing with class override ([f973ab1](https://github.com/cwygoda/service-catalog/commit/f973ab1574b7b16b39c66f15b3d03f68695d8f90))
+
 # [1.7.0](https://github.com/cwygoda/service-catalog/compare/v1.6.3...v1.7.0) (2026-03-03)
 
 ### Bug Fixes
