@@ -15,6 +15,7 @@
   interface Props {
     xml: string;
     interactive?: boolean;
+    class?: string;
     docLinks?: DocLink[];
     onElementClick?: (event: ElementClickEvent) => void;
   }
@@ -42,7 +43,13 @@
     destroy?: () => void;
   }
 
-  let { xml, interactive = false, docLinks, onElementClick }: Props = $props();
+  let {
+    xml,
+    interactive = false,
+    class: className = '',
+    docLinks,
+    onElementClick,
+  }: Props = $props();
 
   let wrapper: HTMLDivElement;
   let container: HTMLDivElement;
@@ -297,7 +304,7 @@
       bind:this={container}
       class="bpmn-container w-full {isFullscreen
         ? 'h-full bg-white dark:bg-gray-900'
-        : 'h-64 rounded-lg border border-gray-200 bg-white sm:h-80 md:h-96 dark:border-gray-700 dark:bg-gray-800'}"
+        : 'bpmn-container--inline rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800'} {className}"
       class:cursor-grab={interactive}
       role="img"
       aria-label="BPMN process diagram"
@@ -405,6 +412,11 @@
 {/if}
 
 <style>
+  .bpmn-container--inline {
+    aspect-ratio: 1;
+    max-height: 75vh;
+  }
+
   .bpmn-container :global(.djs-container) {
     height: 100% !important;
   }
