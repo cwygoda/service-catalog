@@ -78,7 +78,28 @@
           "role": "Evaluates onboarding eligibility rules"
         }
       ],
-      "steps": [],
+      "steps": [
+        {
+          "sequence": 1,
+          "action": "Check Eligibility",
+          "service": "policy-service"
+        },
+        {
+          "sequence": 2,
+          "action": "Create User Account",
+          "service": "auth-service"
+        },
+        {
+          "sequence": 3,
+          "action": "Create Customer Profile",
+          "service": "crm-service"
+        },
+        {
+          "sequence": 4,
+          "action": "Setup Billing Account",
+          "service": "billing-service"
+        }
+      ],
       "domain": "platform",
       "bpmn": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<bpmn:definitions xmlns:bpmn=\"http://www.omg.org/spec/BPMN/20100524/MODEL\" xmlns:bpmndi=\"http://www.omg.org/spec/BPMN/20100524/DI\" xmlns:dc=\"http://www.omg.org/spec/DD/20100524/DC\" xmlns:di=\"http://www.omg.org/spec/DD/20100524/DI\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" id=\"Definitions_1\" targetNamespace=\"http://bpmn.io/schema/bpmn\" exporter=\"bpmn-txt\" exporterVersion=\"0.1.0\">\n  <bpmn:process id=\"customer-onboarding\" isExecutable=\"true\" name=\"Customer Onboarding\">\n    <bpmn:startEvent id=\"registration-started\" name=\"Registration Started\">\n      <bpmn:outgoing>flow_registration-started_check-eligibility_0</bpmn:outgoing>\n    </bpmn:startEvent>\n    <bpmn:serviceTask id=\"check-eligibility\" name=\"Check Eligibility\">\n      <bpmn:incoming>flow_registration-started_check-eligibility_0</bpmn:incoming>\n      <bpmn:outgoing>flow_check-eligibility_eligibility-decision_1</bpmn:outgoing>\n    </bpmn:serviceTask>\n    <bpmn:serviceTask id=\"create-account\" name=\"Create User Account\">\n      <bpmn:incoming>flow_eligibility-decision_create-account_2</bpmn:incoming>\n      <bpmn:outgoing>flow_create-account_create-profile_3</bpmn:outgoing>\n    </bpmn:serviceTask>\n    <bpmn:serviceTask id=\"create-profile\" name=\"Create Customer Profile\">\n      <bpmn:incoming>flow_create-account_create-profile_3</bpmn:incoming>\n      <bpmn:outgoing>flow_create-profile_setup-billing_4</bpmn:outgoing>\n    </bpmn:serviceTask>\n    <bpmn:serviceTask id=\"setup-billing\" name=\"Setup Billing Account\">\n      <bpmn:incoming>flow_create-profile_setup-billing_4</bpmn:incoming>\n      <bpmn:outgoing>flow_setup-billing_onboarding-complete_5</bpmn:outgoing>\n    </bpmn:serviceTask>\n    <bpmn:exclusiveGateway id=\"eligibility-decision\" name=\"Eligible?\" default=\"rejected\">\n      <bpmn:incoming>flow_check-eligibility_eligibility-decision_1</bpmn:incoming>\n      <bpmn:outgoing>flow_eligibility-decision_create-account_2</bpmn:outgoing>\n    </bpmn:exclusiveGateway>\n    <bpmn:endEvent id=\"rejected\" name=\"Registration Rejected\"/>\n    <bpmn:endEvent id=\"onboarding-complete\" name=\"Onboarding Complete\">\n      <bpmn:incoming>flow_setup-billing_onboarding-complete_5</bpmn:incoming>\n    </bpmn:endEvent>\n    <bpmn:sequenceFlow id=\"flow_registration-started_check-eligibility_0\" sourceRef=\"registration-started\" targetRef=\"check-eligibility\"/>\n    <bpmn:sequenceFlow id=\"flow_check-eligibility_eligibility-decision_1\" sourceRef=\"check-eligibility\" targetRef=\"eligibility-decision\"/>\n    <bpmn:sequenceFlow id=\"flow_eligibility-decision_create-account_2\" sourceRef=\"eligibility-decision\" targetRef=\"create-account\"/>\n    <bpmn:sequenceFlow id=\"flow_create-account_create-profile_3\" sourceRef=\"create-account\" targetRef=\"create-profile\"/>\n    <bpmn:sequenceFlow id=\"flow_create-profile_setup-billing_4\" sourceRef=\"create-profile\" targetRef=\"setup-billing\"/>\n    <bpmn:sequenceFlow id=\"flow_setup-billing_onboarding-complete_5\" sourceRef=\"setup-billing\" targetRef=\"onboarding-complete\"/>\n  </bpmn:process>\n  <bpmndi:BPMNDiagram id=\"BPMNDiagram_1\">\n    <bpmndi:BPMNPlane id=\"BPMNPlane_1\" bpmnElement=\"customer-onboarding\">\n      <bpmndi:BPMNShape id=\"registration-started_di\" bpmnElement=\"registration-started\">\n        <dc:Bounds x=\"12\" y=\"90\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"check-eligibility_di\" bpmnElement=\"check-eligibility\">\n        <dc:Bounds x=\"148\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"eligibility-decision_di\" bpmnElement=\"eligibility-decision\">\n        <dc:Bounds x=\"348\" y=\"83\" width=\"50\" height=\"50\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"rejected_di\" bpmnElement=\"rejected\">\n        <dc:Bounds x=\"12\" y=\"12\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"create-account_di\" bpmnElement=\"create-account\">\n        <dc:Bounds x=\"498\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"create-profile_di\" bpmnElement=\"create-profile\">\n        <dc:Bounds x=\"698\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"setup-billing_di\" bpmnElement=\"setup-billing\">\n        <dc:Bounds x=\"898\" y=\"68\" width=\"100\" height=\"80\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNShape id=\"onboarding-complete_di\" bpmnElement=\"onboarding-complete\">\n        <dc:Bounds x=\"1098\" y=\"90\" width=\"36\" height=\"36\"/>\n      </bpmndi:BPMNShape>\n      <bpmndi:BPMNEdge id=\"flow_registration-started_check-eligibility_0_di\" bpmnElement=\"flow_registration-started_check-eligibility_0\">\n        <di:waypoint x=\"48\" y=\"108\"/>\n        <di:waypoint x=\"148\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_check-eligibility_eligibility-decision_1_di\" bpmnElement=\"flow_check-eligibility_eligibility-decision_1\">\n        <di:waypoint x=\"248\" y=\"108\"/>\n        <di:waypoint x=\"348\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_eligibility-decision_create-account_2_di\" bpmnElement=\"flow_eligibility-decision_create-account_2\">\n        <di:waypoint x=\"398\" y=\"108\"/>\n        <di:waypoint x=\"498\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_create-account_create-profile_3_di\" bpmnElement=\"flow_create-account_create-profile_3\">\n        <di:waypoint x=\"598\" y=\"108\"/>\n        <di:waypoint x=\"698\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_create-profile_setup-billing_4_di\" bpmnElement=\"flow_create-profile_setup-billing_4\">\n        <di:waypoint x=\"798\" y=\"108\"/>\n        <di:waypoint x=\"898\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n      <bpmndi:BPMNEdge id=\"flow_setup-billing_onboarding-complete_5_di\" bpmnElement=\"flow_setup-billing_onboarding-complete_5\">\n        <di:waypoint x=\"998\" y=\"108\"/>\n        <di:waypoint x=\"1098\" y=\"108\"/>\n      </bpmndi:BPMNEdge>\n    </bpmndi:BPMNPlane>\n  </bpmndi:BPMNDiagram>\n</bpmn:definitions>\n",
       "content": "# Overview\n\nNew customer registration and account setup. Creates authentication credentials,\ninitializes customer profile, and sets up billing preferences.\n\n\n\n## Eligibility Check {#eligibility-check}\n\nThe policy service evaluates registration data against configurable eligibility\nrules. Checks include region restrictions, duplicate detection, and fraud\nsignals. Rejected registrations receive immediate feedback with the reason.\n\n**Endpoint:** `POST /evaluate`\n\n## Account Creation {#account-creation}\n\nAuth service creates the user record with hashed credentials and generates\nan email verification token. The account starts in a `pending_verification`\nstate until the customer confirms their email.\n\n**Endpoint:** `POST /users`\n\n## Profile Creation {#profile-creation}\n\nCRM service initializes the customer profile with data collected during\nregistration — name, contact details, and communication preferences. The\nprofile is linked to the auth user record via the shared customer ID.\n\n**Endpoint:** `POST /customers`\n\n## Billing Setup {#billing-setup}\n\nBilling service creates the billing account and stores payment preferences.\nNo payment method is required at this stage; it can be added later. A welcome\nemail is triggered once the billing account is active.\n\n**Endpoint:** `POST /accounts`",
@@ -266,6 +287,11 @@
       {
         "source": "auth-service",
         "target": "crm-service",
+        "type": "event"
+      },
+      {
+        "source": "auth-service",
+        "target": "crm-service",
         "type": "http",
         "endpoints": ["GET /customers/{id}"]
       },
@@ -283,6 +309,11 @@
       },
       {
         "source": "crm-service",
+        "target": "billing-service",
+        "type": "event"
+      },
+      {
+        "source": "crm-service",
         "target": "auth-service",
         "type": "http",
         "endpoints": ["PATCH /users/{id}/email"]
@@ -292,6 +323,11 @@
         "target": "catalog-service",
         "type": "http",
         "endpoints": ["POST /inventory/reserve"]
+      },
+      {
+        "source": "policy-service",
+        "target": "auth-service",
+        "type": "event"
       }
     ]
   }
