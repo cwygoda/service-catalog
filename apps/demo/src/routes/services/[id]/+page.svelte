@@ -101,7 +101,7 @@
                 Calls ({data.outgoingConnections.length})
               </h3>
               <ul class="space-y-2">
-                {#each data.outgoingConnections as conn (conn.target)}
+                {#each data.outgoingConnections as conn (conn.target + ':' + conn.type)}
                   <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
                     <a
                       href="/services/{conn.target}"
@@ -137,7 +137,7 @@
                 Called by ({data.incomingConnections.length})
               </h3>
               <ul class="space-y-2">
-                {#each data.incomingConnections as conn (conn.source)}
+                {#each data.incomingConnections as conn (conn.source + ':' + conn.type)}
                   <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
                     <a
                       href="/services/{conn.source}"
