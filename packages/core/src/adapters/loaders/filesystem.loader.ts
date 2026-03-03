@@ -16,6 +16,7 @@ import {
 } from '../parsers/toml.parser.js';
 import { parseBpmnTxt } from '../parsers/bpmn-txt.parser.js';
 import { parseUseCaseMarkdown, markdownToUseCase } from '../parsers/markdown.parser.js';
+import { extractSteps } from '../parsers/bpmn-steps.js';
 import {
   parse as parseBpmnTxtAst,
   toBpmnXmlAsync,
@@ -24,7 +25,7 @@ import {
   lint,
 } from '@cwygoda/bpmn-txt';
 import type { LinterConfig, LintResult } from '@cwygoda/bpmn-txt';
-import type { DocLink, ServiceRef } from '../../domain/use-case.js';
+import type { DocLink, ServiceRef, Step } from '../../domain/use-case.js';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
 const SERVICE_FILENAME = 'service.toml';
@@ -146,6 +147,7 @@ export class FilesystemLoader implements CatalogLoaderPort {
     let bpmnXml: string | undefined;
     let docLinks: DocLink[] | undefined;
     let serviceRefs: ServiceRef[] | undefined;
+    let steps: Step[] | undefined;
 
     if (parsed.bpmnBlocks.length > 0) {
       const bpmnContent = parsed.bpmnBlocks[0] ?? '';
@@ -162,6 +164,7 @@ export class FilesystemLoader implements CatalogLoaderPort {
         bpmnXml = await toBpmnXmlAsync(parseResult.document, { includeDiagram: true });
         docLinks = extractDocLinks(parseResult.document);
         serviceRefs = extractServiceRefs(parseResult.document);
+        steps = extractSteps(parseResult.document);
 
         if (bpmnXml && this.options.bpmnLint !== 'off') {
           const lintResults = await lint(bpmnXml, this.options.bpmnLintConfig);
@@ -172,10 +175,16 @@ export class FilesystemLoader implements CatalogLoaderPort {
       }
     }
 
-    const options: { bpmnXml?: string; docLinks?: DocLink[]; serviceRefs?: ServiceRef[] } = {};
+    const options: {
+      bpmnXml?: string;
+      docLinks?: DocLink[];
+      serviceRefs?: ServiceRef[];
+      steps?: Step[];
+    } = {};
     if (bpmnXml) options.bpmnXml = bpmnXml;
     if (docLinks) options.docLinks = docLinks;
     if (serviceRefs) options.serviceRefs = serviceRefs;
+    if (steps?.length) options.steps = steps;
 
     return markdownToUseCase(parsed, options);
   }

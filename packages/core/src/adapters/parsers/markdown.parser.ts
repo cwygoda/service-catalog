@@ -1,7 +1,7 @@
 import matter from 'gray-matter';
 import { TypeCompiler } from '@sinclair/typebox/compiler';
 import { UseCaseMarkdownFrontmatterSchema } from '../../schemas/use-case.schema.js';
-import type { UseCase, Participant, DocLink, ServiceRef } from '../../domain/use-case.js';
+import type { UseCase, Participant, Step, DocLink, ServiceRef } from '../../domain/use-case.js';
 
 const FrontmatterCheck = TypeCompiler.Compile(UseCaseMarkdownFrontmatterSchema);
 
@@ -69,6 +69,7 @@ export function markdownToUseCase(
     bpmnXml?: string;
     docLinks?: DocLink[];
     serviceRefs?: ServiceRef[];
+    steps?: Step[];
   }
 ): UseCase {
   const { frontmatter, content, description } = parsed;
@@ -101,7 +102,7 @@ export function markdownToUseCase(
     name: frontmatter.name,
     description,
     participants,
-    steps: [],
+    steps: options?.steps ?? [],
   };
 
   if (frontmatter.domain) useCase.domain = frontmatter.domain;

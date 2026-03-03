@@ -151,4 +151,14 @@ describe('markdownToUseCase', () => {
     expect(useCase.docLinks).toEqual(docLinks);
     expect(useCase.serviceRefs).toEqual(serviceRefs);
   });
+
+  it('accepts steps via options', () => {
+    const parsed = parseUseCaseMarkdown(EXAMPLE_MD);
+    const steps = [
+      { sequence: 1, action: 'Browse Products', service: 'catalog-ui' },
+      { sequence: 2, action: 'Validate Order', service: 'catalog-order-service' },
+    ];
+    const useCase = markdownToUseCase(parsed, { steps });
+    expect(useCase.steps).toEqual(steps);
+  });
 });
