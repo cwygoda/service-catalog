@@ -1,3 +1,9 @@
+## [1.8.1](https://github.com/cwygoda/service-catalog/compare/v1.8.0...v1.8.1) (2026-03-03)
+
+### Bug Fixes
+
+- **deps:** bump @cwygoda/bpmn-txt to ^0.14.0 ([968b5b1](https://github.com/cwygoda/service-catalog/commit/968b5b11986333fedb101d95d71f3be6fc926a35))
+
 # [1.8.0](https://github.com/cwygoda/service-catalog/compare/v1.7.0...v1.8.0) (2026-03-03)
 
 ### Features
