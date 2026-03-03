@@ -1,3 +1,13 @@
+# [1.7.0](https://github.com/cwygoda/service-catalog/compare/v1.6.3...v1.7.0) (2026-03-03)
+
+### Bug Fixes
+
+- **demo:** add networkidle wait to breadcrumb E2E test ([9d5e813](https://github.com/cwygoda/service-catalog/commit/9d5e813fddd36cac41506cf548ce3d32eb8d56cd))
+
+### Features
+
+- **core:** auto-extract steps from BPMN tasks ([1e3fd28](https://github.com/cwygoda/service-catalog/commit/1e3fd2810d4e2adb80fc94941fa7385c6b925019))
+
 ## [1.6.3](https://github.com/cwygoda/service-catalog/compare/v1.6.2...v1.6.3) (2026-03-02)
 
 ### Bug Fixes
