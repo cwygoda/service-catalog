@@ -2,6 +2,7 @@
   import { page } from '$app/state';
   import ThemeToggle from './ThemeToggle.svelte';
   import NavModeToggle from './NavModeToggle.svelte';
+  import { searchStore } from '../stores/search.svelte.js';
 
   const navLinks = [
     { href: '/', label: 'Home' },
@@ -52,6 +53,33 @@
       </div>
 
       <div class="flex items-center gap-2">
+        <!-- Search trigger -->
+        <button
+          onclick={() => {
+            searchStore.show();
+          }}
+          class="flex items-center gap-1.5 rounded-md border border-gray-300 px-2.5 py-1.5 text-sm text-gray-500 transition-colors hover:border-gray-400 hover:text-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-300"
+          aria-label="Search catalog"
+        >
+          <svg
+            class="h-4 w-4"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+            />
+          </svg>
+          <span class="hidden sm:inline">Search</span>
+          <kbd
+            class="hidden rounded border border-gray-300 px-1 py-0.5 text-xs sm:inline dark:border-gray-600"
+            >⌘K</kbd
+          >
+        </button>
         <NavModeToggle />
         <ThemeToggle />
         <!-- Mobile menu button -->

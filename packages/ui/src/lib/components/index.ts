@@ -4,6 +4,7 @@ export { default as DomainCard } from './DomainCard.svelte';
 export { default as Header } from './Header.svelte';
 export { default as NavModeToggle } from './NavModeToggle.svelte';
 export { default as NavTree } from './NavTree.svelte';
+export { default as SearchModal } from './SearchModal.svelte';
 export { default as ServiceCard } from './ServiceCard.svelte';
 export { default as ServiceGraph } from './ServiceGraph.svelte';
 export { default as ThemeToggle } from './ThemeToggle.svelte';
