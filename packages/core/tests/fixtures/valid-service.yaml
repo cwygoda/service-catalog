@@ -1,0 +1,6 @@
+service:
+  id: test-service
+  name: Test Service
+  description: A test service for unit tests
+  type: web-service
+  lifecycle: active

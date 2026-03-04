@@ -1,0 +1,22 @@
+use_case:
+  id: checkout-flow
+  name: Customer Checkout
+  description: Handles the complete customer checkout process
+  bpmn: './checkout.bpmn.txt'
+  participants:
+    - service: order-service
+      role: Creates and manages order
+    - service: billing-service
+      role: Processes payment
+  steps:
+    - sequence: 1
+      actor: Customer
+      action: Submits order
+    - sequence: 2
+      service: order-service
+      action: Validates order
+      endpoint: 'POST /orders'
+    - sequence: 3
+      service: billing-service
+      action: Processes payment
+      endpoint: 'POST /payments'

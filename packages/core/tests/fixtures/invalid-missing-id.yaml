@@ -1,0 +1,3 @@
+service:
+  name: Test Service
+  description: Missing the required id field

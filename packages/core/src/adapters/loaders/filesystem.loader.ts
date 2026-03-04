@@ -1,19 +1,18 @@
 import { readFile, readdir, stat } from 'node:fs/promises';
-import { join, dirname } from 'node:path';
+import { join, dirname, extname } from 'node:path';
 import type { CatalogLoaderPort } from '../../ports/catalog-loader.port.js';
 import type { Catalog } from '../../domain/catalog.js';
 import type { Service } from '../../domain/service.js';
 import type { UseCase } from '../../domain/use-case.js';
 import type { Domain } from '../../domain/domain.js';
 import { createCatalog } from '../../domain/catalog.js';
+import { parseToml, parseUseCaseToml, parseDomainToml } from '../parsers/toml.parser.js';
+import { parseYaml, parseUseCaseYaml, parseDomainYaml } from '../parsers/yaml.parser.js';
 import {
-  parseToml,
   sidecarToService,
-  parseUseCaseToml,
   sidecarToUseCase,
-  parseDomainToml,
   sidecarToDomain,
-} from '../parsers/toml.parser.js';
+} from '../parsers/sidecar.transforms.js';
 import { parseBpmnTxt } from '../parsers/bpmn-txt.parser.js';
 import { parseUseCaseMarkdown, markdownToUseCase } from '../parsers/markdown.parser.js';
 import { extractSteps } from '../parsers/bpmn-steps.js';
@@ -28,10 +27,10 @@ import type { LinterConfig, LintResult } from '@cwygoda/bpmn-txt';
 import type { DocLink, ServiceRef, Step } from '../../domain/use-case.js';
 import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 
-const SERVICE_FILENAME = 'service.toml';
-const USE_CASE_FILENAME = 'use-case.toml';
-const USE_CASE_MD_FILENAME = 'use-case.md';
-const DOMAIN_FILENAME = 'domain.toml';
+// Filenames in priority order (first match wins per directory)
+const SERVICE_FILES = ['service.yaml', 'service.toml'] as const;
+const USE_CASE_FILES = ['use-case.md', 'use-case.yaml', 'use-case.toml'] as const;
+const DOMAIN_FILES = ['domain.yaml', 'domain.toml'] as const;
 
 export interface LoaderOptions {
   bpmnLint?: BpmnLintLevel;
@@ -48,25 +47,36 @@ export interface LoadResult {
   lintDiagnostics: LintDiagnostic[];
 }
 
-async function findFiles(dir: string, filename: string): Promise<string[]> {
-  const files: string[] = [];
+/**
+ * Walk directory tree, returning at most one match per directory
+ * based on priority order of filenames.
+ */
+async function findFilesWithPriority(dir: string, filenames: readonly string[]): Promise<string[]> {
+  const results: string[] = [];
 
   async function walk(currentDir: string): Promise<void> {
     const entries = await readdir(currentDir, { withFileTypes: true });
+    const entryNames = new Set<string>();
 
     for (const entry of entries) {
-      const fullPath = join(currentDir, entry.name);
-
       if (entry.isDirectory()) {
-        await walk(fullPath);
-      } else if (entry.isFile() && entry.name === filename) {
-        files.push(fullPath);
+        await walk(join(currentDir, entry.name));
+      } else if (entry.isFile()) {
+        entryNames.add(entry.name);
+      }
+    }
+
+    // Pick highest-priority match
+    for (const candidate of filenames) {
+      if (entryNames.has(candidate)) {
+        results.push(join(currentDir, candidate));
+        break;
       }
     }
   }
 
   await walk(dir);
-  return files;
+  return results;
 }
 
 export class FilesystemLoader implements CatalogLoaderPort {
@@ -90,50 +100,49 @@ export class FilesystemLoader implements CatalogLoaderPort {
       throw new Error(`Path is not a directory: ${path}`);
     }
 
-    // Load services
-    const serviceFiles = await findFiles(path, SERVICE_FILENAME);
+    // Load services (yaml > toml)
+    const serviceFiles = await findFilesWithPriority(path, SERVICE_FILES);
     const services: Service[] = [];
 
     for (const filePath of serviceFiles) {
       const content = await readFile(filePath, 'utf-8');
-      const sidecar = parseToml(content, filePath);
+      const sidecar =
+        extname(filePath) === '.yaml' ? parseYaml(content, filePath) : parseToml(content, filePath);
       services.push(sidecarToService(sidecar));
     }
 
-    // Load use cases (markdown takes precedence over TOML per directory)
-    const useCaseTomlFiles = await findFiles(path, USE_CASE_FILENAME);
-    const useCaseMdFiles = await findFiles(path, USE_CASE_MD_FILENAME);
-
-    // Build set of directories with markdown use cases
-    const mdDirs = new Set(useCaseMdFiles.map((f) => dirname(f)));
-
+    // Load use cases (md > yaml > toml)
+    const useCaseFiles = await findFilesWithPriority(path, USE_CASE_FILES);
     const useCases: UseCase[] = [];
 
-    // Load markdown use cases
-    for (const filePath of useCaseMdFiles) {
-      const useCase = await this.loadMarkdownUseCase(filePath);
-      useCases.push(useCase);
+    for (const filePath of useCaseFiles) {
+      const ext = extname(filePath);
+
+      if (ext === '.md') {
+        const useCase = await this.loadMarkdownUseCase(filePath);
+        useCases.push(useCase);
+      } else {
+        const content = await readFile(filePath, 'utf-8');
+        const sidecar =
+          ext === '.yaml'
+            ? parseUseCaseYaml(content, filePath)
+            : parseUseCaseToml(content, filePath);
+        const useCase = sidecarToUseCase(sidecar);
+        const processedUseCase = await this.processBpmnSource(useCase, dirname(filePath));
+        useCases.push(processedUseCase);
+      }
     }
 
-    // Load TOML use cases (skip dirs that have markdown)
-    for (const filePath of useCaseTomlFiles) {
-      if (mdDirs.has(dirname(filePath))) continue;
-
-      const content = await readFile(filePath, 'utf-8');
-      const sidecar = parseUseCaseToml(content, filePath);
-      const useCase = sidecarToUseCase(sidecar);
-
-      const processedUseCase = await this.processBpmnSource(useCase, dirname(filePath));
-      useCases.push(processedUseCase);
-    }
-
-    // Load domains
-    const domainFiles = await findFiles(path, DOMAIN_FILENAME);
+    // Load domains (yaml > toml)
+    const domainFiles = await findFilesWithPriority(path, DOMAIN_FILES);
     const domains: Domain[] = [];
 
     for (const filePath of domainFiles) {
       const content = await readFile(filePath, 'utf-8');
-      const sidecar = parseDomainToml(content, filePath);
+      const sidecar =
+        extname(filePath) === '.yaml'
+          ? parseDomainYaml(content, filePath)
+          : parseDomainToml(content, filePath);
       domains.push(sidecarToDomain(sidecar));
     }
 

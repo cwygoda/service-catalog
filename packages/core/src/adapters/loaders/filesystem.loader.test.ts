@@ -462,6 +462,206 @@ steps = []
     expect(catalog.useCases[0]?.id).toBe('toml-only');
   });
 
+  // --- YAML dual-format tests ---
+
+  it('loads YAML service', async () => {
+    const serviceDir = join(tempDir, 'yaml-svc');
+    await mkdir(serviceDir);
+    await writeFile(
+      join(serviceDir, 'service.yaml'),
+      `service:
+  id: yaml-service
+  name: YAML Service
+  description: From YAML
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.services[0]?.id).toBe('yaml-service');
+    expect(catalog.services[0]?.name).toBe('YAML Service');
+  });
+
+  it('YAML service takes precedence over TOML', async () => {
+    const serviceDir = join(tempDir, 'dual-svc');
+    await mkdir(serviceDir);
+    await writeFile(
+      join(serviceDir, 'service.toml'),
+      `[service]
+id = "toml-service"
+name = "TOML Service"
+description = "From TOML"
+`
+    );
+    await writeFile(
+      join(serviceDir, 'service.yaml'),
+      `service:
+  id: yaml-service
+  name: YAML Service
+  description: From YAML
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.services[0]?.id).toBe('yaml-service');
+  });
+
+  it('TOML service still works alone', async () => {
+    const serviceDir = join(tempDir, 'toml-svc');
+    await mkdir(serviceDir);
+    await writeFile(
+      join(serviceDir, 'service.toml'),
+      `[service]
+id = "toml-only"
+name = "TOML Only"
+description = "Still works"
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.services[0]?.id).toBe('toml-only');
+  });
+
+  it('loads YAML use case', async () => {
+    const useCaseDir = join(tempDir, 'yaml-uc');
+    await mkdir(useCaseDir);
+    await writeFile(
+      join(useCaseDir, 'use-case.yaml'),
+      `use_case:
+  id: yaml-checkout
+  name: YAML Checkout
+  description: From YAML
+  participants: []
+  steps: []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.id).toBe('yaml-checkout');
+  });
+
+  it('loads YAML domain', async () => {
+    const domainDir = join(tempDir, 'yaml-dom');
+    await mkdir(domainDir);
+    await writeFile(
+      join(domainDir, 'domain.yaml'),
+      `domain:
+  id: yaml-domain
+  name: YAML Domain
+  description: From YAML
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.domains).toHaveLength(1);
+    expect(catalog.domains[0]?.id).toBe('yaml-domain');
+  });
+
+  it('YAML domain takes precedence over TOML', async () => {
+    const domainDir = join(tempDir, 'dual-dom');
+    await mkdir(domainDir);
+    await writeFile(
+      join(domainDir, 'domain.toml'),
+      `[domain]
+id = "toml-domain"
+name = "TOML Domain"
+description = "From TOML"
+`
+    );
+    await writeFile(
+      join(domainDir, 'domain.yaml'),
+      `domain:
+  id: yaml-domain
+  name: YAML Domain
+  description: From YAML
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.domains).toHaveLength(1);
+    expect(catalog.domains[0]?.id).toBe('yaml-domain');
+  });
+
+  it('use-case.md > use-case.yaml > use-case.toml priority', async () => {
+    // Dir with all three formats
+    const allDir = join(tempDir, 'all-three');
+    await mkdir(allDir);
+    await writeFile(
+      join(allDir, 'use-case.toml'),
+      `[use_case]
+id = "toml-uc"
+name = "TOML UC"
+description = "From TOML"
+participants = []
+steps = []
+`
+    );
+    await writeFile(
+      join(allDir, 'use-case.yaml'),
+      `use_case:
+  id: yaml-uc
+  name: YAML UC
+  description: From YAML
+  participants: []
+  steps: []
+`
+    );
+    await writeFile(
+      join(allDir, 'use-case.md'),
+      `---
+id: md-uc
+name: MD UC
+---
+
+From markdown.
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.id).toBe('md-uc');
+  });
+
+  it('use-case.yaml takes precedence over use-case.toml', async () => {
+    const yamlTomlDir = join(tempDir, 'yaml-toml-uc');
+    await mkdir(yamlTomlDir);
+    await writeFile(
+      join(yamlTomlDir, 'use-case.toml'),
+      `[use_case]
+id = "toml-uc"
+name = "TOML UC"
+description = "From TOML"
+participants = []
+steps = []
+`
+    );
+    await writeFile(
+      join(yamlTomlDir, 'use-case.yaml'),
+      `use_case:
+  id: yaml-uc
+  name: YAML UC
+  description: From YAML
+  participants: []
+  steps: []
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.useCases).toHaveLength(1);
+    expect(catalog.useCases[0]?.id).toBe('yaml-uc');
+  });
+
   it('markdown without bpmn block has no XML', async () => {
     const useCaseDir = join(tempDir, 'no-bpmn');
     await mkdir(useCaseDir);
