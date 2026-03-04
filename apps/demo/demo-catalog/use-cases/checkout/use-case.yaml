@@ -1,0 +1,35 @@
+use_case:
+  id: checkout
+  name: Customer Checkout
+  description: >-
+    End-to-end checkout flow when a customer completes their purchase.
+    Coordinates order creation, payment processing, and inventory updates.
+  domain: commerce
+  bpmn: /bpmn/checkout.bpmn
+  participants:
+    - service: orders-service
+      role: Creates and manages order lifecycle
+    - service: billing-service
+      role: Processes payment and generates invoice
+    - service: catalog-service
+      role: Validates product availability and updates inventory
+  steps:
+    - sequence: 1
+      actor: Customer
+      action: Initiates checkout
+    - sequence: 2
+      service: orders-service
+      action: Creates pending order
+      endpoint: POST /orders
+    - sequence: 3
+      service: catalog-service
+      action: Reserves inventory
+      endpoint: POST /inventory/reserve
+    - sequence: 4
+      service: billing-service
+      action: Processes payment
+      endpoint: POST /payments
+    - sequence: 5
+      service: orders-service
+      action: Confirms order
+      endpoint: PATCH /orders/{id}/confirm

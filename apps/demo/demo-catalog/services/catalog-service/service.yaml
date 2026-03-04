@@ -1,0 +1,5 @@
+service:
+  id: catalog-service
+  name: Catalog Service
+  description: Product catalog with search and inventory management
+  domain: commerce

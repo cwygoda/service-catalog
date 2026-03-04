@@ -51,6 +51,62 @@
   ],
   "useCases": [
     {
+      "id": "checkout",
+      "name": "Customer Checkout",
+      "description": "End-to-end checkout flow when a customer completes their purchase. Coordinates order creation, payment processing, and inventory updates.",
+      "participants": [
+        {
+          "service": "orders-service",
+          "role": "Creates and manages order lifecycle"
+        },
+        {
+          "service": "billing-service",
+          "role": "Processes payment and generates invoice"
+        },
+        {
+          "service": "catalog-service",
+          "role": "Validates product availability and updates inventory"
+        }
+      ],
+      "steps": [
+        {
+          "sequence": 1,
+          "action": "Initiates checkout",
+          "actor": "Customer"
+        },
+        {
+          "sequence": 2,
+          "action": "Creates pending order",
+          "service": "orders-service",
+          "endpoint": "POST /orders"
+        },
+        {
+          "sequence": 3,
+          "action": "Reserves inventory",
+          "service": "catalog-service",
+          "endpoint": "POST /inventory/reserve"
+        },
+        {
+          "sequence": 4,
+          "action": "Processes payment",
+          "service": "billing-service",
+          "endpoint": "POST /payments"
+        },
+        {
+          "sequence": 5,
+          "action": "Confirms order",
+          "service": "orders-service",
+          "endpoint": "PATCH /orders/{id}/confirm"
+        }
+      ],
+      "domain": "commerce",
+      "bpmn": "/bpmn/checkout.bpmn",
+      "bpmnSource": {
+        "type": "xml",
+        "path": "/bpmn/checkout.bpmn"
+      }
+    },
+    {
       "id": "customer-onboarding",
       "name": "Customer Onboarding",
       "description": "New customer registration and account setup. Creates authentication credentials,",
@@ -133,62 +189,6 @@
           "serviceId": "billing-service"
         }
       ]
-    },
-    {
-      "id": "checkout",
-      "name": "Customer Checkout",
-      "description": "End-to-end checkout flow when a customer completes their purchase. Coordinates order creation, payment processing, and inventory updates.",
-      "participants": [
-        {
-          "service": "orders-service",
-          "role": "Creates and manages order lifecycle"
-        },
-        {
-          "service": "billing-service",
-          "role": "Processes payment and generates invoice"
-        },
-        {
-          "service": "catalog-service",
-          "role": "Validates product availability and updates inventory"
-        }
-      ],
-      "steps": [
-        {
-          "sequence": 1,
-          "action": "Initiates checkout",
-          "actor": "Customer"
-        },
-        {
-          "sequence": 2,
-          "action": "Creates pending order",
-          "service": "orders-service",
-          "endpoint": "POST /orders"
-        },
-        {
-          "sequence": 3,
-          "action": "Reserves inventory",
-          "service": "catalog-service",
-          "endpoint": "POST /inventory/reserve"
-        },
-        {
-          "sequence": 4,
-          "action": "Processes payment",
-          "service": "billing-service",
-          "endpoint": "POST /payments"
-        },
-        {
-          "sequence": 5,
-          "action": "Confirms order",
-          "service": "orders-service",
-          "endpoint": "PATCH /orders/{id}/confirm"
-        }
-      ],
-      "domain": "commerce",
-      "bpmn": "/bpmn/checkout.bpmn",
-      "bpmnSource": {
-        "type": "xml",
-        "path": "/bpmn/checkout.bpmn"
-      }
     },
     {
       "id": "profile-update",
