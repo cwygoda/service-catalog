@@ -14,11 +14,12 @@
   <title>{data.domain.name} | Service Catalog</title>
 </svelte:head>
 
-<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8">
+<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 lg:px-8" data-pagefind-body>
   <Breadcrumbs items={breadcrumbItems} current={data.domain.name} />
 
   <div
     class="rounded-lg border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+    data-pagefind-meta="type:Domain"
   >
     <!-- Header -->
     <div class="mb-6">

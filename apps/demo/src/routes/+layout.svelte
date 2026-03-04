@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import '../app.css';
   import favicon from '$lib/assets/favicon.svg';
-  import { Header, NavTree, theme, navModeStore } from '@cwygoda/service-catalog-ui';
+  import { Header, NavTree, SearchModal, theme, navModeStore } from '@cwygoda/service-catalog-ui';
   import type { LayoutData } from './$types';
   import type { Snippet } from 'svelte';
 
@@ -18,12 +18,15 @@
 </svelte:head>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-950">
-  <Header />
+  <div data-pagefind-ignore>
+    <Header />
+  </div>
   <div class="flex">
     {#if navModeStore.mode === 'tree'}
       <aside
         aria-label="Catalog navigation"
         class="hidden w-64 shrink-0 border-r border-gray-200 bg-white p-4 md:block dark:border-gray-700 dark:bg-gray-900"
+        data-pagefind-ignore
       >
         <NavTree
           domains={data.catalog.domains}
@@ -36,4 +39,5 @@
       {@render children()}
     </main>
   </div>
+  <SearchModal />
 </div>
