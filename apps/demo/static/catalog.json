@@ -4,55 +4,49 @@
       "id": "auth-service",
       "name": "Auth Service",
       "description": "OIDC identity provider for user authentication",
-      "domain": "platform",
-      "metadata": {
-        "version": "2.1.0"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "platform"
     },
     {
       "id": "billing-service",
       "name": "Billing Service",
       "description": "Two-stage payment processing with authorize and capture",
-      "domain": "commerce",
-      "metadata": {
-        "version": "2.0.0"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "commerce"
     },
     {
       "id": "catalog-service",
       "name": "Catalog Service",
       "description": "Product catalog with search and inventory management",
-      "domain": "commerce",
-      "metadata": {
-        "version": "1.8.0"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "commerce"
     },
     {
       "id": "crm-service",
       "name": "CRM Service",
       "description": "Customer relationship management and profile data",
-      "domain": "platform",
-      "metadata": {
-        "version": "3.0.2"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "platform"
     },
     {
       "id": "orders-service",
       "name": "Orders Service",
       "description": "Order lifecycle management from cart to fulfillment",
-      "domain": "commerce",
-      "metadata": {
-        "version": "4.2.1"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "commerce"
     },
     {
       "id": "policy-service",
       "name": "Policy Service",
       "description": "Authorization policy evaluation using Open Policy Agent",
-      "domain": "platform",
-      "metadata": {
-        "version": "1.4.0"
-      }
+      "type": "web-service",
+      "lifecycle": "active",
+      "domain": "platform"
     }
   ],
   "useCases": [
@@ -255,32 +249,44 @@
       {
         "id": "auth-service",
         "name": "Auth Service",
-        "domain": "platform"
+        "domain": "platform",
+        "type": "web-service",
+        "lifecycle": "active"
       },
       {
         "id": "billing-service",
         "name": "Billing Service",
-        "domain": "commerce"
+        "domain": "commerce",
+        "type": "web-service",
+        "lifecycle": "active"
       },
       {
         "id": "catalog-service",
         "name": "Catalog Service",
-        "domain": "commerce"
+        "domain": "commerce",
+        "type": "web-service",
+        "lifecycle": "active"
       },
       {
         "id": "crm-service",
         "name": "CRM Service",
-        "domain": "platform"
+        "domain": "platform",
+        "type": "web-service",
+        "lifecycle": "active"
       },
       {
         "id": "orders-service",
         "name": "Orders Service",
-        "domain": "commerce"
+        "domain": "commerce",
+        "type": "web-service",
+        "lifecycle": "active"
       },
       {
         "id": "policy-service",
         "name": "Policy Service",
-        "domain": "platform"
+        "domain": "platform",
+        "type": "web-service",
+        "lifecycle": "active"
       }
     ],
     "edges": [

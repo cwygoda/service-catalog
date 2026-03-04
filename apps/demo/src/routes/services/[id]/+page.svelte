@@ -33,13 +33,23 @@
           {data.service.id}
         </p>
       </div>
-      {#if data.service.metadata?.version}
+      <div class="flex items-center gap-2">
         <span
-          class="rounded-full bg-primary-100 px-3 py-1 text-sm font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
+          class="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-medium text-gray-600 dark:bg-gray-700 dark:text-gray-300"
         >
-          v{data.service.metadata.version}
+          {data.service.type}
         </span>
-      {/if}
+        {#if data.service.lifecycle !== 'active'}
+          <span
+            class="rounded-full px-2.5 py-1 text-xs font-medium {data.service.lifecycle ===
+              'deprecated' || data.service.lifecycle === 'sunset'
+              ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+              : 'bg-primary-100 text-primary-800 dark:bg-primary-900 dark:text-primary-200'}"
+          >
+            {data.service.lifecycle}
+          </span>
+        {/if}
+      </div>
     </div>
 
     <div class="border-t border-gray-200 pt-6 dark:border-gray-700">

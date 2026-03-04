@@ -29,6 +29,18 @@ describe('Connection entity', () => {
       expect(conn.endpoints).toBeUndefined();
     });
 
+    it('creates grpc connection with endpoints', () => {
+      const conn = createConnection({
+        target: 'billing-service',
+        type: 'grpc',
+        endpoints: ['billing.v1.BillingService/Charge'],
+      });
+
+      expect(conn.target).toBe('billing-service');
+      expect(conn.type).toBe('grpc');
+      expect(conn.endpoints).toEqual(['billing.v1.BillingService/Charge']);
+    });
+
     it('creates minimal connection without optional fields', () => {
       const conn = createConnection({
         target: 'auth-service',
@@ -61,6 +73,15 @@ describe('Connection entity', () => {
       expect(isConnection(conn)).toBe(true);
     });
 
+    it('returns true for valid grpc connection', () => {
+      const conn: Connection = {
+        target: 'billing-service',
+        type: 'grpc',
+        endpoints: ['billing.v1.BillingService/Charge'],
+      };
+      expect(isConnection(conn)).toBe(true);
+    });
+
     it('returns true for minimal connection', () => {
       const conn: Connection = {
         target: 'auth-service',
@@ -88,7 +109,7 @@ describe('Connection entity', () => {
     });
 
     it('returns false for invalid type', () => {
-      expect(isConnection({ target: 'svc', type: 'grpc' })).toBe(false);
+      expect(isConnection({ target: 'svc', type: 'websocket' })).toBe(false);
       expect(isConnection({ target: 'svc', type: '' })).toBe(false);
     });
 

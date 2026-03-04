@@ -9,6 +9,8 @@ describe('ServiceCard', () => {
     id: 'test-service',
     name: 'Test Service',
     description: 'A test service description',
+    type: 'web-service',
+    lifecycle: 'active',
   };
 
   it('renders service name', () => {
@@ -27,17 +29,22 @@ describe('ServiceCard', () => {
     expect(link).toHaveAttribute('href', '/services/test-service');
   });
 
-  it('shows version badge when metadata has version', () => {
-    const serviceWithVersion: Service = {
-      ...baseService,
-      metadata: { version: '1.2.3' },
-    };
-    render(ServiceCard, { props: { service: serviceWithVersion } });
-    expect(screen.getByText('v1.2.3')).toBeInTheDocument();
+  it('shows service type badge', () => {
+    render(ServiceCard, { props: { service: baseService } });
+    expect(screen.getByText('web-service')).toBeInTheDocument();
   });
 
-  it('does not show version badge when no metadata', () => {
+  it('shows lifecycle badge when not active', () => {
+    const deprecatedService: Service = {
+      ...baseService,
+      lifecycle: 'deprecated',
+    };
+    render(ServiceCard, { props: { service: deprecatedService } });
+    expect(screen.getByText('deprecated')).toBeInTheDocument();
+  });
+
+  it('does not show lifecycle badge when active', () => {
     render(ServiceCard, { props: { service: baseService } });
-    expect(screen.queryByText(/^v\d/)).not.toBeInTheDocument();
+    expect(screen.queryByText('active')).not.toBeInTheDocument();
   });
 });

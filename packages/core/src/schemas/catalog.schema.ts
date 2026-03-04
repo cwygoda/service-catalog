@@ -6,18 +6,40 @@ import {
   ServiceRefSchema,
 } from './use-case.schema.js';
 import { ConnectionSchema } from './connection.schema.js';
+import {
+  ServiceTypeSchema,
+  LifecycleSchema,
+  TierSchema,
+  LinkSchema,
+  ContactSchema,
+} from './service.schema.js';
+
+export const SpecSummarySchema = Type.Object({
+  type: Type.Union([Type.Literal('openapi'), Type.Literal('asyncapi')]),
+  version: Type.Optional(Type.String()),
+  title: Type.Optional(Type.String()),
+  endpoints: Type.Optional(Type.Array(Type.String())),
+  raw: Type.Optional(Type.String()),
+});
 
 export const ServiceSchema = Type.Object({
   id: Type.String({ minLength: 1 }),
   name: Type.String({ minLength: 1 }),
   description: Type.String(),
   domain: Type.Optional(Type.String({ minLength: 1 })),
-  metadata: Type.Optional(
-    Type.Object({
-      version: Type.Optional(Type.String()),
-    })
-  ),
+  type: ServiceTypeSchema,
+  lifecycle: LifecycleSchema,
+  owner: Type.Optional(Type.String({ minLength: 1 })),
+  tags: Type.Optional(Type.Array(Type.String())),
+  links: Type.Optional(Type.Array(LinkSchema)),
+  repository: Type.Optional(Type.String({ minLength: 1 })),
+  tier: Type.Optional(TierSchema),
+  contacts: Type.Optional(Type.Array(ContactSchema)),
+  language: Type.Optional(Type.Array(Type.String())),
+  framework: Type.Optional(Type.String()),
+  specs: Type.Optional(Type.Array(SpecSummarySchema)),
   connections: Type.Optional(Type.Array(ConnectionSchema)),
+  content: Type.Optional(Type.String()),
 });
 
 export const UseCaseSchema = Type.Object({
@@ -44,13 +66,15 @@ export const DomainOutputSchema = Type.Object({
 export const GraphNodeSchema = Type.Object({
   id: Type.String({ minLength: 1 }),
   name: Type.String({ minLength: 1 }),
-  domain: Type.Optional(Type.String()),
+  domain: Type.Optional(Type.String({ minLength: 1 })),
+  type: Type.Optional(ServiceTypeSchema),
+  lifecycle: Type.Optional(LifecycleSchema),
 });
 
 export const GraphEdgeSchema = Type.Object({
   source: Type.String({ minLength: 1 }),
   target: Type.String({ minLength: 1 }),
-  type: Type.Union([Type.Literal('http'), Type.Literal('event')]),
+  type: Type.Union([Type.Literal('http'), Type.Literal('event'), Type.Literal('grpc')]),
   endpoints: Type.Optional(Type.Array(Type.String())),
   events: Type.Optional(Type.Array(Type.String())),
 });

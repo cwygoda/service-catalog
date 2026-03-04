@@ -23,7 +23,6 @@ describe('toml.parser', () => {
       expect(result.service.id).toBe('test-service');
       expect(result.service.name).toBe('Test Service');
       expect(result.service.description).toBe('A test service for unit tests');
-      expect(result.service.metadata?.version).toBe('1.0.0');
     });
 
     it('throws ValidationError for missing required field', async () => {
@@ -52,13 +51,12 @@ describe('toml.parser', () => {
   });
 
   describe('sidecarToService', () => {
-    it('converts sidecar to service domain object', () => {
+    it('converts sidecar to service with defaults', () => {
       const sidecar = {
         service: {
           id: 'test',
           name: 'Test',
           description: 'Description',
-          metadata: { version: '1.0.0' },
         },
       };
 
@@ -68,8 +66,126 @@ describe('toml.parser', () => {
         id: 'test',
         name: 'Test',
         description: 'Description',
-        metadata: { version: '1.0.0' },
+        type: 'web-service',
+        lifecycle: 'active',
       });
+    });
+
+    it('converts sidecar with explicit type and lifecycle', () => {
+      const sidecar = {
+        service: {
+          id: 'test',
+          name: 'Test',
+          description: 'Description',
+          type: 'event-producer' as const,
+          lifecycle: 'deprecated' as const,
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect(service.type).toBe('event-producer');
+      expect(service.lifecycle).toBe('deprecated');
+    });
+
+    it('converts sidecar with all new fields', () => {
+      const sidecar = {
+        service: {
+          id: 'test',
+          name: 'Test',
+          description: 'Description',
+          domain: 'commerce',
+          type: 'web-service' as const,
+          lifecycle: 'active' as const,
+          owner: 'team-a',
+          tags: ['core'],
+          links: [{ url: 'https://dash.io', title: 'Dashboard' }],
+          repository: 'https://github.com/acme/test',
+          tier: 'critical' as const,
+          contacts: [{ type: 'slack', value: '#eng' }],
+          language: ['typescript'],
+          framework: 'nestjs',
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect(service.domain).toBe('commerce');
+      expect(service.owner).toBe('team-a');
+      expect(service.tags).toEqual(['core']);
+      expect(service.links).toEqual([{ url: 'https://dash.io', title: 'Dashboard' }]);
+      expect(service.repository).toBe('https://github.com/acme/test');
+      expect(service.tier).toBe('critical');
+      expect(service.contacts).toEqual([{ type: 'slack', value: '#eng' }]);
+      expect(service.language).toEqual(['typescript']);
+      expect(service.framework).toBe('nestjs');
+    });
+
+    it('defaults description to empty string when omitted', () => {
+      const sidecar = {
+        service: {
+          id: 'no-desc',
+          name: 'No Description',
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect(service.description).toBe('');
+    });
+
+    it('maps connections from sidecar', () => {
+      const sidecar = {
+        service: {
+          id: 'test',
+          name: 'Test',
+          description: 'Description',
+          connections: [
+            { target: 'billing', type: 'http' as const, endpoints: ['/pay'] },
+            { target: 'crm', type: 'event' as const, events: ['order.created'] },
+            { target: 'auth', type: 'grpc' as const },
+          ],
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect(service.connections).toHaveLength(3);
+      expect(service.connections).toEqual([
+        { target: 'billing', type: 'http', endpoints: ['/pay'] },
+        { target: 'crm', type: 'event', events: ['order.created'] },
+        { target: 'auth', type: 'grpc' },
+      ]);
+    });
+
+    it('omits connections key when array is empty', () => {
+      const sidecar = {
+        service: {
+          id: 'test',
+          name: 'Test',
+          description: 'Description',
+          connections: [],
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect('connections' in service).toBe(false);
+    });
+
+    it('does not include specs from sidecar (resolved in loader)', () => {
+      const sidecar = {
+        service: {
+          id: 'test',
+          name: 'Test',
+          description: 'Description',
+          specs: { openapi: './openapi.yaml' },
+        },
+      };
+
+      const service = sidecarToService(sidecar);
+
+      expect('specs' in service).toBe(false);
     });
   });
 

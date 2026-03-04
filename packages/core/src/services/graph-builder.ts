@@ -119,6 +119,8 @@ export function buildServiceGraph(catalog: Catalog): ServiceGraph {
     id: s.id,
     name: s.name,
     ...(s.domain && { domain: s.domain }),
+    type: s.type,
+    lifecycle: s.lifecycle,
   }));
 
   // Derive connections from use cases

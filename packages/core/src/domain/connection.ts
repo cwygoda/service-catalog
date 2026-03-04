@@ -2,14 +2,14 @@
  * Connection entity - represents a dependency from one service to another.
  */
 
-export type ConnectionType = 'http' | 'event';
+export type ConnectionType = 'http' | 'event' | 'grpc';
 
 export interface Connection {
   /** Target service ID */
   target: string;
   /** Connection type */
   type: ConnectionType;
-  /** API endpoints for http connections */
+  /** API endpoints for http/grpc connections */
   endpoints?: string[];
   /** Event topics for event connections */
   events?: string[];
@@ -41,7 +41,7 @@ export function isConnection(value: unknown): value is Connection {
     return false;
   }
 
-  if (conn['type'] !== 'http' && conn['type'] !== 'event') {
+  if (conn['type'] !== 'http' && conn['type'] !== 'event' && conn['type'] !== 'grpc') {
     return false;
   }
 

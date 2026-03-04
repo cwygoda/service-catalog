@@ -114,11 +114,24 @@ describe('graph-builder', () => {
   });
 
   describe('buildServiceGraph', () => {
-    it('builds nodes from services', () => {
+    it('builds nodes from services with type and lifecycle', () => {
       const catalog: Catalog = {
         services: [
-          { id: 'svc1', name: 'Service 1', description: 'desc', domain: 'domain1' },
-          { id: 'svc2', name: 'Service 2', description: 'desc' },
+          {
+            id: 'svc1',
+            name: 'Service 1',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            domain: 'domain1',
+          },
+          {
+            id: 'svc2',
+            name: 'Service 2',
+            description: 'desc',
+            type: 'event-producer',
+            lifecycle: 'deprecated',
+          },
         ],
         useCases: [],
         domains: [],
@@ -127,8 +140,14 @@ describe('graph-builder', () => {
       const graph = buildServiceGraph(catalog);
 
       expect(graph.nodes).toEqual([
-        { id: 'svc1', name: 'Service 1', domain: 'domain1' },
-        { id: 'svc2', name: 'Service 2' },
+        {
+          id: 'svc1',
+          name: 'Service 1',
+          domain: 'domain1',
+          type: 'web-service',
+          lifecycle: 'active',
+        },
+        { id: 'svc2', name: 'Service 2', type: 'event-producer', lifecycle: 'deprecated' },
       ]);
     });
 
@@ -139,9 +158,17 @@ describe('graph-builder', () => {
             id: 'svc1',
             name: 'Service 1',
             description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
             connections: [{ target: 'svc2', type: 'http', endpoints: ['/api'] }],
           },
-          { id: 'svc2', name: 'Service 2', description: 'desc' },
+          {
+            id: 'svc2',
+            name: 'Service 2',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+          },
         ],
         useCases: [],
         domains: [],
@@ -157,8 +184,20 @@ describe('graph-builder', () => {
     it('builds edges from derived connections', () => {
       const catalog: Catalog = {
         services: [
-          { id: 'orders', name: 'Orders', description: 'desc' },
-          { id: 'billing', name: 'Billing', description: 'desc' },
+          {
+            id: 'orders',
+            name: 'Orders',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+          },
+          {
+            id: 'billing',
+            name: 'Billing',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+          },
         ],
         useCases: [
           {
@@ -189,9 +228,17 @@ describe('graph-builder', () => {
             id: 'orders',
             name: 'Orders',
             description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
             connections: [{ target: 'billing', type: 'http', endpoints: ['/refund'] }],
           },
-          { id: 'billing', name: 'Billing', description: 'desc' },
+          {
+            id: 'billing',
+            name: 'Billing',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+          },
         ],
         useCases: [
           {
@@ -228,6 +275,8 @@ describe('graph-builder', () => {
             id: 'svc1',
             name: 'Service 1',
             description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
             connections: [{ target: 'nonexistent', type: 'http' }],
           },
         ],
@@ -238,6 +287,73 @@ describe('graph-builder', () => {
       const graph = buildServiceGraph(catalog);
 
       expect(graph.edges).toEqual([]);
+    });
+
+    it('builds edges for event connections with events field', () => {
+      const catalog: Catalog = {
+        services: [
+          {
+            id: 'svc1',
+            name: 'Service 1',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            connections: [
+              { target: 'svc2', type: 'event', events: ['order.created', 'order.updated'] },
+            ],
+          },
+          {
+            id: 'svc2',
+            name: 'Service 2',
+            description: 'desc',
+            type: 'event-consumer',
+            lifecycle: 'active',
+          },
+        ],
+        useCases: [],
+        domains: [],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      expect(graph.edges).toEqual([
+        {
+          source: 'svc1',
+          target: 'svc2',
+          type: 'event',
+          events: ['order.created', 'order.updated'],
+        },
+      ]);
+    });
+
+    it('builds edges for grpc connections', () => {
+      const catalog: Catalog = {
+        services: [
+          {
+            id: 'svc1',
+            name: 'Service 1',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            connections: [{ target: 'svc2', type: 'grpc', endpoints: ['Billing/Charge'] }],
+          },
+          {
+            id: 'svc2',
+            name: 'Service 2',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+          },
+        ],
+        useCases: [],
+        domains: [],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      expect(graph.edges).toEqual([
+        { source: 'svc1', target: 'svc2', type: 'grpc', endpoints: ['Billing/Charge'] },
+      ]);
     });
   });
 });

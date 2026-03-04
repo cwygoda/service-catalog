@@ -22,8 +22,20 @@ describe('JsonWriter', () => {
     const catalog: Catalog = {
       useCases: [],
       services: [
-        { id: 'svc-1', name: 'Service 1', description: 'First' },
-        { id: 'svc-2', name: 'Service 2', description: 'Second' },
+        {
+          id: 'svc-1',
+          name: 'Service 1',
+          description: 'First',
+          type: 'web-service',
+          lifecycle: 'active',
+        },
+        {
+          id: 'svc-2',
+          name: 'Service 2',
+          description: 'Second',
+          type: 'web-service',
+          lifecycle: 'active',
+        },
       ],
       domains: [],
     };
@@ -49,7 +61,9 @@ describe('JsonWriter', () => {
   it('writes pretty-printed JSON', async () => {
     const catalog: Catalog = {
       useCases: [],
-      services: [{ id: 'test', name: 'Test', description: 'Desc' }],
+      services: [
+        { id: 'test', name: 'Test', description: 'Desc', type: 'web-service', lifecycle: 'active' },
+      ],
       domains: [],
     };
     const outputPath = join(tempDir, 'catalog.json');
@@ -65,11 +79,23 @@ describe('JsonWriter', () => {
     const outputPath = join(tempDir, 'catalog.json');
 
     await writer.write(
-      { useCases: [], services: [{ id: 'old', name: 'Old', description: 'Old' }], domains: [] },
+      {
+        useCases: [],
+        services: [
+          { id: 'old', name: 'Old', description: 'Old', type: 'web-service', lifecycle: 'active' },
+        ],
+        domains: [],
+      },
       outputPath
     );
     await writer.write(
-      { useCases: [], services: [{ id: 'new', name: 'New', description: 'New' }], domains: [] },
+      {
+        useCases: [],
+        services: [
+          { id: 'new', name: 'New', description: 'New', type: 'web-service', lifecycle: 'active' },
+        ],
+        domains: [],
+      },
       outputPath
     );
 
@@ -78,15 +104,16 @@ describe('JsonWriter', () => {
     expect(parsed.services[0]?.id).toBe('new');
   });
 
-  it('preserves service metadata', async () => {
+  it('preserves service type and lifecycle', async () => {
     const catalog: Catalog = {
       useCases: [],
       services: [
         {
-          id: 'with-meta',
-          name: 'With Meta',
-          description: 'Has metadata',
-          metadata: { version: '2.0.0' },
+          id: 'with-type',
+          name: 'With Type',
+          description: 'Has type info',
+          type: 'event-producer',
+          lifecycle: 'deprecated',
         },
       ],
       domains: [],
@@ -97,6 +124,7 @@ describe('JsonWriter', () => {
 
     const content = await readFile(outputPath, 'utf-8');
     const parsed = JSON.parse(content) as Catalog;
-    expect(parsed.services[0]?.metadata?.version).toBe('2.0.0');
+    expect(parsed.services[0]?.type).toBe('event-producer');
+    expect(parsed.services[0]?.lifecycle).toBe('deprecated');
   });
 });

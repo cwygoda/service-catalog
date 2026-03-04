@@ -72,22 +72,29 @@ export function parseToml(content: string, filePath: string): ServiceSidecar {
 }
 
 export function sidecarToService(sidecar: ServiceSidecar): Service {
+  const s = sidecar.service;
+
   const service: Service = {
-    id: sidecar.service.id,
-    name: sidecar.service.name,
-    description: sidecar.service.description,
+    id: s.id,
+    name: s.name,
+    description: s.description ?? '',
+    type: s.type ?? 'web-service',
+    lifecycle: s.lifecycle ?? 'active',
   };
 
-  if (sidecar.service.domain !== undefined) {
-    service.domain = sidecar.service.domain;
-  }
+  if (s.domain !== undefined) service.domain = s.domain;
+  if (s.owner !== undefined) service.owner = s.owner;
+  if (s.tags !== undefined) service.tags = s.tags;
+  if (s.links !== undefined) service.links = s.links;
+  if (s.repository !== undefined) service.repository = s.repository;
+  if (s.tier !== undefined) service.tier = s.tier;
+  if (s.contacts !== undefined) service.contacts = s.contacts;
+  if (s.language !== undefined) service.language = s.language;
+  if (s.framework !== undefined) service.framework = s.framework;
+  // specs: Spec resolution happens in loader, not parser
 
-  if (sidecar.service.metadata) {
-    service.metadata = sidecar.service.metadata;
-  }
-
-  if (sidecar.service.connections && sidecar.service.connections.length > 0) {
-    service.connections = sidecar.service.connections.map((c) => ({
+  if (s.connections && s.connections.length > 0) {
+    service.connections = s.connections.map((c) => ({
       target: c.target,
       type: c.type,
       ...(c.endpoints && { endpoints: c.endpoints }),

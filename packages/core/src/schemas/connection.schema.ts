@@ -3,7 +3,11 @@ import { Type, type Static } from '@sinclair/typebox';
 /**
  * Connection type enum schema.
  */
-export const ConnectionTypeSchema = Type.Union([Type.Literal('http'), Type.Literal('event')]);
+export const ConnectionTypeSchema = Type.Union([
+  Type.Literal('http'),
+  Type.Literal('event'),
+  Type.Literal('grpc'),
+]);
 
 /**
  * Connection schema for service-to-service dependencies.

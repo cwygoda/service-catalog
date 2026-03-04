@@ -1,9 +1,12 @@
 import type { ConnectionType } from './connection.js';
+import type { ServiceType, Lifecycle } from './service.js';
 
 export interface GraphNode {
   id: string;
   name: string;
   domain?: string;
+  type?: ServiceType;
+  lifecycle?: Lifecycle;
 }
 
 export interface GraphEdge {

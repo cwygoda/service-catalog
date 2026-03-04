@@ -43,6 +43,8 @@ description = "A test service"
       id: 'my-service',
       name: 'My Service',
       description: 'A test service',
+      type: 'web-service',
+      lifecycle: 'active',
     });
   });
 
@@ -78,24 +80,76 @@ description = "Billing service"
     expect(ids).toEqual(['auth', 'billing']);
   });
 
-  it('loads service with metadata', async () => {
-    const serviceDir = join(tempDir, 'versioned');
+  it('loads service with type and lifecycle defaults', async () => {
+    const serviceDir = join(tempDir, 'typed');
     await mkdir(serviceDir);
     await writeFile(
       join(serviceDir, 'service.toml'),
       `[service]
-id = "versioned"
-name = "Versioned Service"
-description = "Has version"
-
-[service.metadata]
-version = "1.2.3"
+id = "typed"
+name = "Typed Service"
+description = "Has defaults"
 `
     );
 
     const catalog = await loader.load(tempDir);
 
-    expect(catalog.services[0]?.metadata?.version).toBe('1.2.3');
+    expect(catalog.services[0]?.type).toBe('web-service');
+    expect(catalog.services[0]?.lifecycle).toBe('active');
+  });
+
+  it('loads service with all new metadata fields', async () => {
+    const serviceDir = join(tempDir, 'rich');
+    await mkdir(serviceDir);
+    await writeFile(
+      join(serviceDir, 'service.toml'),
+      `[service]
+id = "rich-service"
+name = "Rich Service"
+description = "Has all fields"
+domain = "commerce"
+type = "event-producer"
+lifecycle = "deprecated"
+owner = "team-a"
+tags = ["core", "data"]
+repository = "https://github.com/acme/rich"
+tier = "critical"
+language = ["typescript", "go"]
+framework = "nestjs"
+
+[[service.links]]
+url = "https://grafana.internal/d/rich"
+title = "Dashboard"
+type = "dashboard"
+
+[[service.contacts]]
+type = "slack"
+value = "#eng"
+
+[[service.connections]]
+target = "billing"
+type = "http"
+endpoints = ["/pay"]
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+    const svc = catalog.services[0];
+
+    expect(svc?.id).toBe('rich-service');
+    expect(svc?.type).toBe('event-producer');
+    expect(svc?.lifecycle).toBe('deprecated');
+    expect(svc?.owner).toBe('team-a');
+    expect(svc?.tags).toEqual(['core', 'data']);
+    expect(svc?.repository).toBe('https://github.com/acme/rich');
+    expect(svc?.tier).toBe('critical');
+    expect(svc?.language).toEqual(['typescript', 'go']);
+    expect(svc?.framework).toBe('nestjs');
+    expect(svc?.links).toEqual([
+      { url: 'https://grafana.internal/d/rich', title: 'Dashboard', type: 'dashboard' },
+    ]);
+    expect(svc?.contacts).toEqual([{ type: 'slack', value: '#eng' }]);
+    expect(svc?.connections).toEqual([{ target: 'billing', type: 'http', endpoints: ['/pay'] }]);
   });
 
   it('throws for non-directory path', async () => {

@@ -22,6 +22,15 @@ describe('ConnectionSchema', () => {
       expect(Value.Check(ConnectionSchema, conn)).toBe(true);
     });
 
+    it('validates grpc connection with endpoints', () => {
+      const conn = {
+        target: 'billing-service',
+        type: 'grpc',
+        endpoints: ['billing.v1.BillingService/Charge'],
+      };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(true);
+    });
+
     it('validates minimal connection', () => {
       const conn = {
         target: 'auth-service',
@@ -57,7 +66,7 @@ describe('ConnectionSchema', () => {
     });
 
     it('rejects invalid type', () => {
-      const conn = { target: 'service', type: 'grpc' };
+      const conn = { target: 'service', type: 'websocket' };
       expect(Value.Check(ConnectionSchema, conn)).toBe(false);
     });
 
