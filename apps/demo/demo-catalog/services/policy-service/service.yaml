@@ -1,0 +1,5 @@
+service:
+  id: policy-service
+  name: Policy Service
+  description: Authorization policy evaluation using Open Policy Agent
+  domain: platform

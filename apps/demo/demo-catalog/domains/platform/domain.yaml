@@ -1,0 +1,4 @@
+domain:
+  id: platform
+  name: Platform
+  description: Core platform services for authentication, customer relationship management, and policy enforcement.

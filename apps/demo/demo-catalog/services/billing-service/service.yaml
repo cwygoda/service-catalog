@@ -1,0 +1,5 @@
+service:
+  id: billing-service
+  name: Billing Service
+  description: Two-stage payment processing with authorize and capture
+  domain: commerce

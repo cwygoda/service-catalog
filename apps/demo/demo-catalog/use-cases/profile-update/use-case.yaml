@@ -1,0 +1,29 @@
+use_case:
+  id: profile-update
+  name: Profile Update
+  description: >-
+    Customer updates their profile information including contact details and
+    preferences. Changes are validated, persisted, and synchronized across
+    services.
+  domain: platform
+  participants:
+    - service: crm-service
+      role: Stores and manages customer profile data
+    - service: auth-service
+      role: Updates authentication credentials if email changes
+  steps:
+    - sequence: 1
+      actor: Customer
+      action: Submits profile changes
+    - sequence: 2
+      service: crm-service
+      action: Validates profile data
+      endpoint: PUT /customers/{id}
+    - sequence: 3
+      service: auth-service
+      action: Updates credentials if email changed
+      endpoint: PATCH /users/{id}/email
+    - sequence: 4
+      service: crm-service
+      action: Confirms update
+      endpoint: GET /customers/{id}

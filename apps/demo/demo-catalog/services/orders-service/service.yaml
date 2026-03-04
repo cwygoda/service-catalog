@@ -1,0 +1,5 @@
+service:
+  id: orders-service
+  name: Orders Service
+  description: Order lifecycle management from cart to fulfillment
+  domain: commerce
