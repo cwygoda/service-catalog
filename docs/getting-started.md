@@ -27,79 +27,74 @@ pnpm add @cwygoda/service-catalog-ui
 my-catalog/
 ├── domains/
 │   └── commerce/
-│       └── domain.toml
+│       └── domain.yaml
 ├── services/
 │   ├── orders-service/
-│   │   └── service.toml
+│   │   └── service.yaml
 │   └── billing-service/
-│       └── service.toml
+│       └── service.yaml
 └── use-cases/
     └── checkout/
-        └── use-case.toml
+        └── use-case.md
 ```
 
 ### 2. Define a Domain
 
-`domains/commerce/domain.toml`:
+`domains/commerce/domain.yaml`:
 
-```toml
-[domain]
-id = "commerce"
-name = "Commerce"
-description = "E-commerce capabilities"
+```yaml
+domain:
+  id: commerce
+  name: Commerce
+  description: 'E-commerce capabilities'
 ```
 
 ### 3. Define Services
 
-`services/orders-service/service.toml`:
+`services/orders-service/service.yaml`:
 
-```toml
-[service]
-id = "orders-service"
-name = "Orders Service"
-description = "Order lifecycle management"
-domain = "commerce"
+```yaml
+service:
+  id: orders-service
+  name: Orders Service
+  type: web-service
+  domain: commerce
+  owner: checkout-squad
 
-[service.metadata]
-version = "1.0.0"
+  connections:
+    - target: billing-service
+      type: http
+      endpoints: ['POST /payments']
 ```
 
 ### 4. Define Use Cases
 
-`use-cases/checkout/use-case.toml`:
+`use-cases/checkout/use-case.md`:
 
-```toml
-[use_case]
-id = "checkout"
-name = "Customer Checkout"
-description = "Complete purchase flow"
-domain = "commerce"
+````markdown
+---
+id: checkout
+name: Customer Checkout
+domain: commerce
+---
 
-[[use_case.participants]]
-service = "orders-service"
-role = "Creates and manages orders"
+Customer completes a purchase through the storefront.
 
-[[use_case.participants]]
-service = "billing-service"
-role = "Processes payment"
-
-[[use_case.steps]]
-sequence = 1
-actor = "Customer"
-action = "Initiates checkout"
-
-[[use_case.steps]]
-sequence = 2
-service = "orders-service"
-action = "Creates pending order"
-endpoint = "POST /orders"
-
-[[use_case.steps]]
-sequence = 3
-service = "billing-service"
-action = "Processes payment"
-endpoint = "POST /payments"
-```
+\```bpmn
+process: checkout
+start: begin
+-> create_order
+task: create_order
+name: "Create Order"
+service: orders-service
+-> pay
+task: pay
+name: "Process Payment"
+service: billing-service
+-> finish
+end: finish
+\```
+````
 
 ### 5. Build the Catalog
 
@@ -115,6 +110,7 @@ See [UI Integration](./ui-integration.md) for setting up the web interface.
 
 ## Next Steps
 
-- [Catalog Format](./catalog-format.md) - Full TOML schema reference
+- [Authoring Guide](./authoring-guide.md) - Complete walkthrough with examples per service type
+- [Catalog Format](./catalog-format.md) - Full schema reference
 - [CLI Reference](./cli.md) - Build command options
 - [UI Integration](./ui-integration.md) - SvelteKit components
