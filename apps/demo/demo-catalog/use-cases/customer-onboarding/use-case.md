@@ -36,8 +36,8 @@ process: customer-onboarding
   gateway: eligibility-decision
     name: "Eligible?"
     type: exclusive
-    default: rejected
-    -> create-account
+    -> create-account {condition: "eligible", name: "Yes"}
+    -> rejected {condition: "not eligible", name: "No"}
 
   end: rejected
     name: "Registration Rejected"
