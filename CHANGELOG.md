@@ -1,3 +1,9 @@
+# [2.1.0](https://github.com/cwygoda/service-catalog/compare/v2.0.0...v2.1.0) (2026-03-05)
+
+### Features
+
+- **ui:** add Pagefind search with Cmd+K modal ([c72d34d](https://github.com/cwygoda/service-catalog/commit/c72d34dd916403260d12f69c6c7d306d630d7b87))
+
 # [2.0.0](https://github.com/cwygoda/service-catalog/compare/v1.8.1...v2.0.0) (2026-03-05)
 
 ### Bug Fixes
