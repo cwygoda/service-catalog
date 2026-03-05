@@ -1,3 +1,14 @@
+# [2.2.0](https://github.com/cwygoda/service-catalog/compare/v2.1.0...v2.2.0) (2026-03-05)
+
+### Bug Fixes
+
+- **demo:** resolve BPMN lint errors in customer-onboarding gateway ([08c86f0](https://github.com/cwygoda/service-catalog/commit/08c86f06f697ef05d50329a9ced988320eecd5c7))
+- **ui:** resolve Svelte 5 reactivity and a11y warnings ([e966d08](https://github.com/cwygoda/service-catalog/commit/e966d08892b8d9c110b1569d3d99b470fbe8a457))
+
+### Features
+
+- **core,ui:** add DataStore entity across all layers ([15b849f](https://github.com/cwygoda/service-catalog/commit/15b849f5f4e178277bdbc12958cfac6164158b08))
+
 # [2.1.0](https://github.com/cwygoda/service-catalog/compare/v2.0.0...v2.1.0) (2026-03-05)
 
 ### Features
