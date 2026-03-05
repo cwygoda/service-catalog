@@ -1,14 +1,15 @@
 <script lang="ts">
   import { SvelteMap, SvelteSet } from 'svelte/reactivity';
-  import type { Domain, UseCase, Service } from '@cwygoda/service-catalog-core/domain';
+  import type { Domain, UseCase, Service, DataStore } from '@cwygoda/service-catalog-core/domain';
 
   interface Props {
     domains: Domain[];
     useCases: UseCase[];
     services: Service[];
+    dataStores?: DataStore[];
   }
 
-  let { domains, useCases, services }: Props = $props();
+  let { domains, useCases, services, dataStores = [] }: Props = $props();
 
   // Track expanded state for domains and use cases
   const expandedDomains = new SvelteSet<string>();
@@ -67,6 +68,17 @@
     return map;
   });
 
+  const domainDataStoreMap = $derived.by(() => {
+    const map = new SvelteMap<string, DataStore[]>();
+    for (const ds of dataStores) {
+      if (!ds.domain) continue;
+      const arr = map.get(ds.domain);
+      if (arr) arr.push(ds);
+      else map.set(ds.domain, [ds]);
+    }
+    return map;
+  });
+
   const serviceById = $derived.by(() => new SvelteMap(services.map((s) => [s.id, s] as const)));
 
   // Thin wrappers — keep template call sites unchanged
@@ -80,6 +92,10 @@
 
   function getDomainServices(domainId: string): Service[] {
     return domainServiceMap.get(domainId) ?? [];
+  }
+
+  function getDomainDataStores(domainId: string): DataStore[] {
+    return domainDataStoreMap.get(domainId) ?? [];
   }
 
   function getUseCaseServices(useCase: UseCase): Service[] {
@@ -205,6 +221,18 @@
                   class="ml-5 block rounded px-2 py-1 text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700"
                 >
                   {service.name}
+                </a>
+              </li>
+            {/each}
+
+            <!-- Data Stores -->
+            {#each getDomainDataStores(domain.id) as ds (ds.id)}
+              <li>
+                <a
+                  href="/data-stores/{ds.id}"
+                  class="ml-5 block rounded px-2 py-1 text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700"
+                >
+                  {ds.name}
                 </a>
               </li>
             {/each}

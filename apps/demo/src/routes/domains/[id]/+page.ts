@@ -13,6 +13,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
 
   const useCases = catalog.useCases.filter((uc) => uc.domain === domain.id);
   const services = catalog.services.filter((s) => s.domain === domain.id);
+  const dataStores = catalog.dataStores.filter((ds) => ds.domain === domain.id);
   const childDomains = catalog.domains.filter((d) => d.parent === domain.id);
 
   // Build ancestor chain for breadcrumbs
@@ -29,6 +30,7 @@ export const load: PageLoad = async ({ fetch, params }) => {
     domain,
     useCases,
     services,
+    dataStores,
     childDomains,
     ancestors,
   };

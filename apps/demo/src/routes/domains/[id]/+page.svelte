@@ -88,6 +88,37 @@
       </div>
     {/if}
 
+    <!-- Data Stores -->
+    {#if data.dataStores.length > 0}
+      <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">
+        <h2
+          class="mb-4 text-sm font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+        >
+          Data Stores ({data.dataStores.length})
+        </h2>
+        <div class="grid gap-4 sm:grid-cols-2">
+          {#each data.dataStores as ds (ds.id)}
+            <a
+              href="/data-stores/{ds.id}"
+              class="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+            >
+              <div class="font-medium text-gray-900 dark:text-white">
+                {ds.name}
+              </div>
+              <div class="mt-1 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                <span class="rounded bg-gray-100 px-1.5 py-0.5 text-xs dark:bg-gray-700">
+                  {ds.type}
+                </span>
+                {#if ds.technology}
+                  <span>{ds.technology}</span>
+                {/if}
+              </div>
+            </a>
+          {/each}
+        </div>
+      </div>
+    {/if}
+
     <!-- Child Domains -->
     {#if data.childDomains.length > 0}
       <div class="mt-8 border-t border-gray-200 pt-6 dark:border-gray-700">

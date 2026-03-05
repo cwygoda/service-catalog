@@ -63,9 +63,13 @@ export const load: PageLoad = async ({ fetch, params }) => {
       sourceName: graph.nodes.find((n) => n.id === e.source)?.name ?? e.source,
     }));
 
+  // Get data stores owned by this service
+  const dataStores = catalog.dataStores.filter((ds) => ds.owner === service.id);
+
   return {
     service,
     useCases,
+    dataStores,
     domain,
     domainAncestors,
     miniGraph: {

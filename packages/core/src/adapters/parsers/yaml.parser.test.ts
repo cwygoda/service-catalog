@@ -5,6 +5,8 @@ import {
   parseYaml,
   parseUseCaseYaml,
   parseDomainYaml,
+  parseDataStoreYaml,
+  sidecarToDataStore,
   YamlParseError,
   ValidationError,
 } from './yaml.parser.js';
@@ -75,6 +77,96 @@ describe('yaml.parser', () => {
         expect(error).toBeInstanceOf(ValidationError);
         expect((error as ValidationError).filePath).toBe('/path/to/use-case.yaml');
       }
+    });
+  });
+
+  describe('parseDataStoreYaml', () => {
+    it('parses valid data store sidecar', async () => {
+      const content = await readFile(join(fixturesDir, 'valid-data-store.yaml'), 'utf-8');
+      const result = parseDataStoreYaml(content, 'test.yaml');
+
+      expect(result.data_store.id).toBe('orders-db');
+      expect(result.data_store.name).toBe('Orders Database');
+      expect(result.data_store.type).toBe('database');
+      expect(result.data_store.domain).toBe('commerce');
+      expect(result.data_store.owner).toBe('orders-service');
+      expect(result.data_store.technology).toBe('PostgreSQL');
+      expect(result.data_store.links).toHaveLength(1);
+    });
+
+    it('throws ValidationError for invalid data store', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-data-store.yaml'), 'utf-8');
+
+      expect(() => parseDataStoreYaml(content, 'invalid.yaml')).toThrow(ValidationError);
+    });
+
+    it('includes file path in error', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-data-store.yaml'), 'utf-8');
+
+      try {
+        parseDataStoreYaml(content, '/path/to/data-store.yaml');
+        expect.fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ValidationError);
+        expect((error as ValidationError).filePath).toBe('/path/to/data-store.yaml');
+      }
+    });
+  });
+
+  describe('sidecarToDataStore', () => {
+    it('converts sidecar to data store', () => {
+      const sidecar = {
+        data_store: {
+          id: 'orders-db',
+          name: 'Orders DB',
+          description: 'Primary database',
+          type: 'database' as const,
+          domain: 'commerce',
+          owner: 'orders-service',
+          technology: 'PostgreSQL',
+          links: [{ url: 'https://dash.io', title: 'Dashboard' }],
+        },
+      };
+
+      const ds = sidecarToDataStore(sidecar);
+
+      expect(ds.id).toBe('orders-db');
+      expect(ds.name).toBe('Orders DB');
+      expect(ds.description).toBe('Primary database');
+      expect(ds.type).toBe('database');
+      expect(ds.domain).toBe('commerce');
+      expect(ds.owner).toBe('orders-service');
+      expect(ds.technology).toBe('PostgreSQL');
+      expect(ds.links).toHaveLength(1);
+    });
+
+    it('defaults description to empty string', () => {
+      const sidecar = {
+        data_store: {
+          id: 'test',
+          name: 'Test',
+          type: 'cache' as const,
+        },
+      };
+
+      const ds = sidecarToDataStore(sidecar);
+      expect(ds.description).toBe('');
+    });
+
+    it('omits optional fields when not present', () => {
+      const sidecar = {
+        data_store: {
+          id: 'test',
+          name: 'Test',
+          type: 'queue' as const,
+        },
+      };
+
+      const ds = sidecarToDataStore(sidecar);
+      expect('domain' in ds).toBe(false);
+      expect('owner' in ds).toBe(false);
+      expect('technology' in ds).toBe(false);
+      expect('links' in ds).toBe(false);
     });
   });
 

@@ -38,6 +38,7 @@ describe('JsonWriter', () => {
         },
       ],
       domains: [],
+      dataStores: [],
     };
     const outputPath = join(tempDir, 'catalog.json');
 
@@ -49,7 +50,7 @@ describe('JsonWriter', () => {
   });
 
   it('creates nested directories if needed', async () => {
-    const catalog: Catalog = { useCases: [], services: [], domains: [] };
+    const catalog: Catalog = { useCases: [], services: [], domains: [], dataStores: [] };
     const outputPath = join(tempDir, 'nested', 'deep', 'catalog.json');
 
     await writer.write(catalog, outputPath);
@@ -65,6 +66,7 @@ describe('JsonWriter', () => {
         { id: 'test', name: 'Test', description: 'Desc', type: 'web-service', lifecycle: 'active' },
       ],
       domains: [],
+      dataStores: [],
     };
     const outputPath = join(tempDir, 'catalog.json');
 
@@ -85,6 +87,7 @@ describe('JsonWriter', () => {
           { id: 'old', name: 'Old', description: 'Old', type: 'web-service', lifecycle: 'active' },
         ],
         domains: [],
+        dataStores: [],
       },
       outputPath
     );
@@ -95,6 +98,7 @@ describe('JsonWriter', () => {
           { id: 'new', name: 'New', description: 'New', type: 'web-service', lifecycle: 'active' },
         ],
         domains: [],
+        dataStores: [],
       },
       outputPath
     );
@@ -117,6 +121,7 @@ describe('JsonWriter', () => {
         },
       ],
       domains: [],
+      dataStores: [],
     };
     const outputPath = join(tempDir, 'catalog.json');
 

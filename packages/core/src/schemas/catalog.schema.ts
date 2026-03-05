@@ -13,6 +13,7 @@ import {
   LinkSchema,
   ContactSchema,
 } from './service.schema.js';
+import { DataStoreTypeSchema } from './data-store.schema.js';
 
 export const SpecSummarySchema = Type.Object({
   type: Type.Union([Type.Literal('openapi'), Type.Literal('asyncapi')]),
@@ -84,10 +85,23 @@ export const ServiceGraphSchema = Type.Object({
   edges: Type.Array(GraphEdgeSchema),
 });
 
+export const DataStoreOutputSchema = Type.Object({
+  id: Type.String({ minLength: 1 }),
+  name: Type.String({ minLength: 1 }),
+  description: Type.String(),
+  type: DataStoreTypeSchema,
+  domain: Type.Optional(Type.String({ minLength: 1 })),
+  owner: Type.Optional(Type.String({ minLength: 1 })),
+  technology: Type.Optional(Type.String({ minLength: 1 })),
+  links: Type.Optional(Type.Array(LinkSchema)),
+  content: Type.Optional(Type.String()),
+});
+
 export const CatalogSchema = Type.Object({
   services: Type.Array(ServiceSchema),
   useCases: Type.Array(UseCaseSchema),
   domains: Type.Array(DomainOutputSchema),
+  dataStores: Type.Array(DataStoreOutputSchema),
   graph: Type.Optional(ServiceGraphSchema),
 });
 

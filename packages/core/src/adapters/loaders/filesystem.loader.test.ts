@@ -22,6 +22,7 @@ describe('FilesystemLoader', () => {
     expect(catalog.services).toEqual([]);
     expect(catalog.useCases).toEqual([]);
     expect(catalog.domains).toEqual([]);
+    expect(catalog.dataStores).toEqual([]);
   });
 
   it('loads single service', async () => {
@@ -660,6 +661,107 @@ steps = []
 
     expect(catalog.useCases).toHaveLength(1);
     expect(catalog.useCases[0]?.id).toBe('yaml-uc');
+  });
+
+  it('loads single data store', async () => {
+    const dsDir = join(tempDir, 'services', 'orders', 'orders-db');
+    await mkdir(dsDir, { recursive: true });
+    await writeFile(
+      join(dsDir, 'data-store.yaml'),
+      `data_store:
+  id: orders-db
+  name: Orders Database
+  type: database
+  domain: commerce
+  owner: orders-service
+  technology: PostgreSQL
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.dataStores).toHaveLength(1);
+    expect(catalog.dataStores[0]?.id).toBe('orders-db');
+    expect(catalog.dataStores[0]?.type).toBe('database');
+    expect(catalog.dataStores[0]?.technology).toBe('PostgreSQL');
+  });
+
+  it('loads TOML data store', async () => {
+    const dsDir = join(tempDir, 'cache');
+    await mkdir(dsDir);
+    await writeFile(
+      join(dsDir, 'data-store.toml'),
+      `[data_store]
+id = "user-cache"
+name = "User Cache"
+type = "cache"
+technology = "Redis"
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.dataStores).toHaveLength(1);
+    expect(catalog.dataStores[0]?.id).toBe('user-cache');
+  });
+
+  it('YAML data store takes precedence over TOML', async () => {
+    const dsDir = join(tempDir, 'dual-ds');
+    await mkdir(dsDir);
+    await writeFile(
+      join(dsDir, 'data-store.toml'),
+      `[data_store]
+id = "toml-ds"
+name = "TOML DS"
+type = "database"
+`
+    );
+    await writeFile(
+      join(dsDir, 'data-store.yaml'),
+      `data_store:
+  id: yaml-ds
+  name: YAML DS
+  type: database
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.dataStores).toHaveLength(1);
+    expect(catalog.dataStores[0]?.id).toBe('yaml-ds');
+  });
+
+  it('loads data stores alongside services and domains', async () => {
+    // Service
+    const svcDir = join(tempDir, 'services', 'orders');
+    await mkdir(svcDir, { recursive: true });
+    await writeFile(
+      join(svcDir, 'service.yaml'),
+      `service:
+  id: orders-service
+  name: Orders Service
+  description: Handles orders
+`
+    );
+
+    // Data store under service
+    const dsDir = join(svcDir, 'orders-db');
+    await mkdir(dsDir);
+    await writeFile(
+      join(dsDir, 'data-store.yaml'),
+      `data_store:
+  id: orders-db
+  name: Orders DB
+  type: database
+  owner: orders-service
+`
+    );
+
+    const catalog = await loader.load(tempDir);
+
+    expect(catalog.services).toHaveLength(1);
+    expect(catalog.dataStores).toHaveLength(1);
+    expect(catalog.dataStores[0]?.owner).toBe('orders-service');
   });
 
   it('markdown without bpmn block has no XML', async () => {

@@ -9,6 +9,7 @@
     { href: '/domains', label: 'Domains' },
     { href: '/use-cases', label: 'Use Cases' },
     { href: '/services', label: 'Services' },
+    { href: '/data-stores', label: 'Data Stores' },
     { href: '/graph', label: 'Graph' },
   ];
 

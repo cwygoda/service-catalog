@@ -1,0 +1,8 @@
+data_store:
+  id: events-queue
+  name: Events Queue
+  description: Message queue for asynchronous event processing between services
+  type: queue
+  domain: commerce
+  owner: orders-service
+  technology: Kafka

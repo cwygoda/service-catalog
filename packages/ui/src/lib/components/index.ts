@@ -1,5 +1,6 @@
 export { default as BpmnDiagram } from './BpmnDiagram.svelte';
 export { default as Breadcrumbs } from './Breadcrumbs.svelte';
+export { default as DataStoreCard } from './DataStoreCard.svelte';
 export { default as DomainCard } from './DomainCard.svelte';
 export { default as Header } from './Header.svelte';
 export { default as NavModeToggle } from './NavModeToggle.svelte';

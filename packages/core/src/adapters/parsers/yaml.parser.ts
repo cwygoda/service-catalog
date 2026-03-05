@@ -2,11 +2,13 @@ import { parse, YAMLParseError } from 'yaml';
 import type { ServiceSidecar } from '../../schemas/service.schema.js';
 import type { UseCaseSidecar } from '../../schemas/use-case.schema.js';
 import type { DomainSidecar } from '../../schemas/domain.schema.js';
+import type { DataStoreSidecar } from '../../schemas/data-store.schema.js';
 import {
   ValidationError,
   compiledServiceSchema,
   compiledUseCaseSchema,
   compiledDomainSchema,
+  compiledDataStoreSchema,
 } from './sidecar.transforms.js';
 
 // Re-export shared transforms for convenience
@@ -15,6 +17,7 @@ export {
   sidecarToService,
   sidecarToUseCase,
   sidecarToDomain,
+  sidecarToDataStore,
 } from './sidecar.transforms.js';
 
 export class YamlParseError extends Error {
@@ -85,6 +88,19 @@ export function parseDomainYaml(content: string, filePath: string): DomainSideca
       (e) => `${e.path}: ${e.message} (got ${JSON.stringify(e.value)})`
     );
     throw new ValidationError('Invalid domain sidecar', filePath, errors);
+  }
+
+  return parsed;
+}
+
+export function parseDataStoreYaml(content: string, filePath: string): DataStoreSidecar {
+  const parsed = parseYamlContent(content, filePath);
+
+  if (!compiledDataStoreSchema.Check(parsed)) {
+    const errors = [...compiledDataStoreSchema.Errors(parsed)].map(
+      (e) => `${e.path}: ${e.message} (got ${JSON.stringify(e.value)})`
+    );
+    throw new ValidationError('Invalid data store sidecar', filePath, errors);
   }
 
   return parsed;

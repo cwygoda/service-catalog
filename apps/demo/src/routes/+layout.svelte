@@ -32,6 +32,7 @@
           domains={data.catalog.domains}
           useCases={data.catalog.useCases}
           services={data.catalog.services}
+          dataStores={data.catalog.dataStores}
         />
       </aside>
     {/if}

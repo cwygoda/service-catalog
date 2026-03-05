@@ -1,0 +1,8 @@
+data_store:
+  id: user-cache
+  name: User Cache
+  description: In-memory cache for user profiles and session data to reduce database load
+  type: cache
+  domain: platform
+  owner: crm-service
+  technology: Redis

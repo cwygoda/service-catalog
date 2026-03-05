@@ -8,6 +8,8 @@ import {
   sidecarToUseCase,
   parseDomainToml,
   sidecarToDomain,
+  parseDataStoreToml,
+  sidecarToDataStore,
   TomlParseError,
   ValidationError,
 } from './toml.parser.js';
@@ -307,6 +309,64 @@ describe('toml.parser', () => {
         expect(error).toBeInstanceOf(ValidationError);
         expect((error as ValidationError).filePath).toBe('/path/to/domain.toml');
       }
+    });
+  });
+
+  describe('parseDataStoreToml', () => {
+    it('parses valid data store sidecar', async () => {
+      const content = await readFile(join(fixturesDir, 'valid-data-store.toml'), 'utf-8');
+      const result = parseDataStoreToml(content, 'test.toml');
+
+      expect(result.data_store.id).toBe('orders-db');
+      expect(result.data_store.name).toBe('Orders Database');
+      expect(result.data_store.type).toBe('database');
+      expect(result.data_store.technology).toBe('PostgreSQL');
+    });
+
+    it('throws ValidationError for invalid data store', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-data-store.toml'), 'utf-8');
+
+      expect(() => parseDataStoreToml(content, 'invalid.toml')).toThrow(ValidationError);
+    });
+
+    it('includes file path in error', async () => {
+      const content = await readFile(join(fixturesDir, 'invalid-data-store.toml'), 'utf-8');
+
+      try {
+        parseDataStoreToml(content, '/path/to/data-store.toml');
+        expect.fail('Should have thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(ValidationError);
+        expect((error as ValidationError).filePath).toBe('/path/to/data-store.toml');
+      }
+    });
+  });
+
+  describe('sidecarToDataStore', () => {
+    it('converts sidecar to data store', () => {
+      const sidecar = {
+        data_store: {
+          id: 'orders-db',
+          name: 'Orders DB',
+          description: 'Primary database',
+          type: 'database' as const,
+          domain: 'commerce',
+          owner: 'orders-service',
+          technology: 'PostgreSQL',
+        },
+      };
+
+      const ds = sidecarToDataStore(sidecar);
+
+      expect(ds).toEqual({
+        id: 'orders-db',
+        name: 'Orders DB',
+        description: 'Primary database',
+        type: 'database',
+        domain: 'commerce',
+        owner: 'orders-service',
+        technology: 'PostgreSQL',
+      });
     });
   });
 

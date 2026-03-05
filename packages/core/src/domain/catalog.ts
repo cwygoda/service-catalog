@@ -1,21 +1,24 @@
 import type { Service } from './service.js';
 import type { UseCase } from './use-case.js';
 import type { Domain } from './domain.js';
+import type { DataStore } from './data-store.js';
 import type { ServiceGraph } from './graph.js';
 
 export interface Catalog {
   services: Service[];
   useCases: UseCase[];
   domains: Domain[];
+  dataStores: DataStore[];
   graph?: ServiceGraph;
 }
 
 export function createCatalog(
   services: Service[] = [],
   useCases: UseCase[] = [],
-  domains: Domain[] = []
+  domains: Domain[] = [],
+  dataStores: DataStore[] = []
 ): Catalog {
-  return { services, useCases, domains };
+  return { services, useCases, domains, dataStores };
 }
 
 export function addService(catalog: Catalog, service: Service): Catalog {
@@ -56,4 +59,20 @@ export function getDomainServices(catalog: Catalog, domainId: string): Service[]
 
 export function getChildDomains(catalog: Catalog, parentId: string): Domain[] {
   return catalog.domains.filter((d) => d.parent === parentId);
+}
+
+export function addDataStore(catalog: Catalog, dataStore: DataStore): Catalog {
+  return { ...catalog, dataStores: [...catalog.dataStores, dataStore] };
+}
+
+export function findDataStore(catalog: Catalog, id: string): DataStore | undefined {
+  return catalog.dataStores.find((ds) => ds.id === id);
+}
+
+export function getDomainDataStores(catalog: Catalog, domainId: string): DataStore[] {
+  return catalog.dataStores.filter((ds) => ds.domain === domainId);
+}
+
+export function getServiceDataStores(catalog: Catalog, serviceId: string): DataStore[] {
+  return catalog.dataStores.filter((ds) => ds.owner === serviceId);
 }

@@ -21,6 +21,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const connections = deriveConnectionsFromUseCases(catalog);
@@ -47,6 +48,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const connections = deriveConnectionsFromUseCases(catalog);
@@ -70,6 +72,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const connections = deriveConnectionsFromUseCases(catalog);
@@ -103,6 +106,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const connections = deriveConnectionsFromUseCases(catalog);
@@ -135,6 +139,7 @@ describe('graph-builder', () => {
         ],
         useCases: [],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -172,6 +177,7 @@ describe('graph-builder', () => {
         ],
         useCases: [],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -212,6 +218,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -253,6 +260,7 @@ describe('graph-builder', () => {
           },
         ],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -282,6 +290,7 @@ describe('graph-builder', () => {
         ],
         useCases: [],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -312,6 +321,7 @@ describe('graph-builder', () => {
         ],
         useCases: [],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);
@@ -347,6 +357,7 @@ describe('graph-builder', () => {
         ],
         useCases: [],
         domains: [],
+        dataStores: [],
       };
 
       const graph = buildServiceGraph(catalog);

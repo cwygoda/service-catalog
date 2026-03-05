@@ -1,0 +1,12 @@
+data_store:
+  id: orders-db
+  name: Orders Database
+  description: Primary relational database storing order data, customer references, and transaction history
+  type: database
+  domain: commerce
+  owner: orders-service
+  technology: PostgreSQL
+  links:
+    - url: https://grafana.internal/d/orders-db
+      title: Database Dashboard
+      type: dashboard

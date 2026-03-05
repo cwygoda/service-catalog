@@ -1,0 +1,8 @@
+data_store:
+  id: product-index
+  name: Product Index
+  description: Full-text search index for product catalog browsing and search
+  type: search-index
+  domain: commerce
+  owner: catalog-service
+  technology: Elasticsearch

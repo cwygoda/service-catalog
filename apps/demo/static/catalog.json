@@ -244,6 +244,51 @@
       "description": "Core platform services for authentication, customer relationship management, and policy enforcement."
     }
   ],
+  "dataStores": [
+    {
+      "id": "product-index",
+      "name": "Product Index",
+      "description": "Full-text search index for product catalog browsing and search",
+      "type": "search-index",
+      "domain": "commerce",
+      "owner": "catalog-service",
+      "technology": "Elasticsearch"
+    },
+    {
+      "id": "user-cache",
+      "name": "User Cache",
+      "description": "In-memory cache for user profiles and session data to reduce database load",
+      "type": "cache",
+      "domain": "platform",
+      "owner": "crm-service",
+      "technology": "Redis"
+    },
+    {
+      "id": "events-queue",
+      "name": "Events Queue",
+      "description": "Message queue for asynchronous event processing between services",
+      "type": "queue",
+      "domain": "commerce",
+      "owner": "orders-service",
+      "technology": "Kafka"
+    },
+    {
+      "id": "orders-db",
+      "name": "Orders Database",
+      "description": "Primary relational database storing order data, customer references, and transaction history",
+      "type": "database",
+      "domain": "commerce",
+      "owner": "orders-service",
+      "technology": "PostgreSQL",
+      "links": [
+        {
+          "url": "https://grafana.internal/d/orders-db",
+          "title": "Database Dashboard",
+          "type": "dashboard"
+        }
+      ]
+    }
+  ],
   "graph": {
     "nodes": [
       {

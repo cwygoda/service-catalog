@@ -1,0 +1,4 @@
+data_store:
+  id: missing-type
+  name: Missing Type
+  description: This data store has no type field

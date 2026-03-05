@@ -5,13 +5,25 @@ import type { Catalog } from '../../domain/catalog.js';
 import type { Service } from '../../domain/service.js';
 import type { UseCase } from '../../domain/use-case.js';
 import type { Domain } from '../../domain/domain.js';
+import type { DataStore } from '../../domain/data-store.js';
 import { createCatalog } from '../../domain/catalog.js';
-import { parseToml, parseUseCaseToml, parseDomainToml } from '../parsers/toml.parser.js';
-import { parseYaml, parseUseCaseYaml, parseDomainYaml } from '../parsers/yaml.parser.js';
+import {
+  parseToml,
+  parseUseCaseToml,
+  parseDomainToml,
+  parseDataStoreToml,
+} from '../parsers/toml.parser.js';
+import {
+  parseYaml,
+  parseUseCaseYaml,
+  parseDomainYaml,
+  parseDataStoreYaml,
+} from '../parsers/yaml.parser.js';
 import {
   sidecarToService,
   sidecarToUseCase,
   sidecarToDomain,
+  sidecarToDataStore,
 } from '../parsers/sidecar.transforms.js';
 import { parseBpmnTxt } from '../parsers/bpmn-txt.parser.js';
 import { parseUseCaseMarkdown, markdownToUseCase } from '../parsers/markdown.parser.js';
@@ -31,6 +43,7 @@ import type { BpmnLintLevel } from '../../schemas/catalog-config.schema.js';
 const SERVICE_FILES = ['service.yaml', 'service.toml'] as const;
 const USE_CASE_FILES = ['use-case.md', 'use-case.yaml', 'use-case.toml'] as const;
 const DOMAIN_FILES = ['domain.yaml', 'domain.toml'] as const;
+const DATA_STORE_FILES = ['data-store.yaml', 'data-store.toml'] as const;
 
 export interface LoaderOptions {
   bpmnLint?: BpmnLintLevel;
@@ -146,7 +159,20 @@ export class FilesystemLoader implements CatalogLoaderPort {
       domains.push(sidecarToDomain(sidecar));
     }
 
-    return createCatalog(services, useCases, domains);
+    // Load data stores (yaml > toml)
+    const dataStoreFiles = await findFilesWithPriority(path, DATA_STORE_FILES);
+    const dataStores: DataStore[] = [];
+
+    for (const filePath of dataStoreFiles) {
+      const content = await readFile(filePath, 'utf-8');
+      const sidecar =
+        extname(filePath) === '.yaml'
+          ? parseDataStoreYaml(content, filePath)
+          : parseDataStoreToml(content, filePath);
+      dataStores.push(sidecarToDataStore(sidecar));
+    }
+
+    return createCatalog(services, useCases, domains, dataStores);
   }
 
   private async loadMarkdownUseCase(filePath: string): Promise<UseCase> {

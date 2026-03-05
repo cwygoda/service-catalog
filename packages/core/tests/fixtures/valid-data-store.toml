@@ -1,0 +1,13 @@
+[data_store]
+id = "orders-db"
+name = "Orders Database"
+description = "Primary database for order data"
+type = "database"
+domain = "commerce"
+owner = "orders-service"
+technology = "PostgreSQL"
+
+[[data_store.links]]
+url = "https://grafana.internal/d/orders-db"
+title = "Dashboard"
+type = "dashboard"

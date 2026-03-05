@@ -4,17 +4,22 @@ import {
   addService,
   addUseCase,
   addDomain,
+  addDataStore,
   findService,
   findUseCase,
   findDomain,
+  findDataStore,
   getServiceUseCases,
+  getServiceDataStores,
   getDomainUseCases,
   getDomainServices,
+  getDomainDataStores,
   getChildDomains,
 } from './catalog.js';
 import { createService } from './service.js';
 import { createUseCase, type UseCase } from './use-case.js';
 import { createDomain } from './domain.js';
+import { createDataStore } from './data-store.js';
 
 describe('Catalog', () => {
   describe('createCatalog', () => {
@@ -23,6 +28,7 @@ describe('Catalog', () => {
       expect(catalog.services).toEqual([]);
       expect(catalog.useCases).toEqual([]);
       expect(catalog.domains).toEqual([]);
+      expect(catalog.dataStores).toEqual([]);
     });
 
     it('creates catalog with services', () => {
@@ -347,6 +353,102 @@ describe('Catalog', () => {
 
       expect(result).toHaveLength(1);
       expect(result[0]?.id).toBe('commerce');
+    });
+  });
+
+  describe('addDataStore', () => {
+    it('adds data store to empty catalog', () => {
+      const catalog = createCatalog();
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database');
+      const updated = addDataStore(catalog, ds);
+
+      expect(updated.dataStores).toHaveLength(1);
+      expect(updated.dataStores[0]).toBe(ds);
+    });
+
+    it('does not mutate original catalog', () => {
+      const catalog = createCatalog();
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database');
+      addDataStore(catalog, ds);
+
+      expect(catalog.dataStores).toHaveLength(0);
+    });
+
+    it('preserves other collections when adding data store', () => {
+      const service = createService('test', 'Test', 'Description');
+      const catalog = createCatalog([service]);
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database');
+      const updated = addDataStore(catalog, ds);
+
+      expect(updated.services).toHaveLength(1);
+    });
+  });
+
+  describe('findDataStore', () => {
+    it('finds data store by id', () => {
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database');
+      const catalog = createCatalog([], [], [], [ds]);
+
+      expect(findDataStore(catalog, 'orders-db')).toBe(ds);
+    });
+
+    it('returns undefined for unknown id', () => {
+      const catalog = createCatalog();
+      expect(findDataStore(catalog, 'unknown')).toBeUndefined();
+    });
+  });
+
+  describe('getDomainDataStores', () => {
+    it('returns data stores in domain', () => {
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database', {
+        domain: 'commerce',
+      });
+      const catalog = createCatalog([], [], [], [ds]);
+
+      const result = getDomainDataStores(catalog, 'commerce');
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBe(ds);
+    });
+
+    it('returns empty array when no data stores in domain', () => {
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database', {
+        domain: 'other',
+      });
+      const catalog = createCatalog([], [], [], [ds]);
+
+      expect(getDomainDataStores(catalog, 'commerce')).toEqual([]);
+    });
+  });
+
+  describe('getServiceDataStores', () => {
+    it('returns data stores owned by service', () => {
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database', {
+        owner: 'orders-service',
+      });
+      const catalog = createCatalog([], [], [], [ds]);
+
+      const result = getServiceDataStores(catalog, 'orders-service');
+
+      expect(result).toHaveLength(1);
+      expect(result[0]).toBe(ds);
+    });
+
+    it('returns empty array when no data stores owned by service', () => {
+      const ds = createDataStore('orders-db', 'Orders DB', 'Database', 'database', {
+        owner: 'other-service',
+      });
+      const catalog = createCatalog([], [], [], [ds]);
+
+      expect(getServiceDataStores(catalog, 'orders-service')).toEqual([]);
+    });
+
+    it('returns multiple data stores for same owner', () => {
+      const ds1 = createDataStore('db', 'DB', 'Database', 'database', { owner: 'svc' });
+      const ds2 = createDataStore('cache', 'Cache', 'Cache', 'cache', { owner: 'svc' });
+      const catalog = createCatalog([], [], [], [ds1, ds2]);
+
+      expect(getServiceDataStores(catalog, 'svc')).toHaveLength(2);
     });
   });
 });

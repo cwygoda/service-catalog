@@ -19,7 +19,7 @@
     </p>
   </div>
 
-  <div class="mb-12 grid gap-6 sm:grid-cols-3">
+  <div class="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
     <a
       href="/domains"
       class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
@@ -46,6 +46,15 @@
         {data.serviceCount}
       </div>
       <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">Services</div>
+    </a>
+    <a
+      href="/data-stores"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+    >
+      <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
+        {data.dataStoreCount}
+      </div>
+      <div class="mt-1 text-sm text-gray-600 dark:text-gray-400">Data Stores</div>
     </a>
   </div>
 
