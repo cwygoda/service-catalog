@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/cwygoda/service-catalog/compare/v1.8.1...v2.0.0) (2026-03-05)
+
+### Bug Fixes
+
+- **release:** re-publish with resolved workspace protocols ([7b56031](https://github.com/cwygoda/service-catalog/commit/7b56031dcff6a9a1b329449b82cf1a5dcb0de4a5))
+
+### Features
+
+- **core:** add YAML parser and dual-format loader ([bd049bd](https://github.com/cwygoda/service-catalog/commit/bd049bdd209933ac0c05b975d913e3e8eb0f0125))
+- **core:** expand service metadata schema with type, lifecycle, and rich fields ([26764fd](https://github.com/cwygoda/service-catalog/commit/26764fd05f8fc4b27b641352db67a9f626a0c497))
+- **demo:** migrate all TOML sidecars to YAML ([5f16433](https://github.com/cwygoda/service-catalog/commit/5f16433585ba805b8b2bca155ec61db82cc80753))
+
+### BREAKING CHANGES
+
+- **core:** Service.metadata removed; Service.type and Service.lifecycle
+  now required (defaults: web-service, active).
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 ## [1.8.1](https://github.com/cwygoda/service-catalog/compare/v1.8.0...v1.8.1) (2026-03-03)
 
 ### Bug Fixes
