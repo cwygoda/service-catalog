@@ -51,8 +51,8 @@
     onElementClick,
   }: Props = $props();
 
-  let wrapper: HTMLDivElement;
-  let container: HTMLDivElement;
+  let wrapper: HTMLDivElement | undefined = $state();
+  let container: HTMLDivElement | undefined = $state();
   let resizeObserver: ResizeObserver | null = null;
   let viewer: BpmnViewer | null = $state(null);
   let error: string | null = $state(null);
@@ -200,7 +200,7 @@
   }
 
   onMount(async () => {
-    if (!browser || !xml) return;
+    if (!browser || !xml || !container) return;
 
     try {
       // Dynamic import to avoid SSR issues

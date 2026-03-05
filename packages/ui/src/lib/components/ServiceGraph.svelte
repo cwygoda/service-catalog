@@ -55,7 +55,8 @@
   let tooltip = $state({ visible: false, x: 0, y: 0, content: '' });
 
   // Responsive height — scales with container width on narrow screens
-  let responsiveHeight = $state(height);
+  // Initialized to default; computed from height prop in onMount/resize
+  let responsiveHeight = $state(500);
   let resizeObserver: ResizeObserver | null = null;
 
   // Fullscreen state

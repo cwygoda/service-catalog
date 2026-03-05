@@ -152,6 +152,7 @@
   <div
     class="fixed inset-x-0 top-[15%] z-50 mx-auto w-full max-w-lg"
     role="dialog"
+    tabindex="-1"
     aria-modal="true"
     aria-label="Search catalog"
     onkeydown={handleModalKeydown}
@@ -215,6 +216,9 @@
                   : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'}"
                 onclick={() => {
                   navigate(result.url);
+                }}
+                onkeydown={(e) => {
+                  if (e.key === 'Enter') navigate(result.url);
                 }}
                 onmouseenter={() => {
                   selectedIndex = i;
