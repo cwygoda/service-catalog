@@ -1,3 +1,10 @@
+# [4.1.0](https://github.com/cwygoda/service-catalog/compare/v4.0.0...v4.1.0) (2026-03-06)
+
+### Features
+
+- resolve CLI input paths relative to caller's cwd via INIT_CWD ([8256975](https://github.com/cwygoda/service-catalog/commit/825697525acab802fd3bbc3f0b79154c5673f3f2))
+- support CATALOG_DIR env var for custom catalog input ([00f07c6](https://github.com/cwygoda/service-catalog/commit/00f07c6bab61d34ddc7f78b557824320b2242302))
+
 # [4.0.0](https://github.com/cwygoda/service-catalog/compare/v3.0.0...v4.0.0) (2026-03-06)
 
 - feat!: update dependencies and CI to Node 24, pnpm 10, ESLint 10 ([ff79438](https://github.com/cwygoda/service-catalog/commit/ff7943873ad6e61bb9f58ee91de7f0c94939b85e))
