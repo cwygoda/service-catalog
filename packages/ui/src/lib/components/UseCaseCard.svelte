@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { UseCase } from '@cwygoda/service-catalog-core/domain';
+  import Shield from './Shield.svelte';
 
   let { useCase }: { useCase: UseCase } = $props();
 
@@ -14,22 +15,26 @@
   aria-label="View {useCase.name} use case"
   class="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md active:shadow-sm dark:border-gray-700 dark:bg-gray-800"
 >
-  <div class="mb-2 flex items-center justify-between">
-    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-      {useCase.name}
-    </h3>
-    {#if useCase.bpmn}
-      <span
-        class="rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
-      >
-        BPMN
-      </span>
-    {/if}
+  <div class="mb-3 flex items-start gap-4">
+    <Shield label={useCase.name} size={44} />
+    <div class="min-w-0 flex-1">
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="truncate text-lg font-semibold text-gray-900 dark:text-white">
+          {useCase.name}
+        </h3>
+        {#if useCase.bpmn}
+          <span
+            class="shrink-0 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
+          >
+            BPMN
+          </span>
+        {/if}
+      </div>
+      <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        {truncate(useCase.description, 120)}
+      </p>
+    </div>
   </div>
-
-  <p class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-    {truncate(useCase.description, 120)}
-  </p>
 
   <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
     <span class="flex items-center gap-1">
