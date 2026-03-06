@@ -1,11 +1,11 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import { fetchCatalog } from '@cwygoda/service-catalog-ui';
 import type { Domain } from '@cwygoda/service-catalog-core';
 
-export const load: PageLoad = async ({ fetch, params }) => {
-  const catalog = await fetchCatalog(fetch);
-  const domain = catalog.domains.find((d) => d.id === params.id);
+export const load: PageLoad = async ({ params, parent }) => {
+  const { catalog } = await parent();
+  const domainMap = new Map(catalog.domains.map((d) => [d.id, d]));
+  const domain = domainMap.get(params.id);
 
   if (!domain) {
     error(404, `Domain '${params.id}' not found`);
@@ -20,10 +20,10 @@ export const load: PageLoad = async ({ fetch, params }) => {
   const ancestors: Domain[] = [];
   let current = domain;
   while (current.parent) {
-    const parent = catalog.domains.find((d) => d.id === current.parent);
-    if (!parent) break;
-    ancestors.unshift(parent);
-    current = parent;
+    const p = domainMap.get(current.parent);
+    if (!p) break;
+    ancestors.unshift(p);
+    current = p;
   }
 
   return {
