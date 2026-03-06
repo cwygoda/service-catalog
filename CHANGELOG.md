@@ -1,3 +1,13 @@
+# [4.0.0](https://github.com/cwygoda/service-catalog/compare/v3.0.0...v4.0.0) (2026-03-06)
+
+- feat!: update dependencies and CI to Node 24, pnpm 10, ESLint 10 ([ff79438](https://github.com/cwygoda/service-catalog/commit/ff7943873ad6e61bb9f58ee91de7f0c94939b85e))
+
+### BREAKING CHANGES
+
+- requires Node.js >= 24
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 # [3.0.0](https://github.com/cwygoda/service-catalog/compare/v2.2.0...v3.0.0) (2026-03-06)
 
 - feat!: add event-transformer type, frameworks array, dataStores connections ([d555383](https://github.com/cwygoda/service-catalog/commit/d55538339bbd7ba646f2c9ee65e8396fb1a2865e))
