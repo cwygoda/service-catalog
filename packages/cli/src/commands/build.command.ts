@@ -18,7 +18,8 @@ interface BuildOptions {
 }
 
 async function build(options: BuildOptions): Promise<void> {
-  const inputPath = resolve(options.input);
+  const base = process.env['INIT_CWD'] ?? process.cwd();
+  const inputPath = resolve(base, options.input);
   const outputPath = resolve(options.output, 'catalog.json');
 
   console.log(chalk.blue('Building catalog...'));

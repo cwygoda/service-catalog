@@ -11,7 +11,8 @@ interface LintOptions {
 }
 
 async function lintAction(options: LintOptions): Promise<void> {
-  const inputPath = resolve(options.input);
+  const base = process.env['INIT_CWD'] ?? process.cwd();
+  const inputPath = resolve(base, options.input);
   const bpmnLintConfig = (await resolveBpmnlintrc(options.config)) ?? recommendedConfig;
 
   const loader = new FilesystemLoader({ bpmnLint: 'warn', bpmnLintConfig });
