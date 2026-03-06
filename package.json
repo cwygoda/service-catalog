@@ -17,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "verify": "pnpm typecheck && pnpm lint && pnpm format:check && pnpm test && pnpm build && pnpm test:e2e",
-    "dev": "pnpm -F @cwygoda/service-catalog-demo dev",
+    "dev": "CATALOG_DIR=${CATALOG_DIR:+$(cd \"$CATALOG_DIR\" && pwd)} pnpm -F @cwygoda/service-catalog-demo dev",
     "preview": "pnpm -F @cwygoda/service-catalog-demo preview",
     "postinstall": "",
     "prepare": "husky"
