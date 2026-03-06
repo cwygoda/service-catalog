@@ -4,8 +4,14 @@ export type ServiceType =
   | 'web-service'
   | 'event-consumer'
   | 'event-producer'
+  | 'event-transformer'
   | 'web-app'
   | 'library';
+
+export interface DataStoreConnection {
+  target: string;
+  access: 'r' | 'rw';
+}
 export type Lifecycle = 'experimental' | 'active' | 'deprecated' | 'sunset';
 export type Tier = 'critical' | 'standard' | 'internal';
 
@@ -42,7 +48,8 @@ export interface Service {
   tier?: Tier;
   contacts?: Contact[];
   language?: string[];
-  framework?: string;
+  frameworks?: string[];
+  dataStores?: DataStoreConnection[];
   specs?: SpecSummary[];
   connections?: Connection[];
   content?: string;
@@ -54,6 +61,7 @@ const VALID_TYPES = new Set<string>([
   'web-service',
   'event-consumer',
   'event-producer',
+  'event-transformer',
   'web-app',
   'library',
 ]);
@@ -96,7 +104,8 @@ export interface CreateServiceOptions {
   tier?: Tier;
   contacts?: Contact[];
   language?: string[];
-  framework?: string;
+  frameworks?: string[];
+  dataStores?: DataStoreConnection[];
   specs?: SpecSummary[];
   connections?: Connection[];
   content?: string;
@@ -122,7 +131,8 @@ export function createService(
     ...(options?.tier !== undefined && { tier: options.tier }),
     ...(options?.contacts !== undefined && { contacts: options.contacts }),
     ...(options?.language !== undefined && { language: options.language }),
-    ...(options?.framework !== undefined && { framework: options.framework }),
+    ...(options?.frameworks !== undefined && { frameworks: options.frameworks }),
+    ...(options?.dataStores !== undefined && { dataStores: options.dataStores }),
     ...(options?.specs !== undefined && { specs: options.specs }),
     ...(options?.connections !== undefined && { connections: options.connections }),
     ...(options?.content !== undefined && { content: options.content }),

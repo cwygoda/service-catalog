@@ -106,7 +106,7 @@ describe('toml.parser', () => {
           tier: 'critical' as const,
           contacts: [{ type: 'slack', value: '#eng' }],
           language: ['typescript'],
-          framework: 'nestjs',
+          frameworks: ['nestjs'],
         },
       };
 
@@ -120,7 +120,7 @@ describe('toml.parser', () => {
       expect(service.tier).toBe('critical');
       expect(service.contacts).toEqual([{ type: 'slack', value: '#eng' }]);
       expect(service.language).toEqual(['typescript']);
-      expect(service.framework).toBe('nestjs');
+      expect(service.frameworks).toEqual(['nestjs']);
     });
 
     it('defaults description to empty string when omitted', () => {

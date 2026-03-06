@@ -5,6 +5,7 @@ export const ServiceTypeSchema = Type.Union([
   Type.Literal('web-service'),
   Type.Literal('event-consumer'),
   Type.Literal('event-producer'),
+  Type.Literal('event-transformer'),
   Type.Literal('web-app'),
   Type.Literal('library'),
 ]);
@@ -53,7 +54,15 @@ export const ServiceSidecarSchema = Type.Object({
     tier: Type.Optional(TierSchema),
     contacts: Type.Optional(Type.Array(ContactSchema)),
     language: Type.Optional(Type.Array(Type.String())),
-    framework: Type.Optional(Type.String()),
+    frameworks: Type.Optional(Type.Array(Type.String())),
+    dataStores: Type.Optional(
+      Type.Array(
+        Type.Object({
+          target: Type.String({ minLength: 1 }),
+          access: Type.Union([Type.Literal('r'), Type.Literal('rw')]),
+        })
+      )
+    ),
     specs: Type.Optional(SpecRefsSchema),
     connections: Type.Optional(Type.Array(ConnectionSchema)),
   }),

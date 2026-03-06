@@ -48,7 +48,8 @@ export function sidecarToService(sidecar: ServiceSidecar): Service {
   if (s.tier !== undefined) service.tier = s.tier;
   if (s.contacts !== undefined) service.contacts = s.contacts;
   if (s.language !== undefined) service.language = s.language;
-  if (s.framework !== undefined) service.framework = s.framework;
+  if (s.frameworks !== undefined) service.frameworks = s.frameworks;
+  if (s.dataStores !== undefined) service.dataStores = s.dataStores;
   // specs: Spec resolution happens in loader, not parser
 
   if (s.connections && s.connections.length > 0) {

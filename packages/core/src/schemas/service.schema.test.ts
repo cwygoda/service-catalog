@@ -11,12 +11,16 @@ import {
 } from './service.schema.js';
 
 describe('ServiceTypeSchema', () => {
-  it.each(['web-service', 'event-consumer', 'event-producer', 'web-app', 'library'])(
-    'validates %s',
-    (type) => {
-      expect(Value.Check(ServiceTypeSchema, type)).toBe(true);
-    }
-  );
+  it.each([
+    'web-service',
+    'event-consumer',
+    'event-producer',
+    'event-transformer',
+    'web-app',
+    'library',
+  ])('validates %s', (type) => {
+    expect(Value.Check(ServiceTypeSchema, type)).toBe(true);
+  });
 
   it('rejects invalid type', () => {
     expect(Value.Check(ServiceTypeSchema, 'microservice')).toBe(false);
@@ -130,7 +134,8 @@ describe('ServiceSidecarSchema', () => {
         tier: 'critical',
         contacts: [{ type: 'slack', value: '#commerce-eng' }],
         language: ['typescript'],
-        framework: 'nestjs',
+        frameworks: ['nestjs'],
+        dataStores: [{ target: 'orders-db', access: 'rw' }],
         specs: { openapi: './openapi.yaml' },
         connections: [{ target: 'billing-service', type: 'http', endpoints: ['/authorizations'] }],
       },

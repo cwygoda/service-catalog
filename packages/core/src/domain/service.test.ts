@@ -19,6 +19,7 @@ describe('Service', () => {
         'web-service',
         'event-consumer',
         'event-producer',
+        'event-transformer',
         'web-app',
         'library',
       ] as const) {
@@ -163,7 +164,8 @@ describe('Service', () => {
         tier: 'critical',
         contacts: [{ type: 'slack', value: '#eng' }],
         language: ['typescript'],
-        framework: 'nestjs',
+        frameworks: ['nestjs'],
+        dataStores: [{ target: 'orders-db', access: 'rw' }],
         connections: [{ target: 'other', type: 'http' }],
         content: 'Rich description',
       });
@@ -174,7 +176,8 @@ describe('Service', () => {
       expect(service.tier).toBe('critical');
       expect(service.contacts).toHaveLength(1);
       expect(service.language).toEqual(['typescript']);
-      expect(service.framework).toBe('nestjs');
+      expect(service.frameworks).toEqual(['nestjs']);
+      expect(service.dataStores).toEqual([{ target: 'orders-db', access: 'rw' }]);
       expect(service.connections).toHaveLength(1);
       expect(service.content).toBe('Rich description');
     });
@@ -193,7 +196,8 @@ describe('Service', () => {
       expect('tier' in service).toBe(false);
       expect('contacts' in service).toBe(false);
       expect('language' in service).toBe(false);
-      expect('framework' in service).toBe(false);
+      expect('frameworks' in service).toBe(false);
+      expect('dataStores' in service).toBe(false);
       expect('specs' in service).toBe(false);
       expect('connections' in service).toBe(false);
       expect('content' in service).toBe(false);

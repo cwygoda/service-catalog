@@ -116,7 +116,7 @@ tags = ["core", "data"]
 repository = "https://github.com/acme/rich"
 tier = "critical"
 language = ["typescript", "go"]
-framework = "nestjs"
+frameworks = ["nestjs"]
 
 [[service.links]]
 url = "https://grafana.internal/d/rich"
@@ -145,7 +145,7 @@ endpoints = ["/pay"]
     expect(svc?.repository).toBe('https://github.com/acme/rich');
     expect(svc?.tier).toBe('critical');
     expect(svc?.language).toEqual(['typescript', 'go']);
-    expect(svc?.framework).toBe('nestjs');
+    expect(svc?.frameworks).toEqual(['nestjs']);
     expect(svc?.links).toEqual([
       { url: 'https://grafana.internal/d/rich', title: 'Dashboard', type: 'dashboard' },
     ]);

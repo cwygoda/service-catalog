@@ -37,7 +37,15 @@ export const ServiceSchema = Type.Object({
   tier: Type.Optional(TierSchema),
   contacts: Type.Optional(Type.Array(ContactSchema)),
   language: Type.Optional(Type.Array(Type.String())),
-  framework: Type.Optional(Type.String()),
+  frameworks: Type.Optional(Type.Array(Type.String())),
+  dataStores: Type.Optional(
+    Type.Array(
+      Type.Object({
+        target: Type.String({ minLength: 1 }),
+        access: Type.Union([Type.Literal('r'), Type.Literal('rw')]),
+      })
+    )
+  ),
   specs: Type.Optional(Type.Array(SpecSummarySchema)),
   connections: Type.Optional(Type.Array(ConnectionSchema)),
   content: Type.Optional(Type.String()),
