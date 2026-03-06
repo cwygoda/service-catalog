@@ -29,9 +29,10 @@ describe('ServiceCard', () => {
     expect(link).toHaveAttribute('href', '/services/test-service');
   });
 
-  it('shows service type badge', () => {
+  it('shows service type shield with tooltip', () => {
     render(ServiceCard, { props: { service: baseService } });
-    expect(screen.getByText('web-service')).toBeInTheDocument();
+    expect(screen.getByTitle('Web Service')).toBeInTheDocument();
+    expect(screen.getByRole('tooltip')).toHaveTextContent('Web Service');
   });
 
   it('shows lifecycle badge when not active', () => {
