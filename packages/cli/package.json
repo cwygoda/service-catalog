@@ -23,10 +23,10 @@
     "@cwygoda/bpmn-txt": "^0.14.0",
     "@cwygoda/service-catalog-core": "workspace:*",
     "chalk": "^5.6.2",
-    "commander": "^13.1.0"
+    "commander": "^14.0.3"
   },
   "devDependencies": {
-    "@types/node": "^22.19.13",
+    "@types/node": "^24.12.0",
     "typescript": "^5.9.3"
   }
 }
