@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm build:catalog && vite dev",
     "build": "pnpm build:catalog && vite build && pagefind --site build",
-    "build:catalog": "service-catalog build -i demo-catalog -o static",
+    "build:catalog": "service-catalog build -i ${CATALOG_DIR:-demo-catalog} -o static",
     "preview": "vite preview",
     "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "test:e2e": "playwright test"
