@@ -18,18 +18,9 @@
   <div class="mb-3 flex items-start gap-4">
     <Shield label={useCase.name} size={44} />
     <div class="min-w-0 flex-1">
-      <div class="flex items-center justify-between gap-2">
-        <h3 class="truncate text-lg font-semibold text-gray-900 dark:text-white">
-          {useCase.name}
-        </h3>
-        {#if useCase.bpmn}
-          <span
-            class="shrink-0 rounded-full bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
-          >
-            BPMN
-          </span>
-        {/if}
-      </div>
+      <h3 class="truncate text-lg font-semibold text-gray-900 dark:text-white">
+        {useCase.name}
+      </h3>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
         {truncate(useCase.description, 120)}
       </p>
@@ -59,5 +50,12 @@
       </svg>
       {useCase.steps.length} step{useCase.steps.length !== 1 ? 's' : ''}
     </span>
+    {#if useCase.bpmn}
+      <span
+        class="rounded-full bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-800 dark:bg-primary-900 dark:text-primary-200"
+      >
+        BPMN
+      </span>
+    {/if}
   </div>
 </a>
