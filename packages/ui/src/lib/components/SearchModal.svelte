@@ -3,6 +3,8 @@
   import { browser } from '$app/environment';
   import { searchStore } from '../stores/search.svelte.js';
 
+  let modalEl: HTMLDivElement | undefined = $state();
+
   interface SearchResult {
     id: string;
     url: string;
@@ -95,6 +97,25 @@
         e.preventDefault();
         navigate(selected.url);
       }
+    } else if (e.key === 'Tab') {
+      trapFocus(e);
+    }
+  }
+
+  function trapFocus(e: KeyboardEvent) {
+    if (!modalEl) return;
+    const focusable = modalEl.querySelectorAll<HTMLElement>(
+      'input, button, [tabindex]:not([tabindex="-1"]), a[href]'
+    );
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (!first || !last) return;
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
     }
   }
 
@@ -140,7 +161,7 @@
 {#if searchStore.open}
   <!-- Backdrop -->
   <div
-    class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+    class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm dark:bg-black/70"
     role="presentation"
     onclick={close}
     onkeydown={(e) => {
@@ -150,6 +171,7 @@
 
   <!-- Modal -->
   <div
+    bind:this={modalEl}
     class="fixed inset-x-0 top-[15%] z-50 mx-auto w-full max-w-lg"
     role="dialog"
     tabindex="-1"
@@ -168,6 +190,7 @@
           viewBox="0 0 24 24"
           stroke="currentColor"
           stroke-width="2"
+          aria-hidden="true"
         >
           <path
             stroke-linecap="round"

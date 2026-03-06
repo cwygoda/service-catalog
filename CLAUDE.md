@@ -138,3 +138,46 @@ Error: Invalid service.toml at demo-catalog/orders-service/service.toml:12
 - Skip tests for "simple" changes
 - Use `any` or `@ts-ignore`
 - Commit with failing `pnpm verify`
+
+## Design Context
+
+### Users
+
+Product managers and engineers, working together. PMs explore business flows and use cases to understand system behavior. Engineers look up service dependencies, APIs, connections, and trace paths during development and debugging. Both need to quickly find information and understand relationships.
+
+### Brand Personality
+
+**Warm, Approachable, Polished.** The catalog should feel welcoming to non-technical users while earning trust from engineers through precision. Not a cold developer tool — a shared artifact that brings product and engineering closer.
+
+### Aesthetic Direction
+
+- **Visual tone:** Clean, generous whitespace, excellent typography. Professional but not sterile.
+- **References:** Stripe Docs, Notion — approachable polish, clear hierarchy, content-first.
+- **Anti-references:** Cluttered enterprise dashboards, raw Bootstrap/Material defaults, overly playful SaaS marketing.
+- **Theme:** Light + dark mode (class-based `.dark` toggle, system preference detection).
+- **Color:** Custom primary palette at oklch hue 250 (blue). Semantic amber for warnings/deprecated states. Gray scale for structure.
+
+### Design System
+
+- **Framework:** Tailwind CSS 4 with `@theme` tokens in `apps/demo/src/app.css`
+- **Components:** `packages/ui/` — Svelte 5 component library (Header, cards, search modal, nav tree, BPMN viewer, service graph)
+- **Layout:** max-w-7xl container, responsive grid (sm/md/lg breakpoints), sidebar nav tree (optional)
+- **Cards:** Bordered, subtle shadow, hover elevation. Rounded-lg corners.
+- **Typography:** System font stack (Tailwind defaults). Bold headings, text-sm for metadata.
+- **Icons:** Inline SVG, stroke-based, 24x24 viewBox.
+
+### Accessibility
+
+- **Target:** WCAG AA compliance
+- **Contrast:** 4.5:1 minimum for text, 3:1 for large text and UI components
+- **Keyboard:** Full keyboard navigation, visible focus rings (`focus-visible:outline-2`)
+- **Screen readers:** aria-labels on interactive elements, sr-only text for icon-only buttons, aria-live for dynamic state
+- **Motion:** Respect `prefers-reduced-motion` for transitions and animations
+
+### Design Principles
+
+1. **Content first** — Information hierarchy drives layout. Every pixel serves comprehension.
+2. **Bridge the gap** — Equally useful for product and engineering. No jargon gatekeeping, no oversimplification.
+3. **Progressive disclosure** — Overview → detail. Cards summarize, detail pages go deep. Never overwhelm.
+4. **Consistent vocabulary** — Visual patterns map 1:1 to domain concepts. A card always means a navigable entity. Colors always mean the same thing.
+5. **Quiet confidence** — Polish through restraint. No decoration without purpose. Let the content breathe.
