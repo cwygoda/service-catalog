@@ -13,7 +13,7 @@
 <a
   href="/domains/{domain.id}"
   aria-label="View {domain.name} domain"
-  class="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+  class="block rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-shadow hover:shadow-md active:shadow-sm dark:border-gray-700 dark:bg-gray-800"
 >
   <div class="mb-2">
     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">

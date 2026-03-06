@@ -46,7 +46,7 @@
         >
           Use Cases ({data.useCases.length})
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-2">
           {#each data.useCases as useCase (useCase.id)}
             <UseCaseCard {useCase} />
           {/each}
@@ -71,7 +71,7 @@
         >
           Services ({data.services.length})
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-2">
           {#each data.services as service (service.id)}
             <ServiceCard {service} />
           {/each}
@@ -96,11 +96,11 @@
         >
           Data Stores ({data.dataStores.length})
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-2">
           {#each data.dataStores as ds (ds.id)}
             <a
               href="/data-stores/{ds.id}"
-              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
+              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
             >
               <div class="font-medium text-gray-900 dark:text-white">
                 {ds.name}
@@ -127,11 +127,11 @@
         >
           Subdomains ({data.childDomains.length})
         </h2>
-        <div class="grid gap-4 sm:grid-cols-2">
+        <div class="grid gap-4 md:grid-cols-2">
           {#each data.childDomains as child (child.id)}
             <a
               href="/domains/{child.id}"
-              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
+              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md active:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
             >
               <div class="font-medium text-gray-900 dark:text-white">
                 {child.name}

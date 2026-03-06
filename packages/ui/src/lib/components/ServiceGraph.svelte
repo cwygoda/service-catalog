@@ -94,7 +94,7 @@
     ]);
 
     const width = container.clientWidth;
-    responsiveHeight = Math.max(300, Math.min(width * 0.6, height));
+    responsiveHeight = Math.max(width < 640 ? 400 : 300, Math.min(width * 0.6, height));
 
     // Create simulation nodes with positions
     const simNodes: SimNode[] = nodes.map((n) => ({

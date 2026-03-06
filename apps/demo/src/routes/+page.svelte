@@ -11,7 +11,9 @@
 
 <div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
   <div class="mb-12 text-center">
-    <h1 class="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
+    <h1
+      class="font-bold tracking-tight text-gray-900 dark:text-white text-[clamp(2.25rem,6vw,3rem)]"
+    >
       Service Catalog
     </h1>
     <p class="mx-auto mt-4 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
