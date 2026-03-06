@@ -6,14 +6,25 @@
 
   let { label, size = 80 }: Props = $props();
 
-  // FNV-1a 32-bit hash
+  // FNV-1a 32-bit hash with avalanche finalizer
   function hash(str: string): number {
     let h = 0x811c9dc5;
     for (let i = 0; i < str.length; i++) {
       h ^= str.charCodeAt(i);
       h = Math.imul(h, 0x01000193) >>> 0;
     }
-    return h;
+    // Murmur3-style finalizer — spreads clustered inputs
+    h ^= h >>> 16;
+    h = Math.imul(h, 0x85ebca6b) >>> 0;
+    h ^= h >>> 13;
+    h = Math.imul(h, 0xc2b2ae35) >>> 0;
+    h ^= h >>> 16;
+    return h >>> 0;
+  }
+
+  // Golden-ratio distribution: maps hash to [0, range) with maximal spacing
+  function golden(h: number, range: number): number {
+    return Math.round((((h / 0x100000000) * 0x9e3779b9) % 1) * range);
   }
 
   const n = (v: number): string => String(v);
@@ -25,13 +36,13 @@
     const h2 = hash(label + 'salt2');
     const h3 = hash(label + 'salt3');
 
-    const hue1 = h % 360;
-    const hue2 = (hue1 + 30 + (h2 % 60)) % 360;
-    const sat1 = 65 + (h2 % 30);
-    const sat2 = 70 + (h3 % 25);
-    const lit1 = 38 + (h3 % 18);
-    const lit2 = 28 + (h2 % 14);
-    const angle = (h % 160) + 120;
+    const hue1 = golden(h, 360);
+    const hue2 = (hue1 + 30 + golden(h2, 60)) % 360;
+    const sat1 = 65 + golden(h2, 30);
+    const sat2 = 70 + golden(h3, 25);
+    const lit1 = 38 + golden(h3, 18);
+    const lit2 = 28 + golden(h2, 14);
+    const angle = golden(h, 160) + 120;
 
     const c1 = `hsl(${n(hue1)}, ${n(sat1)}%, ${n(lit1)}%)`;
     const c2 = `hsl(${n(hue2)}, ${n(sat2)}%, ${n(lit2)}%)`;
