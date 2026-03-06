@@ -22,7 +22,7 @@
   <div class="mb-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
     <a
       href="/domains"
-      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
     >
       <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
         {data.domainCount}
@@ -31,7 +31,7 @@
     </a>
     <a
       href="/use-cases"
-      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
     >
       <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
         {data.useCaseCount}
@@ -40,7 +40,7 @@
     </a>
     <a
       href="/services"
-      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
     >
       <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
         {data.serviceCount}
@@ -49,7 +49,7 @@
     </a>
     <a
       href="/data-stores"
-      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md dark:border-gray-700 dark:bg-gray-800"
+      class="rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
     >
       <div class="text-4xl font-bold text-primary-600 dark:text-primary-400">
         {data.dataStoreCount}

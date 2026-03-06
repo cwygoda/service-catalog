@@ -25,10 +25,10 @@
   <title>Service Graph | Service Catalog</title>
 </svelte:head>
 
-<div class="space-y-6">
+<div class="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
   <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
-      <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Service Graph</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Service Graph</h1>
       <p class="mt-1 text-gray-600 dark:text-gray-400">
         Visualize service connections derived from use case flows. Click a node to view service
         details.
@@ -43,7 +43,7 @@
       <select
         id="use-case-filter"
         bind:value={selectedUseCaseId}
-        class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+        class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
       >
         <option value="">All services</option>
         {#each data.useCases as useCase (useCase.id)}
@@ -69,7 +69,7 @@
       </span>
       <button
         onclick={() => (selectedUseCaseId = '')}
-        class="ml-auto rounded p-1 hover:bg-primary-100 dark:hover:bg-primary-800"
+        class="ml-auto rounded p-1 hover:bg-primary-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:hover:bg-primary-800"
         aria-label="Clear filter"
       >
         <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

@@ -75,7 +75,7 @@
           {#each data.useCases as useCase (useCase.id)}
             <a
               href="/use-cases/{useCase.id}"
-              class="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
             >
               <div class="font-medium text-gray-900 dark:text-white">
                 {useCase.name}
@@ -100,7 +100,7 @@
           {#each data.dataStores as ds (ds.id)}
             <a
               href="/data-stores/{ds.id}"
-              class="rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+              class="rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
             >
               <div class="font-medium text-gray-900 dark:text-white">
                 {ds.name}
@@ -143,7 +143,9 @@
               </h3>
               <ul class="space-y-2">
                 {#each data.outgoingConnections as conn (conn.target + ':' + conn.type)}
-                  <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+                  <li
+                    class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                  >
                     <a
                       href="/services/{conn.target}"
                       class="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"
@@ -179,7 +181,9 @@
               </h3>
               <ul class="space-y-2">
                 {#each data.incomingConnections as conn (conn.source + ':' + conn.type)}
-                  <li class="rounded-lg border border-gray-200 p-3 dark:border-gray-700">
+                  <li
+                    class="rounded-lg border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                  >
                     <a
                       href="/services/{conn.source}"
                       class="font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300"

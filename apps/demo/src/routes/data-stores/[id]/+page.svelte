@@ -75,7 +75,7 @@
         </h2>
         <a
           href="/services/{data.ownerService.id}"
-          class="inline-block rounded-lg border border-gray-200 p-4 transition-shadow hover:shadow-md dark:border-gray-700"
+          class="inline-block rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 dark:border-gray-700 dark:bg-gray-800"
         >
           <div class="font-medium text-gray-900 dark:text-white">
             {data.ownerService.name}
@@ -107,7 +107,7 @@
               </a>
               {#if link.type}
                 <span
-                  class="ml-2 rounded bg-gray-100 px-1.5 py-0.5 text-xs text-gray-500 dark:bg-gray-700 dark:text-gray-400"
+                  class="ml-2 rounded bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-500 dark:bg-gray-700 dark:text-gray-400"
                 >
                   {link.type}
                 </span>
