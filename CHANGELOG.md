@@ -1,3 +1,9 @@
+## [4.1.1](https://github.com/cwygoda/service-catalog/compare/v4.1.0...v4.1.1) (2026-03-06)
+
+### Bug Fixes
+
+- resolve CATALOG_DIR to absolute path at root script level ([1bd7874](https://github.com/cwygoda/service-catalog/commit/1bd7874336c9a736387a3c573b49ba398b3f2d2b))
+
 # [4.1.0](https://github.com/cwygoda/service-catalog/compare/v4.0.0...v4.1.0) (2026-03-06)
 
 ### Features
