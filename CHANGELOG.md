@@ -1,3 +1,18 @@
+# [3.0.0](https://github.com/cwygoda/service-catalog/compare/v2.2.0...v3.0.0) (2026-03-06)
+
+- feat!: add event-transformer type, frameworks array, dataStores connections ([d555383](https://github.com/cwygoda/service-catalog/commit/d55538339bbd7ba646f2c9ee65e8396fb1a2865e))
+
+### BREAKING CHANGES
+
+- `framework` field renamed to `frameworks` (string[])
+
+* Add `event-transformer` to ServiceType for consumer+producer services
+* Rename `framework: string` → `frameworks: string[]` for multi-framework support
+* Add `dataStores` array with target/access (r|rw) for explicit data store connections
+* Bump all packages to 2.2.0
+
+Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+
 # [2.2.0](https://github.com/cwygoda/service-catalog/compare/v2.1.0...v2.2.0) (2026-03-05)
 
 ### Bug Fixes
