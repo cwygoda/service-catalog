@@ -1,3 +1,9 @@
+# [0.18.0](https://github.com/cwygoda/service-catalog/compare/v0.17.1...v0.18.0) (2026-03-09)
+
+### Features
+
+- merge core/cli/ui into single @cwygoda/service-catalog package ([ac66d4c](https://github.com/cwygoda/service-catalog/commit/ac66d4c74caef8b754023066083b025285a103ef))
+
 ## [0.17.1](https://github.com/cwygoda/service-catalog/compare/v0.17.0...v0.17.1) (2026-03-09)
 
 ### Bug Fixes
