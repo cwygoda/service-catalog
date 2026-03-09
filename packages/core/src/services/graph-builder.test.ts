@@ -336,6 +336,65 @@ describe('graph-builder', () => {
       ]);
     });
 
+    it('passes role and description through to edges', () => {
+      const catalog: Catalog = {
+        services: [
+          {
+            id: 'otm',
+            name: 'OTM',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            connections: [
+              {
+                target: 'notifications',
+                type: 'event',
+                role: 'producer',
+                events: ['order.expired'],
+                description: 'Sends expiration notifications via SQS',
+              },
+            ],
+          },
+          {
+            id: 'notifications',
+            name: 'Notifications',
+            description: 'desc',
+            type: 'event-consumer',
+            lifecycle: 'active',
+            connections: [
+              {
+                target: 'otm',
+                type: 'event',
+                role: 'consumer',
+              },
+            ],
+          },
+        ],
+        useCases: [],
+        domains: [],
+        dataStores: [],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      expect(graph.edges).toEqual([
+        {
+          source: 'otm',
+          target: 'notifications',
+          type: 'event',
+          role: 'producer',
+          events: ['order.expired'],
+          description: 'Sends expiration notifications via SQS',
+        },
+        {
+          source: 'notifications',
+          target: 'otm',
+          type: 'event',
+          role: 'consumer',
+        },
+      ]);
+    });
+
     it('builds edges for grpc connections', () => {
       const catalog: Catalog = {
         services: [

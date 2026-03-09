@@ -144,8 +144,10 @@ export function buildServiceGraph(catalog: Catalog): ServiceGraph {
           source: service.id,
           target: conn.target,
           type: conn.type,
+          ...(conn.role && { role: conn.role }),
           ...(conn.endpoints && { endpoints: conn.endpoints }),
           ...(conn.events && { events: conn.events }),
+          ...(conn.description && { description: conn.description }),
         });
       }
     }

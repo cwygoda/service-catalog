@@ -51,6 +51,34 @@ describe('Connection entity', () => {
       expect(conn.type).toBe('http');
       expect(conn.endpoints).toBeUndefined();
       expect(conn.events).toBeUndefined();
+      expect(conn.role).toBeUndefined();
+      expect(conn.description).toBeUndefined();
+    });
+
+    it('creates event connection with role and description', () => {
+      const conn = createConnection({
+        target: 'notifications-service',
+        type: 'event',
+        role: 'producer',
+        events: ['order.expired'],
+        description: 'Sends expiration notifications via SQS',
+      });
+
+      expect(conn.target).toBe('notifications-service');
+      expect(conn.type).toBe('event');
+      expect(conn.role).toBe('producer');
+      expect(conn.events).toEqual(['order.expired']);
+      expect(conn.description).toBe('Sends expiration notifications via SQS');
+    });
+
+    it('creates consumer event connection', () => {
+      const conn = createConnection({
+        target: 'otm-service',
+        type: 'event',
+        role: 'consumer',
+      });
+
+      expect(conn.role).toBe('consumer');
     });
   });
 
@@ -127,6 +155,24 @@ describe('Connection entity', () => {
 
     it('returns false for non-string events', () => {
       expect(isConnection({ target: 'svc', type: 'event', events: [{}] })).toBe(false);
+    });
+
+    it('returns true for valid role', () => {
+      expect(isConnection({ target: 'svc', type: 'event', role: 'producer' })).toBe(true);
+      expect(isConnection({ target: 'svc', type: 'event', role: 'consumer' })).toBe(true);
+    });
+
+    it('returns false for invalid role', () => {
+      expect(isConnection({ target: 'svc', type: 'event', role: 'observer' })).toBe(false);
+      expect(isConnection({ target: 'svc', type: 'event', role: 123 })).toBe(false);
+    });
+
+    it('returns true for valid description', () => {
+      expect(isConnection({ target: 'svc', type: 'http', description: 'Some desc' })).toBe(true);
+    });
+
+    it('returns false for non-string description', () => {
+      expect(isConnection({ target: 'svc', type: 'http', description: 123 })).toBe(false);
     });
   });
 });

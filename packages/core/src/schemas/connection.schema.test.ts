@@ -47,6 +47,34 @@ describe('ConnectionSchema', () => {
       };
       expect(Value.Check(ConnectionSchema, conn)).toBe(true);
     });
+
+    it('validates event connection with producer role', () => {
+      const conn = {
+        target: 'notifications',
+        type: 'event',
+        role: 'producer',
+        events: ['order.expired'],
+      };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(true);
+    });
+
+    it('validates event connection with consumer role', () => {
+      const conn = {
+        target: 'otm-service',
+        type: 'event',
+        role: 'consumer',
+      };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(true);
+    });
+
+    it('validates connection with description', () => {
+      const conn = {
+        target: 'billing',
+        type: 'http',
+        description: 'Payment processing via REST API',
+      };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(true);
+    });
   });
 
   describe('invalid connections', () => {
@@ -87,6 +115,16 @@ describe('ConnectionSchema', () => {
 
     it('rejects non-string in events array', () => {
       const conn = { target: 'service', type: 'event', events: [null] };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(false);
+    });
+
+    it('rejects invalid role', () => {
+      const conn = { target: 'service', type: 'event', role: 'observer' };
+      expect(Value.Check(ConnectionSchema, conn)).toBe(false);
+    });
+
+    it('rejects non-string description', () => {
+      const conn = { target: 'service', type: 'http', description: 123 };
       expect(Value.Check(ConnectionSchema, conn)).toBe(false);
     });
   });

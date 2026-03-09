@@ -43,6 +43,7 @@ export const ServiceSchema = Type.Object({
       Type.Object({
         target: Type.String({ minLength: 1 }),
         access: Type.Union([Type.Literal('r'), Type.Literal('rw')]),
+        description: Type.Optional(Type.String()),
       })
     )
   ),
@@ -84,8 +85,10 @@ export const GraphEdgeSchema = Type.Object({
   source: Type.String({ minLength: 1 }),
   target: Type.String({ minLength: 1 }),
   type: Type.Union([Type.Literal('http'), Type.Literal('event'), Type.Literal('grpc')]),
+  role: Type.Optional(Type.Union([Type.Literal('producer'), Type.Literal('consumer')])),
   endpoints: Type.Optional(Type.Array(Type.String())),
   events: Type.Optional(Type.Array(Type.String())),
+  description: Type.Optional(Type.String()),
 });
 
 export const ServiceGraphSchema = Type.Object({
