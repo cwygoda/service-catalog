@@ -1,3 +1,9 @@
+# [4.3.0](https://github.com/cwygoda/service-catalog/compare/v4.2.0...v4.3.0) (2026-03-09)
+
+### Features
+
+- **core:** add role and description fields to connections and data stores ([#6](https://github.com/cwygoda/service-catalog/issues/6)) ([b689a40](https://github.com/cwygoda/service-catalog/commit/b689a4014d375c7e404a97c91011a24d947d6c92))
+
 # [4.2.0](https://github.com/cwygoda/service-catalog/compare/v4.1.1...v4.2.0) (2026-03-06)
 
 ### Bug Fixes
