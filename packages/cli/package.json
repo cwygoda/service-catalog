@@ -1,6 +1,6 @@
 {
   "name": "@cwygoda/service-catalog-cli",
-  "version": "4.3.1",
+  "version": "0.17.1",
   "type": "module",
   "bin": {
     "service-catalog": "./bin/service-catalog.js"

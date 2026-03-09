@@ -1,16 +1,16 @@
-## [4.3.1](https://github.com/cwygoda/service-catalog/compare/v4.3.0...v4.3.1) (2026-03-09)
+## [0.17.1](https://github.com/cwygoda/service-catalog/compare/v0.17.0...v0.17.1) (2026-03-09)
 
 ### Bug Fixes
 
 - **core:** pass role and description through sidecar transform ([#7](https://github.com/cwygoda/service-catalog/issues/7)) ([84ceec6](https://github.com/cwygoda/service-catalog/commit/84ceec6c6fef6f8d31c00b7a5f78398e77947833))
 
-# [4.3.0](https://github.com/cwygoda/service-catalog/compare/v4.2.0...v4.3.0) (2026-03-09)
+# [0.17.0](https://github.com/cwygoda/service-catalog/compare/v0.16.0...v0.17.0) (2026-03-09)
 
 ### Features
 
 - **core:** add role and description fields to connections and data stores ([#6](https://github.com/cwygoda/service-catalog/issues/6)) ([b689a40](https://github.com/cwygoda/service-catalog/commit/b689a4014d375c7e404a97c91011a24d947d6c92))
 
-# [4.2.0](https://github.com/cwygoda/service-catalog/compare/v4.1.1...v4.2.0) (2026-03-06)
+# [0.16.0](https://github.com/cwygoda/service-catalog/compare/v0.15.1...v0.16.0) (2026-03-06)
 
 ### Bug Fixes
 
@@ -29,20 +29,20 @@
 
 - enable precompress, use parent() loaders, add lookup maps ([63205c2](https://github.com/cwygoda/service-catalog/commit/63205c27f320dc49589ab96f956c51d1438ff7e2))
 
-## [4.1.1](https://github.com/cwygoda/service-catalog/compare/v4.1.0...v4.1.1) (2026-03-06)
+## [0.15.1](https://github.com/cwygoda/service-catalog/compare/v0.15.0...v0.15.1) (2026-03-06)
 
 ### Bug Fixes
 
 - resolve CATALOG_DIR to absolute path at root script level ([1bd7874](https://github.com/cwygoda/service-catalog/commit/1bd7874336c9a736387a3c573b49ba398b3f2d2b))
 
-# [4.1.0](https://github.com/cwygoda/service-catalog/compare/v4.0.0...v4.1.0) (2026-03-06)
+# [0.15.0](https://github.com/cwygoda/service-catalog/compare/v0.14.0...v0.15.0) (2026-03-06)
 
 ### Features
 
 - resolve CLI input paths relative to caller's cwd via INIT_CWD ([8256975](https://github.com/cwygoda/service-catalog/commit/825697525acab802fd3bbc3f0b79154c5673f3f2))
 - support CATALOG_DIR env var for custom catalog input ([00f07c6](https://github.com/cwygoda/service-catalog/commit/00f07c6bab61d34ddc7f78b557824320b2242302))
 
-# [4.0.0](https://github.com/cwygoda/service-catalog/compare/v3.0.0...v4.0.0) (2026-03-06)
+# [0.14.0](https://github.com/cwygoda/service-catalog/compare/v0.13.0...v0.14.0) (2026-03-06)
 
 - feat!: update dependencies and CI to Node 24, pnpm 10, ESLint 10 ([ff79438](https://github.com/cwygoda/service-catalog/commit/ff7943873ad6e61bb9f58ee91de7f0c94939b85e))
 
@@ -52,7 +52,7 @@
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
-# [3.0.0](https://github.com/cwygoda/service-catalog/compare/v2.2.0...v3.0.0) (2026-03-06)
+# [0.13.0](https://github.com/cwygoda/service-catalog/compare/v0.12.0...v0.13.0) (2026-03-06)
 
 - feat!: add event-transformer type, frameworks array, dataStores connections ([d555383](https://github.com/cwygoda/service-catalog/commit/d55538339bbd7ba646f2c9ee65e8396fb1a2865e))
 
@@ -63,11 +63,11 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 * Add `event-transformer` to ServiceType for consumer+producer services
 * Rename `framework: string` → `frameworks: string[]` for multi-framework support
 * Add `dataStores` array with target/access (r|rw) for explicit data store connections
-* Bump all packages to 2.2.0
+* Bump all packages to 0.12.0
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
-# [2.2.0](https://github.com/cwygoda/service-catalog/compare/v2.1.0...v2.2.0) (2026-03-05)
+# [0.12.0](https://github.com/cwygoda/service-catalog/compare/v0.11.0...v0.12.0) (2026-03-05)
 
 ### Bug Fixes
 
@@ -78,13 +78,13 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 - **core,ui:** add DataStore entity across all layers ([15b849f](https://github.com/cwygoda/service-catalog/commit/15b849f5f4e178277bdbc12958cfac6164158b08))
 
-# [2.1.0](https://github.com/cwygoda/service-catalog/compare/v2.0.0...v2.1.0) (2026-03-05)
+# [0.11.0](https://github.com/cwygoda/service-catalog/compare/v0.10.0...v0.11.0) (2026-03-05)
 
 ### Features
 
 - **ui:** add Pagefind search with Cmd+K modal ([c72d34d](https://github.com/cwygoda/service-catalog/commit/c72d34dd916403260d12f69c6c7d306d630d7b87))
 
-# [2.0.0](https://github.com/cwygoda/service-catalog/compare/v1.8.1...v2.0.0) (2026-03-05)
+# [0.10.0](https://github.com/cwygoda/service-catalog/compare/v0.9.1...v0.10.0) (2026-03-05)
 
 ### Bug Fixes
 
@@ -103,19 +103,19 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
-## [1.8.1](https://github.com/cwygoda/service-catalog/compare/v1.8.0...v1.8.1) (2026-03-03)
+## [0.9.1](https://github.com/cwygoda/service-catalog/compare/v0.9.0...v0.9.1) (2026-03-03)
 
 ### Bug Fixes
 
 - **deps:** bump @cwygoda/bpmn-txt to ^0.14.0 ([968b5b1](https://github.com/cwygoda/service-catalog/commit/968b5b11986333fedb101d95d71f3be6fc926a35))
 
-# [1.8.0](https://github.com/cwygoda/service-catalog/compare/v1.7.0...v1.8.0) (2026-03-03)
+# [0.9.0](https://github.com/cwygoda/service-catalog/compare/v0.8.0...v0.9.0) (2026-03-03)
 
 ### Features
 
 - **ui:** responsive BPMN diagram sizing with class override ([f973ab1](https://github.com/cwygoda/service-catalog/commit/f973ab1574b7b16b39c66f15b3d03f68695d8f90))
 
-# [1.7.0](https://github.com/cwygoda/service-catalog/compare/v1.6.3...v1.7.0) (2026-03-03)
+# [0.8.0](https://github.com/cwygoda/service-catalog/compare/v0.7.3...v0.8.0) (2026-03-03)
 
 ### Bug Fixes
 
@@ -125,92 +125,92 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 - **core:** auto-extract steps from BPMN tasks ([1e3fd28](https://github.com/cwygoda/service-catalog/commit/1e3fd2810d4e2adb80fc94941fa7385c6b925019))
 
-## [1.6.3](https://github.com/cwygoda/service-catalog/compare/v1.6.2...v1.6.3) (2026-03-02)
+## [0.7.3](https://github.com/cwygoda/service-catalog/compare/v0.7.2...v0.7.3) (2026-03-02)
 
 ### Bug Fixes
 
 - update @cwygoda/bpmn-txt to ^0.13.3 ([100dc1d](https://github.com/cwygoda/service-catalog/commit/100dc1d001c8163222f0f8b9506d94cc55a07893))
 
-## [1.6.2](https://github.com/cwygoda/service-catalog/compare/v1.6.1...v1.6.2) (2026-03-02)
+## [0.7.2](https://github.com/cwygoda/service-catalog/compare/v0.7.1...v0.7.2) (2026-03-02)
 
 ### Bug Fixes
 
 - update @cwygoda/bpmn-txt to ^0.13.2 for lane stacking fix ([f3e8535](https://github.com/cwygoda/service-catalog/commit/f3e853572fd161ef78927722573c8a0569e1b52e))
 
-## [1.6.1](https://github.com/cwygoda/service-catalog/compare/v1.6.0...v1.6.1) (2026-03-02)
+## [0.7.1](https://github.com/cwygoda/service-catalog/compare/v0.7.0...v0.7.1) (2026-03-02)
 
 ### Bug Fixes
 
 - **ui:** BPMN fullscreen overlay not covering viewport ([fcbcfe2](https://github.com/cwygoda/service-catalog/commit/fcbcfe2c1f7995af093310cb0883392b72035a99))
 - **ui:** rewrite message flow label centering to match bpmn-js structure ([d3edc4e](https://github.com/cwygoda/service-catalog/commit/d3edc4e7396ea9e22f268a7b9206a7336ef6b456))
 
-# [1.6.0](https://github.com/cwygoda/service-catalog/compare/v1.5.2...v1.6.0) (2026-03-02)
+# [0.7.0](https://github.com/cwygoda/service-catalog/compare/v0.6.2...v0.7.0) (2026-03-02)
 
 ### Features
 
 - **ui:** replace native fullscreen with fixed-viewport overlay ([5ff420e](https://github.com/cwygoda/service-catalog/commit/5ff420eb96c320b1175b2f6176f9b8c3dcf9061c))
 
-## [1.5.2](https://github.com/cwygoda/service-catalog/compare/v1.5.1...v1.5.2) (2026-03-02)
+## [0.6.2](https://github.com/cwygoda/service-catalog/compare/v0.6.1...v0.6.2) (2026-03-02)
 
 ### Bug Fixes
 
 - center message flow labels in BPMN diagram ([9c891ab](https://github.com/cwygoda/service-catalog/commit/9c891ab0fc0414e7af9ce86b5fc54f3c1f675d95))
 
-## [1.5.1](https://github.com/cwygoda/service-catalog/compare/v1.5.0...v1.5.1) (2026-03-02)
+## [0.6.1](https://github.com/cwygoda/service-catalog/compare/v0.6.0...v0.6.1) (2026-03-02)
 
 ### Bug Fixes
 
 - update @cwygoda/bpmn-txt to ^0.13.0 ([432397a](https://github.com/cwygoda/service-catalog/commit/432397a4dc6e8b57a5b59d6ccd51e272e932e356))
 
-# [1.5.0](https://github.com/cwygoda/service-catalog/compare/v1.4.1...v1.5.0) (2026-03-02)
+# [0.6.0](https://github.com/cwygoda/service-catalog/compare/v0.5.1...v0.6.0) (2026-03-02)
 
 ### Features
 
 - update bpmn-txt to 0.12.0 for message flow envelope support ([8f6b5b7](https://github.com/cwygoda/service-catalog/commit/8f6b5b764d359d2c609240937b09251197231d0c))
 
-## [1.4.1](https://github.com/cwygoda/service-catalog/compare/v1.4.0...v1.4.1) (2026-03-02)
+## [0.5.1](https://github.com/cwygoda/service-catalog/compare/v0.5.0...v0.5.1) (2026-03-02)
 
 ### Bug Fixes
 
 - update bpmn-txt to 0.11.1 for XML flow reference fix ([37c3da8](https://github.com/cwygoda/service-catalog/commit/37c3da8d76b0217777a103abfe999e71990d774e))
 
-# [1.4.0](https://github.com/cwygoda/service-catalog/compare/v1.3.0...v1.4.0) (2026-03-02)
+# [0.5.0](https://github.com/cwygoda/service-catalog/compare/v0.4.0...v0.5.0) (2026-03-02)
 
 ### Features
 
 - add lint command, surface bpmnlint diagnostics ([f4d85f4](https://github.com/cwygoda/service-catalog/commit/f4d85f4c5dd5c604614a867e09d55e2e14e1c453))
 
-# [1.3.0](https://github.com/cwygoda/service-catalog/compare/v1.2.3...v1.3.0) (2026-03-02)
+# [0.4.0](https://github.com/cwygoda/service-catalog/compare/v0.3.3...v0.4.0) (2026-03-02)
 
 ### Features
 
 - **core:** update @cwygoda/bpmn-txt to ^0.10.0 for improved line layouts ([0138d23](https://github.com/cwygoda/service-catalog/commit/0138d23a2ff03b9e5b98fe0269906391911cac45))
 
-## [1.2.3](https://github.com/cwygoda/service-catalog/compare/v1.2.2...v1.2.3) (2026-02-27)
+## [0.3.3](https://github.com/cwygoda/service-catalog/compare/v0.3.2...v0.3.3) (2026-02-27)
 
 ### Bug Fixes
 
 - **core:** bump @cwygoda/bpmn-txt to ^0.9.1 ([224b6bd](https://github.com/cwygoda/service-catalog/commit/224b6bdcbef5e6622fd9cfef2bd351d3154a0b0e))
 
-## [1.2.2](https://github.com/cwygoda/service-catalog/compare/v1.2.1...v1.2.2) (2026-02-27)
+## [0.3.2](https://github.com/cwygoda/service-catalog/compare/v0.3.1...v0.3.2) (2026-02-27)
 
 ### Bug Fixes
 
 - **core:** update @cwygoda/bpmn-txt to ^0.9.1 ([039923f](https://github.com/cwygoda/service-catalog/commit/039923f4fbfe0d93c34780c34e57ddb6473f2a28))
 
-## [1.2.1](https://github.com/cwygoda/service-catalog/compare/v1.2.0...v1.2.1) (2026-02-27)
+## [0.3.1](https://github.com/cwygoda/service-catalog/compare/v0.3.0...v0.3.1) (2026-02-27)
 
 ### Bug Fixes
 
 - **core:** switch bpmn-txt from GitHub tarball to @cwygoda/bpmn-txt npm package ([5037f40](https://github.com/cwygoda/service-catalog/commit/5037f40b4ebe1f5b3706dcdc456a3a4202e20fc0))
 
-# [1.2.0](https://github.com/cwygoda/service-catalog/compare/v1.1.0...v1.2.0) (2026-02-26)
+# [0.3.0](https://github.com/cwygoda/service-catalog/compare/v0.2.0...v0.3.0) (2026-02-26)
 
 ### Features
 
 - **core:** warn on BPMN parse errors and update bpmn-txt to v0.6.0 ([401cbe9](https://github.com/cwygoda/service-catalog/commit/401cbe903f7addc82e613138a2c1d54ee6c8806c))
 
-# [1.1.0](https://github.com/cwygoda/service-catalog/compare/v1.0.3...v1.1.0) (2026-02-26)
+# [0.2.0](https://github.com/cwygoda/service-catalog/compare/v0.1.3...v0.2.0) (2026-02-26)
 
 ### Bug Fixes
 
@@ -221,7 +221,7 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 - add markdown use-case format with inline BPMN and doc links ([465a408](https://github.com/cwygoda/service-catalog/commit/465a408c81318e88b56920e7c59878011935b7c0))
 
-## [1.0.3](https://github.com/cwygoda/service-catalog/compare/v1.0.2...v1.0.3) (2026-02-26)
+## [0.1.3](https://github.com/cwygoda/service-catalog/compare/v0.1.2...v0.1.3) (2026-02-26)
 
 ### Bug Fixes
 
@@ -233,20 +233,20 @@ Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
 
 - **ui:** optimize D3 tree-shaking, derived reactivity, and graph rendering ([1ccafd3](https://github.com/cwygoda/service-catalog/commit/1ccafd38b2cc60f826f2638dabe6707bffa983d0))
 
-## [1.0.2](https://github.com/cwygoda/service-catalog/compare/v1.0.1...v1.0.2) (2026-02-25)
+## [0.1.2](https://github.com/cwygoda/service-catalog/compare/v0.1.1...v0.1.2) (2026-02-25)
 
 ### Bug Fixes
 
 - ship Tailwind v4 [@source](https://github.com/source) declaration via CSS export ([9586f9a](https://github.com/cwygoda/service-catalog/commit/9586f9ad281d113ae6ce79bd2d83c402cecf75a8))
 
-## [1.0.1](https://github.com/cwygoda/service-catalog/compare/v1.0.0...v1.0.1) (2026-02-24)
+## [0.1.1](https://github.com/cwygoda/service-catalog/compare/v0.1.0...v0.1.1) (2026-02-24)
 
 ### Bug Fixes
 
 - **ci:** update Playwright install to use correct package name ([93b15bd](https://github.com/cwygoda/service-catalog/commit/93b15bd509badd14fd0375697b5b6b347eee43b3))
 - correct package names to [@cwygoda](https://github.com/cwygoda) scope ([0c4df36](https://github.com/cwygoda/service-catalog/commit/0c4df363a70243d2358bb27b08070c3dc10ec4b0))
 
-# 1.0.0 (2026-02-24)
+# 0.1.0 (2026-02-24)
 
 ### Bug Fixes
 

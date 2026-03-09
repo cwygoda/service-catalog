@@ -3,7 +3,6 @@ name: Release
 on:
   push:
     branches: [main]
-    paths-ignore: ['**'] # TEMPORARY: disabled during version rewrite
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
