@@ -1,3 +1,9 @@
+## [4.3.1](https://github.com/cwygoda/service-catalog/compare/v4.3.0...v4.3.1) (2026-03-09)
+
+### Bug Fixes
+
+- **core:** pass role and description through sidecar transform ([#7](https://github.com/cwygoda/service-catalog/issues/7)) ([84ceec6](https://github.com/cwygoda/service-catalog/commit/84ceec6c6fef6f8d31c00b7a5f78398e77947833))
+
 # [4.3.0](https://github.com/cwygoda/service-catalog/compare/v4.2.0...v4.3.0) (2026-03-09)
 
 ### Features
