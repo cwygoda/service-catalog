@@ -1,3 +1,22 @@
+# [4.2.0](https://github.com/cwygoda/service-catalog/compare/v4.1.1...v4.2.0) (2026-03-06)
+
+### Bug Fixes
+
+- harden UI accessibility — focus traps, motion, ARIA, focus rings ([30ae4cb](https://github.com/cwygoda/service-catalog/commit/30ae4cbb7735cb85189eb2b29f4096b244d6e4f7))
+- improve responsive adaptation — touch feedback, fluid type, grid breakpoints ([fe37b2b](https://github.com/cwygoda/service-catalog/commit/fe37b2bc3c2a812fee0abaa6006f81be2981114e))
+- improve Shield color contrast for similar labels ([a04eecb](https://github.com/cwygoda/service-catalog/commit/a04eecbe1558ef05159e43a398ca7bd8b065b016))
+- move BPMN pill to metadata row in UseCaseCard ([5c113ec](https://github.com/cwygoda/service-catalog/commit/5c113eceabf4bf016d389351615dc210f9ccafe3))
+- normalize UI against design system — cards, focus, layout ([6570401](https://github.com/cwygoda/service-catalog/commit/65704010839e254d203c79419fe8d706967424b9))
+
+### Features
+
+- add Shield components for service type and data store cards ([c18e1d5](https://github.com/cwygoda/service-catalog/commit/c18e1d572550a0e284f7cf1ebbee5c88f382d153))
+- add Shield to DomainCard and UseCaseCard for visual consistency ([ad50cba](https://github.com/cwygoda/service-catalog/commit/ad50cba14f264295a33b10ec07bc1704a4573c05))
+
+### Performance Improvements
+
+- enable precompress, use parent() loaders, add lookup maps ([63205c2](https://github.com/cwygoda/service-catalog/commit/63205c27f320dc49589ab96f956c51d1438ff7e2))
+
 ## [4.1.1](https://github.com/cwygoda/service-catalog/compare/v4.1.0...v4.1.1) (2026-03-06)
 
 ### Bug Fixes
