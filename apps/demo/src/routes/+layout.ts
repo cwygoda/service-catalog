@@ -1,5 +1,5 @@
 import type { LayoutLoad } from './$types';
-import { fetchCatalog } from '@cwygoda/service-catalog-ui';
+import { fetchCatalog } from '@cwygoda/service-catalog/ui';
 
 export const prerender = true;
 

@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import '@cwygoda/service-catalog-ui';
+@import '@cwygoda/service-catalog/ui';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

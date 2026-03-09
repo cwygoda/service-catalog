@@ -2,7 +2,7 @@
   import { onMount } from 'svelte';
   import '../app.css';
   import favicon from '$lib/assets/favicon.svg';
-  import { Header, NavTree, SearchModal, theme, navModeStore } from '@cwygoda/service-catalog-ui';
+  import { Header, NavTree, SearchModal, theme, navModeStore } from '@cwygoda/service-catalog/ui';
   import type { LayoutData } from './$types';
   import type { Snippet } from 'svelte';
 

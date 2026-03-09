@@ -65,12 +65,9 @@ importers:
 
   apps/demo:
     dependencies:
-      '@cwygoda/service-catalog-core':
+      '@cwygoda/service-catalog':
         specifier: workspace:*
-        version: link:../../packages/core
-      '@cwygoda/service-catalog-ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
+        version: link:../../packages/service-catalog
       bpmn-js:
         specifier: ^18.12.0
         version: 18.12.0
@@ -87,9 +84,6 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
     devDependencies:
-      '@cwygoda/service-catalog-cli':
-        specifier: workspace:*
-        version: link:../../packages/cli
       '@playwright/test':
         specifier: ^1.58.2
         version: 1.58.2
@@ -159,73 +153,23 @@ importers:
 
   configs/tsconfig: {}
 
-  packages/cli:
+  packages/service-catalog:
     dependencies:
       '@cwygoda/bpmn-txt':
         specifier: ^0.14.0
         version: 0.14.0
-      '@cwygoda/service-catalog-core':
-        specifier: workspace:*
-        version: link:../core
-      chalk:
-        specifier: ^5.6.2
-        version: 5.6.2
-      commander:
-        specifier: ^14.0.3
-        version: 14.0.3
-    devDependencies:
-      '@types/node':
-        specifier: ^24.12.0
-        version: 24.12.0
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-
-  packages/core:
-    dependencies:
-      '@cwygoda/bpmn-txt':
-        specifier: ^0.14.0
-        version: 0.14.0
-      '@sinclair/typebox':
-        specifier: ^0.34.48
-        version: 0.34.48
-      graphology:
-        specifier: ^0.26.0
-        version: 0.26.0(graphology-types@0.24.8)
-      gray-matter:
-        specifier: ^4.0.3
-        version: 4.0.3
-      smol-toml:
-        specifier: ^1.6.0
-        version: 1.6.0
-      yaml:
-        specifier: ^2.8.2
-        version: 2.8.2
-    devDependencies:
-      '@types/node':
-        specifier: ^24.12.0
-        version: 24.12.0
-      graphology-types:
-        specifier: ^0.24.8
-        version: 0.24.8
-      typescript:
-        specifier: ^5.9.3
-        version: 5.9.3
-      vitest:
-        specifier: ^4.0.18
-        version: 4.0.18(@types/node@24.12.0)(jiti@2.6.1)(jsdom@28.1.0)(lightningcss@1.31.1)(yaml@2.8.2)
-
-  packages/ui:
-    dependencies:
-      '@cwygoda/service-catalog-core':
-        specifier: workspace:*
-        version: link:../core
       '@sinclair/typebox':
         specifier: ^0.34.48
         version: 0.34.48
       bpmn-js:
         specifier: ^18.0.0
         version: 18.12.0
+      chalk:
+        specifier: ^5.6.2
+        version: 5.6.2
+      commander:
+        specifier: ^14.0.3
+        version: 14.0.3
       d3-drag:
         specifier: ^3.0.0
         version: 3.0.0
@@ -238,6 +182,18 @@ importers:
       d3-zoom:
         specifier: ^3.0.0
         version: 3.0.0
+      graphology:
+        specifier: ^0.26.0
+        version: 0.26.0(graphology-types@0.24.8)
+      gray-matter:
+        specifier: ^4.0.3
+        version: 4.0.3
+      smol-toml:
+        specifier: ^1.6.0
+        version: 1.6.0
+      yaml:
+        specifier: ^2.8.2
+        version: 2.8.2
     devDependencies:
       '@sveltejs/kit':
         specifier: ^2.53.4
@@ -269,6 +225,12 @@ importers:
       '@types/d3-zoom':
         specifier: ^3.0.8
         version: 3.0.8
+      '@types/node':
+        specifier: ^24.12.0
+        version: 24.12.0
+      graphology-types:
+        specifier: ^0.24.8
+        version: 0.24.8
       jsdom:
         specifier: ^28.1.0
         version: 28.1.0

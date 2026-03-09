@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
-  import { BpmnDiagram, Breadcrumbs } from '@cwygoda/service-catalog-ui';
+  import { BpmnDiagram, Breadcrumbs } from '@cwygoda/service-catalog/ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

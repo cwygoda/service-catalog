@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Breadcrumbs } from '@cwygoda/service-catalog-ui';
+  import { Breadcrumbs } from '@cwygoda/service-catalog/ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

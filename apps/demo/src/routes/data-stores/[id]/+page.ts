@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
 import type { PageLoad } from './$types';
-import type { Domain } from '@cwygoda/service-catalog-core';
+import type { Domain } from '@cwygoda/service-catalog';
 
 export const load: PageLoad = async ({ params, parent }) => {
   const { catalog } = await parent();

@@ -6,4 +6,4 @@ pnpm-lock.yaml
 playwright-report/
 test-results/
 static/catalog.json
-packages/core/tests/fixtures/invalid-syntax.yaml
+packages/service-catalog/src/tests/fixtures/invalid-syntax.yaml

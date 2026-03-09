@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ServiceCard, UseCaseCard } from '@cwygoda/service-catalog-ui';
+  import { ServiceCard, UseCaseCard } from '@cwygoda/service-catalog/ui';
   import type { PageData } from './$types';
 
   let { data }: { data: PageData } = $props();

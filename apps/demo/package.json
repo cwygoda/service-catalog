@@ -12,8 +12,7 @@
     "test:e2e": "playwright test"
   },
   "dependencies": {
-    "@cwygoda/service-catalog-core": "workspace:*",
-    "@cwygoda/service-catalog-ui": "workspace:*",
+    "@cwygoda/service-catalog": "workspace:*",
     "bpmn-js": "^18.12.0",
     "d3-drag": "^3.0.0",
     "d3-force": "^3.0.0",
@@ -21,7 +20,6 @@
     "d3-zoom": "^3.0.0"
   },
   "devDependencies": {
-    "@cwygoda/service-catalog-cli": "workspace:*",
     "@playwright/test": "^1.58.2",
     "@sveltejs/adapter-static": "^3.0.10",
     "@sveltejs/kit": "^2.53.4",
