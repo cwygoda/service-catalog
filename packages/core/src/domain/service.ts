@@ -11,6 +11,8 @@ export type ServiceType =
 export interface DataStoreConnection {
   target: string;
   access: 'r' | 'rw';
+  /** Markdown description of this data store connection */
+  description?: string;
 }
 export type Lifecycle = 'experimental' | 'active' | 'deprecated' | 'sunset';
 export type Tier = 'critical' | 'standard' | 'internal';

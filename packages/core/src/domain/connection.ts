@@ -3,16 +3,21 @@
  */
 
 export type ConnectionType = 'http' | 'event' | 'grpc';
+export type ConnectionRole = 'producer' | 'consumer';
 
 export interface Connection {
   /** Target service ID */
   target: string;
   /** Connection type */
   type: ConnectionType;
+  /** Role of the declaring service in event connections */
+  role?: ConnectionRole;
   /** API endpoints for http/grpc connections */
   endpoints?: string[];
   /** Event topics for event connections */
   events?: string[];
+  /** Markdown description of this connection */
+  description?: string;
 }
 
 /**
@@ -22,8 +27,10 @@ export function createConnection(input: Connection): Connection {
   return {
     target: input.target,
     type: input.type,
+    ...(input.role && { role: input.role }),
     ...(input.endpoints && { endpoints: input.endpoints }),
     ...(input.events && { events: input.events }),
+    ...(input.description && { description: input.description }),
   };
 }
 
@@ -45,6 +52,10 @@ export function isConnection(value: unknown): value is Connection {
     return false;
   }
 
+  if (conn['role'] !== undefined) {
+    if (conn['role'] !== 'producer' && conn['role'] !== 'consumer') return false;
+  }
+
   if (conn['endpoints'] !== undefined) {
     if (!Array.isArray(conn['endpoints'])) return false;
     if (!conn['endpoints'].every((e) => typeof e === 'string')) return false;
@@ -53,6 +64,10 @@ export function isConnection(value: unknown): value is Connection {
   if (conn['events'] !== undefined) {
     if (!Array.isArray(conn['events'])) return false;
     if (!conn['events'].every((e) => typeof e === 'string')) return false;
+  }
+
+  if (conn['description'] !== undefined) {
+    if (typeof conn['description'] !== 'string') return false;
   }
 
   return true;
