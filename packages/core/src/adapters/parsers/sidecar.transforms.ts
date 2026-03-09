@@ -56,8 +56,10 @@ export function sidecarToService(sidecar: ServiceSidecar): Service {
     service.connections = s.connections.map((c) => ({
       target: c.target,
       type: c.type,
+      ...(c.role && { role: c.role }),
       ...(c.endpoints && { endpoints: c.endpoints }),
       ...(c.events && { events: c.events }),
+      ...(c.description && { description: c.description }),
     }));
   }
 

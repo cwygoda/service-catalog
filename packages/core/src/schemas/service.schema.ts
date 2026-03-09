@@ -60,6 +60,7 @@ export const ServiceSidecarSchema = Type.Object({
         Type.Object({
           target: Type.String({ minLength: 1 }),
           access: Type.Union([Type.Literal('r'), Type.Literal('rw')]),
+          description: Type.Optional(Type.String()),
         })
       )
     ),
