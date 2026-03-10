@@ -1,3 +1,9 @@
+# [0.20.0](https://github.com/cwygoda/service-catalog/compare/v0.19.1...v0.20.0) (2026-03-10)
+
+### Features
+
+- **graph:** add antsSpeed prop to ServiceGraph component ([1eec490](https://github.com/cwygoda/service-catalog/commit/1eec4905377771ba6ada9a4343589c6f28c76ceb))
+
 ## [0.19.1](https://github.com/cwygoda/service-catalog/compare/v0.19.0...v0.19.1) (2026-03-10)
 
 ### Bug Fixes
