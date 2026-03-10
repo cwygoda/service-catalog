@@ -169,7 +169,7 @@
                     >
                       {conn.type.toUpperCase()}
                     </span>
-                    {#if conn.endpoints && conn.endpoints.length > 0}
+                    {#if conn.type !== 'data-store' && conn.endpoints && conn.endpoints.length > 0}
                       <span class="truncate" title={conn.endpoints.join(', ')}>
                         {conn.endpoints.join(', ')}
                       </span>
@@ -207,7 +207,7 @@
                     >
                       {conn.type.toUpperCase()}
                     </span>
-                    {#if conn.endpoints && conn.endpoints.length > 0}
+                    {#if conn.type !== 'data-store' && conn.endpoints && conn.endpoints.length > 0}
                       <span class="truncate" title={conn.endpoints.join(', ')}>
                         {conn.endpoints.join(', ')}
                       </span>
