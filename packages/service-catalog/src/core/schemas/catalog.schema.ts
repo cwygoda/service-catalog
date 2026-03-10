@@ -77,18 +77,25 @@ export const GraphNodeSchema = Type.Object({
   id: Type.String({ minLength: 1 }),
   name: Type.String({ minLength: 1 }),
   domain: Type.Optional(Type.String({ minLength: 1 })),
-  type: Type.Optional(ServiceTypeSchema),
+  type: Type.Optional(Type.Union([ServiceTypeSchema, Type.Literal('data-store')])),
   lifecycle: Type.Optional(LifecycleSchema),
+  partition: Type.Optional(Type.Number()),
 });
 
 export const GraphEdgeSchema = Type.Object({
   source: Type.String({ minLength: 1 }),
   target: Type.String({ minLength: 1 }),
-  type: Type.Union([Type.Literal('http'), Type.Literal('event'), Type.Literal('grpc')]),
+  type: Type.Union([
+    Type.Literal('http'),
+    Type.Literal('event'),
+    Type.Literal('grpc'),
+    Type.Literal('data-store'),
+  ]),
   role: Type.Optional(Type.Union([Type.Literal('producer'), Type.Literal('consumer')])),
   endpoints: Type.Optional(Type.Array(Type.String())),
   events: Type.Optional(Type.Array(Type.String())),
   description: Type.Optional(Type.String()),
+  access: Type.Optional(Type.Union([Type.Literal('r'), Type.Literal('rw')])),
 });
 
 export const ServiceGraphSchema = Type.Object({

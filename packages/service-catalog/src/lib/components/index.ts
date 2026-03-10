@@ -11,5 +11,7 @@ export { default as ServiceCard } from './ServiceCard.svelte';
 export { default as ServiceTypeShield } from './ServiceTypeShield.svelte';
 export { default as Shield } from './Shield.svelte';
 export { default as ServiceGraph } from './ServiceGraph.svelte';
+export { computeLayout } from './graph/index.js';
+export type { LayoutNode, LayoutEdge, LayoutResult } from './graph/index.js';
 export { default as ThemeToggle } from './ThemeToggle.svelte';
 export { default as UseCaseCard } from './UseCaseCard.svelte';

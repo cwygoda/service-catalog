@@ -128,9 +128,9 @@
         </h2>
 
         <!-- Mini graph -->
-        {#if data.miniGraph.nodes.length > 1}
+        {#if data.miniLayout.nodes.length > 1}
           <div class="mb-6">
-            <ServiceGraph nodes={data.miniGraph.nodes} edges={data.miniGraph.edges} height={300} />
+            <ServiceGraph layout={data.miniLayout} height={300} lockZoom />
           </div>
         {/if}
 

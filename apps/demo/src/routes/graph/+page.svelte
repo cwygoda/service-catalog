@@ -82,13 +82,13 @@
   <div
     class="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-900"
   >
-    <ServiceGraph nodes={data.nodes} edges={data.edges} height={600} {highlightedNodes} />
+    <ServiceGraph layout={data.layout} height={600} {highlightedNodes} lockZoom />
   </div>
 
   <div class="text-sm text-gray-500 dark:text-gray-400">
     <p>
-      <strong>{data.nodes.length}</strong> services,
-      <strong>{data.edges.length}</strong> connections derived from
+      <strong>{data.layout.nodes.length}</strong> services,
+      <strong>{data.layout.edges.length}</strong> connections derived from
       <strong>{data.useCases.length}</strong> use cases
     </p>
   </div>

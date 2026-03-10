@@ -151,8 +151,15 @@ describe('graph-builder', () => {
           domain: 'domain1',
           type: 'web-service',
           lifecycle: 'active',
+          partition: 1,
         },
-        { id: 'svc2', name: 'Service 2', type: 'event-producer', lifecycle: 'deprecated' },
+        {
+          id: 'svc2',
+          name: 'Service 2',
+          type: 'event-producer',
+          lifecycle: 'deprecated',
+          partition: 2,
+        },
       ]);
     });
 
@@ -424,6 +431,118 @@ describe('graph-builder', () => {
       expect(graph.edges).toEqual([
         { source: 'svc1', target: 'svc2', type: 'grpc', endpoints: ['Billing/Charge'] },
       ]);
+    });
+
+    it('sets partitions on service nodes by type', () => {
+      const catalog: Catalog = {
+        services: [
+          { id: 'ui', name: 'UI', description: 'desc', type: 'web-app', lifecycle: 'active' },
+          { id: 'api', name: 'API', description: 'desc', type: 'web-service', lifecycle: 'active' },
+          {
+            id: 'worker',
+            name: 'Worker',
+            description: 'desc',
+            type: 'event-consumer',
+            lifecycle: 'active',
+          },
+          { id: 'lib', name: 'Lib', description: 'desc', type: 'library', lifecycle: 'active' },
+        ],
+        useCases: [],
+        domains: [],
+        dataStores: [],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      expect(graph.nodes.map((n) => ({ id: n.id, partition: n.partition }))).toEqual([
+        { id: 'ui', partition: 0 },
+        { id: 'api', partition: 1 },
+        { id: 'worker', partition: 2 },
+        { id: 'lib', partition: 3 },
+      ]);
+    });
+
+    it('includes shared data-store nodes and edges', () => {
+      const catalog: Catalog = {
+        services: [
+          {
+            id: 'svc1',
+            name: 'Service 1',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            dataStores: [{ target: 'shared-db', access: 'rw' }],
+          },
+          {
+            id: 'svc2',
+            name: 'Service 2',
+            description: 'desc',
+            type: 'event-consumer',
+            lifecycle: 'active',
+            dataStores: [{ target: 'shared-db', access: 'r' }],
+          },
+        ],
+        useCases: [],
+        domains: [],
+        dataStores: [
+          { id: 'shared-db', name: 'Shared DB', description: 'Main database', type: 'database' },
+        ],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      // Data-store node present
+      const dsNode = graph.nodes.find((n) => n.id === 'shared-db');
+      expect(dsNode).toEqual({
+        id: 'shared-db',
+        name: 'Shared DB',
+        type: 'data-store',
+        partition: 2, // max of web-service(1) and event-consumer(2)
+      });
+
+      // Data-store edges present
+      const dsEdges = graph.edges.filter((e) => e.type === 'data-store');
+      expect(dsEdges).toEqual([
+        {
+          source: 'svc1',
+          target: 'shared-db',
+          type: 'data-store',
+          access: 'rw',
+          description: 'Main database',
+        },
+        {
+          source: 'svc2',
+          target: 'shared-db',
+          type: 'data-store',
+          access: 'r',
+          description: 'Main database',
+        },
+      ]);
+    });
+
+    it('excludes data stores connected to only one service', () => {
+      const catalog: Catalog = {
+        services: [
+          {
+            id: 'svc1',
+            name: 'Service 1',
+            description: 'desc',
+            type: 'web-service',
+            lifecycle: 'active',
+            dataStores: [{ target: 'private-db', access: 'rw' }],
+          },
+        ],
+        useCases: [],
+        domains: [],
+        dataStores: [
+          { id: 'private-db', name: 'Private DB', description: 'Private', type: 'database' },
+        ],
+      };
+
+      const graph = buildServiceGraph(catalog);
+
+      expect(graph.nodes.find((n) => n.id === 'private-db')).toBeUndefined();
+      expect(graph.edges.filter((e) => e.type === 'data-store')).toEqual([]);
     });
   });
 });

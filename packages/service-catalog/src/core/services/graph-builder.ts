@@ -12,6 +12,15 @@ import type { GraphNode, GraphEdge, ServiceGraph } from '../domain/graph.js';
 
 export type { GraphNode, GraphEdge, ServiceGraph };
 
+export const PARTITION_BY_TYPE: Record<string, number> = {
+  'web-app': 0,
+  'web-service': 1,
+  'event-consumer': 2,
+  'event-producer': 2,
+  'event-transformer': 2,
+  library: 3,
+};
+
 /**
  * Derives connections from use case steps.
  * When step N has service A and step N+1 has service B, that implies A -> B connection.
@@ -112,15 +121,17 @@ function mergeConnections(
 
 /**
  * Builds a service graph from catalog data.
+ * Includes shared data-store nodes (connected to 2+ services).
  */
 export function buildServiceGraph(catalog: Catalog): ServiceGraph {
-  // Create nodes from services
+  // Create nodes from services with partitions
   const nodes: GraphNode[] = catalog.services.map((s) => ({
     id: s.id,
     name: s.name,
     ...(s.domain && { domain: s.domain }),
     type: s.type,
     lifecycle: s.lifecycle,
+    partition: PARTITION_BY_TYPE[s.type] ?? 1,
   }));
 
   // Derive connections from use cases
@@ -153,8 +164,58 @@ export function buildServiceGraph(catalog: Catalog): ServiceGraph {
     }
   }
 
+  // Collect data-store edges from all services
+  const serviceTypeMap = new Map(catalog.services.map((s) => [s.id, s.type]));
+  const dsDescMap = new Map(catalog.dataStores.map((ds) => [ds.id, ds.description]));
+
+  const allDsEdges: GraphEdge[] = catalog.services.flatMap((svc) =>
+    (svc.dataStores ?? []).map((ds) => {
+      const desc = dsDescMap.get(ds.target);
+      return {
+        source: svc.id,
+        target: ds.target,
+        type: 'data-store' as const,
+        access: ds.access,
+        ...(desc ? { description: desc } : {}),
+      };
+    })
+  );
+
+  // Only include shared data stores (connected to 2+ services)
+  const dsOwners = new Map<string, string[]>();
+  for (const e of allDsEdges) {
+    const owners = dsOwners.get(e.target) ?? [];
+    owners.push(e.source);
+    dsOwners.set(e.target, owners);
+  }
+
+  const sharedDsIds = new Set(
+    [...dsOwners.entries()].filter(([, owners]) => owners.length >= 2).map(([id]) => id)
+  );
+
+  // Add shared data-store nodes
+  const dsNodes: GraphNode[] = catalog.dataStores
+    .filter((ds) => sharedDsIds.has(ds.id))
+    .map((ds) => {
+      const owners = dsOwners.get(ds.id) ?? [];
+      const ownerPartitions = owners.map(
+        (id) => PARTITION_BY_TYPE[serviceTypeMap.get(id) ?? ''] ?? 1
+      );
+      const partition = Math.max(...ownerPartitions, 1);
+      return {
+        id: ds.id,
+        name: ds.name,
+        ...(ds.domain ? { domain: ds.domain } : {}),
+        type: 'data-store' as const,
+        partition,
+      };
+    });
+
+  // Add shared data-store edges
+  const dsEdges = allDsEdges.filter((e) => sharedDsIds.has(e.target));
+
   return {
-    nodes,
-    edges: Array.from(edgeMap.values()),
+    nodes: [...nodes, ...dsNodes],
+    edges: [...Array.from(edgeMap.values()), ...dsEdges],
   };
 }

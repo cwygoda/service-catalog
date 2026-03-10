@@ -5,18 +5,20 @@ export interface GraphNode {
   id: string;
   name: string;
   domain?: string;
-  type?: ServiceType;
+  type?: ServiceType | 'data-store';
   lifecycle?: Lifecycle;
+  partition?: number;
 }
 
 export interface GraphEdge {
   source: string;
   target: string;
-  type: ConnectionType;
+  type: ConnectionType | 'data-store';
   role?: ConnectionRole;
   endpoints?: string[];
   events?: string[];
   description?: string;
+  access?: 'r' | 'rw';
 }
 
 export interface ServiceGraph {

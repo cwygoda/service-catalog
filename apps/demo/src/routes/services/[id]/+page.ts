@@ -1,4 +1,5 @@
 import { error } from '@sveltejs/kit';
+import { computeLayout } from '@cwygoda/service-catalog/ui/graph';
 import type { PageLoad } from './$types';
 import type { Domain } from '@cwygoda/service-catalog';
 
@@ -65,16 +66,19 @@ export const load: PageLoad = async ({ params, parent }) => {
   // Get data stores owned by this service
   const dataStores = catalog.dataStores.filter((ds) => ds.owner === service.id);
 
+  // Compute ELK layout for the mini graph
+  const miniLayout =
+    relevantNodes.length > 1
+      ? await computeLayout(relevantNodes, relevantEdges)
+      : { nodes: [], edges: [], width: 0, height: 0 };
+
   return {
     service,
     useCases,
     dataStores,
     domain,
     domainAncestors,
-    miniGraph: {
-      nodes: relevantNodes,
-      edges: relevantEdges,
-    },
+    miniLayout,
     outgoingConnections,
     incomingConnections,
   };
