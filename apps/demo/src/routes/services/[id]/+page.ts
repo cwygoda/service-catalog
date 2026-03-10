@@ -34,58 +34,22 @@ export const load: PageLoad = async ({ params, parent }) => {
     }
   }
 
-  // Data store edges for this service
-  const dsDescMap = new Map(catalog.dataStores.map((ds) => [ds.id, ds.description]));
-  const serviceDataStoreEdges = (service.dataStores ?? []).map((ds) => {
-    const desc = dsDescMap.get(ds.target);
-    return {
-      source: service.id,
-      target: ds.target,
-      type: 'data-store' as const,
-      access: ds.access,
-      ...(desc ? { description: desc } : {}),
-    };
-  });
+  // Mini-graph: filter full graph to this service's connections
+  // (graph already includes data-store nodes and edges from the builder)
+  const relevantEdges = graph.edges.filter(
+    (e) => e.source === service.id || e.target === service.id
+  );
 
-  const allEdges = [...graph.edges, ...serviceDataStoreEdges];
-
-  // Get edges where this service is source or target
-  const relevantEdges = allEdges.filter((e) => e.source === service.id || e.target === service.id);
-
-  // Filter nodes to only connected services + data stores
   const connectedIds = new Set<string>([service.id]);
   for (const edge of relevantEdges) {
     connectedIds.add(edge.source);
     connectedIds.add(edge.target);
   }
 
-  // Build data store nodes for connected data stores
-  const PARTITION_BY_TYPE: Record<string, number> = {
-    'web-app': 0,
-    'web-service': 1,
-    'event-consumer': 2,
-    'event-producer': 2,
-    'event-transformer': 2,
-    library: 3,
-  };
-  const ownerPartition = PARTITION_BY_TYPE[service.type] ?? 1;
+  const relevantNodes = graph.nodes.filter((n) => connectedIds.has(n.id));
 
-  const dataStoreNodes = catalog.dataStores
-    .filter((ds) => connectedIds.has(ds.id))
-    .map((ds) => ({
-      id: ds.id,
-      name: ds.name,
-      ...(ds.domain ? { domain: ds.domain } : {}),
-      type: 'data-store' as const,
-      partition: ownerPartition,
-    }));
-
-  const relevantNodes = [...graph.nodes.filter((n) => connectedIds.has(n.id)), ...dataStoreNodes];
-
-  // Name lookup across services and data stores
-  const nameMap = new Map<string, string>();
-  for (const n of graph.nodes) nameMap.set(n.id, n.name);
-  for (const ds of catalog.dataStores) nameMap.set(ds.id, ds.name);
+  // Name lookup for connection lists
+  const nameMap = new Map(graph.nodes.map((n) => [n.id, n.name]));
 
   // Separate incoming and outgoing connections
   const outgoingConnections = relevantEdges
