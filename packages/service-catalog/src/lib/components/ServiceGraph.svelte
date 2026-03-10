@@ -11,9 +11,17 @@
     height?: number;
     highlightedNodes?: string[] | undefined;
     lockZoom?: boolean;
+    antsSpeed?: number;
   }
 
-  let { layout, basePath = '', height, highlightedNodes, lockZoom = false }: Props = $props();
+  let {
+    layout,
+    basePath = '',
+    height,
+    highlightedNodes,
+    lockZoom = false,
+    antsSpeed = 0.6,
+  }: Props = $props();
 
   let svgEl: SVGSVGElement | undefined = $state();
   let containerEl: HTMLDivElement | undefined = $state();
@@ -189,7 +197,9 @@
 <div
   bind:this={containerEl}
   class="service-graph"
-  style="width:100%;height:{height ? `${String(height)}px` : '100%'};overflow:hidden;"
+  style="width:100%;height:{height
+    ? `${String(height)}px`
+    : '100%'};overflow:hidden;--ants-speed:{antsSpeed}s;"
 >
   <svg
     bind:this={svgEl}
@@ -393,7 +403,7 @@
   }
 
   .service-graph :global(.edge-ants) {
-    animation: march 0.6s linear infinite;
+    animation: march var(--ants-speed, 0.6s) linear infinite;
   }
 
   .service-graph :global(.edge-group:hover .edge-pipe) {
