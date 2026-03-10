@@ -14,7 +14,6 @@ export const load: PageLoad = async ({ params, parent }) => {
   // Build lookup maps for O(1) access
   const domainMap = new Map(catalog.domains.map((d) => [d.id, d]));
   const graph = catalog.graph ?? { nodes: [], edges: [] };
-  const nodeMap = new Map(graph.nodes.map((n) => [n.id, n]));
 
   // Get use cases this service participates in
   const useCases = catalog.useCases.filter((uc) =>
@@ -35,32 +34,72 @@ export const load: PageLoad = async ({ params, parent }) => {
     }
   }
 
-  // Get edges where this service is source or target
-  const relevantEdges = graph.edges.filter(
-    (e) => e.source === service.id || e.target === service.id
-  );
+  // Data store edges for this service
+  const dsDescMap = new Map(catalog.dataStores.map((ds) => [ds.id, ds.description]));
+  const serviceDataStoreEdges = (service.dataStores ?? []).map((ds) => {
+    const desc = dsDescMap.get(ds.target);
+    return {
+      source: service.id,
+      target: ds.target,
+      type: 'data-store' as const,
+      access: ds.access,
+      ...(desc ? { description: desc } : {}),
+    };
+  });
 
-  // Filter nodes to only connected services
-  const connectedServiceIds = new Set<string>([service.id]);
+  const allEdges = [...graph.edges, ...serviceDataStoreEdges];
+
+  // Get edges where this service is source or target
+  const relevantEdges = allEdges.filter((e) => e.source === service.id || e.target === service.id);
+
+  // Filter nodes to only connected services + data stores
+  const connectedIds = new Set<string>([service.id]);
   for (const edge of relevantEdges) {
-    connectedServiceIds.add(edge.source);
-    connectedServiceIds.add(edge.target);
+    connectedIds.add(edge.source);
+    connectedIds.add(edge.target);
   }
-  const relevantNodes = graph.nodes.filter((n) => connectedServiceIds.has(n.id));
+
+  // Build data store nodes for connected data stores
+  const PARTITION_BY_TYPE: Record<string, number> = {
+    'web-app': 0,
+    'web-service': 1,
+    'event-consumer': 2,
+    'event-producer': 2,
+    'event-transformer': 2,
+    library: 3,
+  };
+  const ownerPartition = PARTITION_BY_TYPE[service.type] ?? 1;
+
+  const dataStoreNodes = catalog.dataStores
+    .filter((ds) => connectedIds.has(ds.id))
+    .map((ds) => ({
+      id: ds.id,
+      name: ds.name,
+      ...(ds.domain ? { domain: ds.domain } : {}),
+      type: 'data-store' as const,
+      partition: ownerPartition,
+    }));
+
+  const relevantNodes = [...graph.nodes.filter((n) => connectedIds.has(n.id)), ...dataStoreNodes];
+
+  // Name lookup across services and data stores
+  const nameMap = new Map<string, string>();
+  for (const n of graph.nodes) nameMap.set(n.id, n.name);
+  for (const ds of catalog.dataStores) nameMap.set(ds.id, ds.name);
 
   // Separate incoming and outgoing connections
   const outgoingConnections = relevantEdges
     .filter((e) => e.source === service.id)
     .map((e) => ({
       ...e,
-      targetName: nodeMap.get(e.target)?.name ?? e.target,
+      targetName: nameMap.get(e.target) ?? e.target,
     }));
 
   const incomingConnections = relevantEdges
     .filter((e) => e.target === service.id)
     .map((e) => ({
       ...e,
-      sourceName: nodeMap.get(e.source)?.name ?? e.source,
+      sourceName: nameMap.get(e.source) ?? e.source,
     }));
 
   // Get data stores owned by this service
