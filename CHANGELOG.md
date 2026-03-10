@@ -1,3 +1,9 @@
+## [0.19.1](https://github.com/cwygoda/service-catalog/compare/v0.19.0...v0.19.1) (2026-03-10)
+
+### Bug Fixes
+
+- **demo:** remove duplicate data-store nodes in service mini-graph ([586f547](https://github.com/cwygoda/service-catalog/commit/586f547ed3856012135536bd12a39b8c7450365c))
+
 # [0.19.0](https://github.com/cwygoda/service-catalog/compare/v0.18.0...v0.19.0) (2026-03-10)
 
 ### Bug Fixes
